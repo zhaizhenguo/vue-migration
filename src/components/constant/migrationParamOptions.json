@@ -1,0 +1,22 @@
+{
+    "allTheParams":[
+        { "key":"001","lable": "按照水平分区迁移", "disabled": true },
+        { "key":"002","lable": "不检查check约束", "disabled": false },
+        { "key":"003","lable": "迁移注释", "disabled": false },
+        { "key":"004","lable": "迁移序列", "disabled": false },
+        { "key":"005","lable": "自动分配水平分区名", "disabled": false },
+        { "key":"006","lable": "从数据库中读取序列", "disabled": true },
+        { "key":"007","lable": "是否对视图排序", "disabled": false },
+        { "key":"008","lable": "是否迁移存储选项", "disabled": true },
+        { "key":"009","lable": "强制重新获取元数据对象信息", "disabled": true },
+        { "key":"010","lable": "迁移时强制使用大写标识", "disabled": false },
+        { "key":"011","lable": "保存数据库登录密码", "disabled": false },
+        { "key":"012","lable": "迁移完成后执行Analyze", "disabled": false },
+        { "key":"013","lable": "断点续传", "disabled": false },
+        { "key":"014","lable": "迁移oracle pl对象", "disabled": true },
+        { "key":"015","lable": "Mysql数据编码转换(是否转码可用Navicat工具查看数据显示是否正常)", "disabled": false }
+      ],
+      "checkedParams":[
+        "001","002","004","008","010","011","013"
+      ]
+}
