@@ -1,74 +1,72 @@
 <template>
-  <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
-    <el-tab-pane label="迁移参数" name="first">
-      <el-checkbox-group
-        @change="handleCheckedCitiesChange"
-        style="padding: 30px 100px 10px"
-        v-model="checkedmigrationParams"
-      >
-        <el-checkbox
-          class="lable01"
-          v-for="data in migrationParams"
-          :label="data.key"
-          :key="data.key"
-          :disabled="data.disabled"
-          >{{ data.lable }}</el-checkbox
-        >
-      </el-checkbox-group>
-      <div style="color: #606266; font-weight: 500; padding: 10px 100px">
-        迁移错误策略
-        <el-radio style="margin-left: 15px" v-model="errorStrategy" label="0"
-          >遇错停止</el-radio
-        >
-        <el-radio v-model="errorStrategy" label="1">遇错忽略</el-radio>
-      </div>
-      <div style="color: #606266; font-weight: 500; padding: 10px 100px">
-        列长度倍数<el-input
-          style="width: 100px; padding-left: 35px"
-          v-model="lengthUnit"
-          type="number"
-        ></el-input>
-      </div>
-    </el-tab-pane>
-    <el-tab-pane label="性能参数" name="second">性能参数</el-tab-pane>
-    <el-tab-pane label="迁移监控参数" name="third">迁移监控参数</el-tab-pane>
-  </el-tabs>
+  <div>
+    <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
+      <el-tab-pane label="迁移参数" name="migrationParams">
+        <migrationParams
+          ref="migrationParams"
+          class="paramDiv"
+        ></migrationParams>
+      </el-tab-pane>
+      <el-tab-pane label="性能参数" name="performanceParams">
+        <performanceParams
+          ref="performanceParams"
+          class="paramDiv"
+        ></performanceParams>
+      </el-tab-pane>
+      <el-tab-pane label="迁移监控参数" name="monitoringParams"
+        ><monitoringParams
+          ref="monitoringParams"
+          class="paramDiv"
+        ></monitoringParams
+      ></el-tab-pane>
+    </el-tabs>
+  </div>
 </template>
 <script>
-import migrationParamOptions from "../constant/migrationParamOptions";
+import migrationParams from "./step2-migrationParams";
+import performanceParams from "./step2-performanceParams.vue";
+import monitoringParams from "./step2-monitoringParams.vue";
 export default {
+  components: {
+    migrationParams: migrationParams,
+    performanceParams: performanceParams,
+    monitoringParams: monitoringParams,
+  },
   data() {
     return {
-      activeName: "first",
-      checkedmigrationParams: migrationParamOptions.checkedParams,
-      migrationParams: migrationParamOptions.allTheParams,
-      errorStrategy: "1",
-      lengthUnit: 1.0,
+      activeName: "migrationParams",
     };
   },
   methods: {
     handleClick(tab, event) {
-      console.log(tab, event);
+      console.log(this.getParam());
     },
     getData() {
       return this.getParam();
     },
     getParam() {
-      return {
-        checkedmigrationParams: this.checkedmigrationParams,
-        errorStrategy: this.errorStrategy,
-        lengthUnit: this.lengthUnit,
-      };
+      let migrationParams = this.$refs.migrationParams.getData();
+      let performanceParams = this.$refs.performanceParams.getData();
+      let monitoringParams = this.$refs.monitoringParams.getData();
+      console.log("migrationParams===", migrationParams);
+      if (migrationParams && performanceParams && monitoringParams) {
+        return { migrationParams, performanceParams, monitoringParams };
+      }
     },
-    handleCheckedCitiesChange(value) {
-      console.log("migrationParams======", this.getParam());
+    btnclickReset() {
+      if (this.activeName === "migrationParams") {
+        this.$refs.migrationParams.btnclickReset();
+      } else if (this.activeName === "performanceParams") {
+        this.$refs.performanceParams.btnclickReset();
+      } else if (this.activeName === "monitoringParams") {
+        this.$refs.monitoringParams.btnclickReset();
+      }
     },
   },
 };
 </script>
 <style scoped>
-.lable01 {
-  width: 200px;
-  margin-top: 20px;
+.paramDiv {
+  padding: 30px 100px 10px;
 }
 </style>

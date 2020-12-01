@@ -38,6 +38,13 @@
         :disabled="nowProcess == stepDesc.length"
         >下一步</el-button
       >
+
+      <el-button
+        type="primary"
+        @click="btnclickReset()"
+        :loading="sumbitLoading"
+        >重置</el-button
+      >
       <el-button
         type="primary"
         @click="btnclickSumbit()"
@@ -113,6 +120,9 @@ export default {
       //       type: "success"
       //     });
       //   });
+    },
+    btnclickReset() {
+      this.$refs.step2.btnclickReset();
     },
   },
 };
