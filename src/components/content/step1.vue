@@ -20,7 +20,6 @@ export default {
     getData() {
       let formSourceDate = this.$refs.formSource.getData();
       let formTargetDate = this.$refs.formTarget.getData();
-      console.log("formSourceDate===", formSourceDate);
       if (formSourceDate && formTargetDate) {
         return { formSourceDate, formTargetDate };
       }

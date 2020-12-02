@@ -267,6 +267,6 @@ export default {
   float: left;
 }
 .elementDiv {
-  width: 100px;
+  width: 150px;
 }
 </style>

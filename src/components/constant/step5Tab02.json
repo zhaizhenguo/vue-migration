@@ -1,0 +1,35 @@
+    [
+        {
+            "sourceLineName": "ID02",
+            "targetLineName": "ID02",
+            "checkType": "VARCHAR02",
+            "length": "50",
+            "precision": "64",
+            "decimals": "64",
+            "ismajorKey": "0",
+            "canBeNull": "0",
+            "defaultValue": "40"
+        },
+        {
+            "sourceLineName": "NAME02",
+            "targetLineName": "NAME02",
+            "checkType": "VARCHAR02",
+            "length": "50",
+            "precision": "64",
+            "decimals": "64",
+            "ismajorKey": "0",
+            "canBeNull": "0",
+            "defaultValue": "40"
+        },
+        {
+            "sourceLineName": "PASSWOED02",
+            "targetLineName": "PASSWOED02",
+            "checkType": "VARCHAR",
+            "length": "50",
+            "precision": "64",
+            "decimals": "64",
+            "ismajorKey": "0",
+            "canBeNull": "0",
+            "defaultValue": "40"
+        }
+    ]

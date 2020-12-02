@@ -1,0 +1,28 @@
+    [
+        {
+            "sourceTableName": "TEST",
+            "targetTableName": "TEST",
+            "checkOperatingMode": "newTable",
+            "checkTableSpace": "SYSTEM",
+            "initSize": "64",
+            "incrementSize": "64",
+            "maxSize": "0",
+            "freeRatio": "10",
+            "minUseRatio": "40",
+            "checkOutputLog": 0,
+            "filter": ""
+        },
+        {
+            "sourceTableName": "TEST11",
+            "targetTableName": "TEST11",
+            "checkOperatingMode": "newTable",
+            "checkTableSpace": "SYSTEM",
+            "initSize": "64",
+            "incrementSize": "64",
+            "maxSize": "0",
+            "freeRatio": "10",
+            "minUseRatio": "40",
+            "checkOutputLog": 0,
+            "filter": ""
+        }
+    ]

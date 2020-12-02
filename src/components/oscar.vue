@@ -24,11 +24,21 @@
       <el-row style="margin-top: 10px">{{ getDesc }}</el-row>
     </el-header>
     <!-- <el-main :style="`height:${contentHeight}px;padding: 45px 20px;`"> -->
-    <el-main :style="'height:' + contentHeight + 'px;padding: 25px 20px;'">
+    <el-main :style="'height:' + contentHeight + 'px;padding: 25px 20px 0px;'">
       <step1 v-show="nowProcess === 1" ref="step1"></step1>
       <step2 v-show="nowProcess === 2" ref="step2"></step2>
+      <step3 v-show="nowProcess === 3" ref="step3"></step3>
+      <step4 v-show="nowProcess === 4" ref="step4"></step4>
+      <step5 v-show="nowProcess === 5" ref="step5"></step5>
     </el-main>
     <el-footer style="text-align: right">
+      <el-button
+        v-show="nowProcess === 2"
+        type="primary"
+        @click="btnclickReset()"
+        :loading="sumbitLoading"
+        >重置</el-button
+      >
       <el-button type="primary" @click="btnclick(0)" :disabled="nowProcess == 1"
         >上一步</el-button
       >
@@ -41,31 +51,31 @@
 
       <el-button
         type="primary"
-        @click="btnclickReset()"
-        :loading="sumbitLoading"
-        >重置</el-button
-      >
-      <el-button
-        type="primary"
         @click="btnclickSumbit()"
         :loading="sumbitLoading"
         :disabled="nowProcess !== stepDesc.length"
         >完成</el-button
       >
     </el-footer>
-    <div class="szBrand">神州通用数据技术有限公司</div>
+    <div class="szBrand">2008-2020 神州通用数据技术有限公司</div>
   </div>
 </template>
 <script>
 import stepDesc from "./constant/stepDesc";
 import step1 from "./content/step1";
 import step2 from "./content/step2";
+import step3 from "./content/step3";
+import step4 from "./content/step4";
+import step5 from "./content/step5";
 import api from "./asset/api";
 export default {
   name: "oscar",
   components: {
     step1: step1,
     step2: step2,
+    step3: step3,
+    step4: step4,
+    step5: step5,
   },
   data() {
     return {
@@ -73,7 +83,7 @@ export default {
       stepData: {},
       sumbitLoading: false,
       stepDesc: stepDesc,
-      nowProcess: 2,
+      nowProcess: 4,
       value: "",
       options: [],
     };
@@ -99,18 +109,21 @@ export default {
     },
     btnclick(isDown) {
       if (isDown) {
-        let getData = this.$refs["step" + this.nowProcess].getData();
-        if (!getData) {
-          return;
-        }
-        console.log("this.stepData===", this.stepData);
-        this.stepData["step" + this.nowProcess] = getData;
+        //保存数据逻辑
+        // let getData = this.$refs["step" + this.nowProcess].getData();
+        // if (!getData) {
+        //   return;
+        // }
+        // console.log("this.stepData===", this.stepData);
+        // this.stepData["step" + this.nowProcess] = getData;
+        // console.log("this.stepData===", this.stepData);
         this.nowProcess++;
       } else {
         this.nowProcess--;
       }
     },
     btnclickSumbit() {
+      this.$refs["step3"].calResultData();
       //   this.sumbitLoading = true;
       //   api.postPay({}, response => {
       //     this.sumbitLoading = false;
@@ -139,7 +152,7 @@ export default {
 .szBrand {
   font-size: small;
   position: fixed;
-  bottom: 2px;
+  bottom: 10px;
   left: 50%;
   transform: translateX(-50%);
 }
