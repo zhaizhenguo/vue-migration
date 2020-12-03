@@ -6,6 +6,9 @@
       stripe
       :height="tableHeight"
       style="width: 100%"
+      @select-all="selectAll"
+      @select="select"
+      ref="table"
     >
       <el-table-column type="selection" min-width="2%"> </el-table-column>
       <el-table-column type="index" label="行号" min-width="2%">
@@ -47,19 +50,31 @@ export default {
   props: {
     tableHeight: {
       type: Number,
-      default: function () {
+      default: function() {
         return 500;
-      },
-    },
+      }
+    }
   },
   components: {},
   data() {
     return {
       objData: objData,
-      objData02: objData02,
+      objData02: objData02
     };
   },
   methods: {
+    selectRow(rows) {
+      let tableRef = this.$ref.table;
+      rows.forEach(row => {
+        tableRef.toggleRowSelection(row);
+      });
+    },
+    selectAll(selection) {
+      this.$emit("getData", "step4ViewPane", selection);
+    },
+    select(selection) {
+      this.$emit("getData", "step4ViewPane", selection);
+    },
     handleSelectionChange(val) {
       if (val === "ZG") {
         this.objData = JSON.parse(
@@ -73,13 +88,12 @@ export default {
 
     getData() {
       return {
-        objData,
+        objData
       };
-    },
+    }
   },
-  created: function () {},
-  computed: {},
+  created: function() {},
+  computed: {}
 };
 </script>
-<style scoped>
-</style>
+<style scoped></style>

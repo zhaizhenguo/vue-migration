@@ -3,6 +3,7 @@
     <el-tab-pane label="表" name="step4TablePane">
       <step4TablePane
         :tableHeight="tableHeight"
+        @getData="getData"
         ref="step4TablePane"
       ></step4TablePane>
     </el-tab-pane>
@@ -10,6 +11,7 @@
     <el-tab-pane label="视图" name="step4ViewPane">
       <step4ViewPane
         :tableHeight="tableHeight"
+        @getData="getData"
         ref="step4ViewPane"
       ></step4ViewPane>
     </el-tab-pane>
@@ -93,16 +95,21 @@ export default {
     step4ProcedurePane: step4ProcedurePane,
     step4PackagePane: step4PackagePane,
     step4FunctionPane: step4FunctionPane,
-    step4UserFunctionPane: step4UserFunctionPane,
+    step4UserFunctionPane: step4UserFunctionPane
   },
   data() {
     return {
+      selectRow: [],
+      tabPaneData: {},
       tableHeight: 457,
       sourceData: "",
-      activeName: "step4TablePane",
+      activeName: "step4TablePane"
     };
   },
   methods: {
+    getData(key, value) {
+      this.tabPaneData[key] = value;
+    },
     handleSourceDataSelectionChange(val) {
       this.sourceData = val;
       if (this.sourceData === "ZG") {
@@ -119,12 +126,15 @@ export default {
       console.log("this.sourceData===", this.sourceData);
     },
     tabHandleClick(tab, event) {
+      this.selectRow = this.tabPaneData[this.activeName] || [];
+      this.$refs[this.activeName].selectRow(this.selectRow);
+      console.log(this.selectRow);
       this.handleSourceDataSelectionChange(this.sourceData);
       console.log(this.activeName);
     },
     getData() {
       return {
-        objData,
+        objData
       };
     },
     calcHeightx() {
@@ -136,13 +146,12 @@ export default {
         //通过上边计算得到的table高度的value值，减去table表格的header高度，剩下的通过dom节点直接强行赋给table表格的body
         wapper[0].style.height = this.tableHeight + "px";
       }, 100);
-    },
+    }
   },
-  created: function () {
+  created: function() {
     this.calcHeightx();
   },
-  computed: {},
+  computed: {}
 };
 </script>
-<style scoped>
-</style>
+<style scoped></style>

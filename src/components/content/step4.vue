@@ -143,7 +143,7 @@ import step4Tabs from "./subcontent/step4-tabs";
 export default {
   components: {
     dialogSQLData: dialogSQLData,
-    step4Tabs: step4Tabs,
+    step4Tabs: step4Tabs
   },
   data() {
     return {
@@ -155,24 +155,24 @@ export default {
       operatingMode: [
         { value: "newTable", label: "新建表" },
         { value: "heavyLoadData", label: "重载数据" },
-        { value: "addToData", label: "追加数据" },
+        { value: "addToData", label: "追加数据" }
       ],
       tableSpace: [
         { value: "SYSTEM", label: "SYSTEM" },
         { value: "UNDOTS01", label: "UNDOTS01" },
         { value: "TEMP", label: "TEMP" },
-        { value: "AUDIT", label: "AUDIT" },
+        { value: "AUDIT", label: "AUDIT" }
       ],
       outputLog: [
         { value: 0, label: "是" },
-        { value: 1, label: "否" },
+        { value: 1, label: "否" }
       ],
 
       sourcePattern: [
         { value: "SYSDBA", label: "SYSDBA" },
-        { value: "ZG", label: "ZG" },
+        { value: "ZG", label: "ZG" }
       ],
-      checkSourcePattern: "SYSDBA",
+      checkSourcePattern: "SYSDBA"
       //   this.sourcePattern[0].value,
     };
   },
@@ -195,7 +195,7 @@ export default {
     },
     getData() {
       return {
-        objData,
+        objData
       };
     },
     calcHeightx() {
@@ -207,12 +207,12 @@ export default {
         //通过上边计算得到的table高度的value值，减去table表格的header高度，剩下的通过dom节点直接强行赋给table表格的body
         wapper[0].style.height = this.tableHeight + "px";
       }, 100);
-    },
+    }
   },
-  created: function () {
+  created: function() {
     this.calcHeightx();
   },
-  computed: {},
+  computed: {}
 };
 </script>
 <style scoped>

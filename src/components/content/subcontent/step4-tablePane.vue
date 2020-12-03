@@ -5,6 +5,9 @@
     stripe
     :height="tableHeight"
     style="width: 100%"
+    @select-all="selectAll"
+    @select="select"
+    ref="table"
   >
     <el-table-column type="selection" min-width="2%"> </el-table-column>
     <el-table-column type="index" label="行号" min-width="2%">
@@ -118,10 +121,10 @@ export default {
   props: {
     tableHeight: {
       type: Number,
-      default: function () {
+      default: function() {
         return 500;
-      },
-    },
+      }
+    }
   },
   components: {},
   data() {
@@ -133,28 +136,43 @@ export default {
       operatingMode: [
         { value: "newTable", label: "新建表" },
         { value: "heavyLoadData", label: "重载数据" },
-        { value: "addToData", label: "追加数据" },
+        { value: "addToData", label: "追加数据" }
       ],
       tableSpace: [
         { value: "SYSTEM", label: "SYSTEM" },
         { value: "UNDOTS01", label: "UNDOTS01" },
         { value: "TEMP", label: "TEMP" },
-        { value: "AUDIT", label: "AUDIT" },
+        { value: "AUDIT", label: "AUDIT" }
       ],
       outputLog: [
         { value: 0, label: "是" },
-        { value: 1, label: "否" },
+        { value: 1, label: "否" }
       ],
 
       sourcePattern: [
         { value: "SYSDBA", label: "SYSDBA" },
-        { value: "ZG", label: "ZG" },
+        { value: "ZG", label: "ZG" }
       ],
-      checkSourcePattern: "SYSDBA",
+      checkSourcePattern: "SYSDBA"
       //   this.sourcePattern[0].value,
     };
   },
   methods: {
+    selectRow(rows) {
+      let tableRef = this.$ref.table;
+      rows.forEach(row => {
+        tableRef.toggleRowSelection(row);
+      });
+    },
+    selectAll(selection) {
+      console.log("selectAll selection===", selection);
+      this.$emit("getData", "step4TablePane", selection);
+    },
+    select(selection) {
+      console.log("select selection===", selection);
+      this.$emit("getData", "step4TablePane", selection);
+    },
+
     handleSelectionChange(val) {
       if (val === "ZG") {
         this.objData = JSON.parse(
@@ -176,12 +194,11 @@ export default {
     },
     getData() {
       return {
-        objData,
+        objData
       };
-    },
+    }
   },
-  created: function () {},
-  computed: {},
+  computed: {}
 };
 </script>
 <style scoped>
