@@ -32,6 +32,7 @@
         >
           <template slot-scope="scope">
             <el-select
+              v-if="typeof scope.row.targetFieldType === 'object'"
               v-model="scope.row.checkTargetFieldType"
               placeholder="请选择"
             >
@@ -43,6 +44,7 @@
               >
               </el-option>
             </el-select>
+            <el-input v-model="scope.row.targetFieldType" v-else></el-input>
           </template>
         </el-table-column>
         <el-table-column prop="targetPrecision" label="精度" min-width="10%">
@@ -139,7 +141,7 @@ export default {
       backColMapRelation: null,
       colMapRelationTemp: [],
       multipleSelection: [],
-      tableHeight: 450,
+      tableHeight: 450
     };
   },
   methods: {
@@ -148,11 +150,11 @@ export default {
     },
     getData() {
       return {
-        colMapRelation,
+        colMapRelation
       };
     },
     calResultData() {
-      this.colMapRelationTemp.forEach((item) => {
+      this.colMapRelationTemp.forEach(item => {
         this.colMapRelation.push(item);
       });
     },
@@ -166,12 +168,12 @@ export default {
           checkTargetFieldType: "",
           targetPrecision: "",
           targetDecimal: "",
-          targetFieldLength: "",
+          targetFieldLength: ""
         });
       } else {
         if (this.multipleSelection.length) {
           //   this.multipleSelection.forEach(function(item) {});
-          this.multipleSelection.forEach((item) => {
+          this.multipleSelection.forEach(item => {
             let index = this.colMapRelationTemp.indexOf(item);
             if (index != -1) {
               this.colMapRelationTemp.splice(index, 1);
@@ -195,13 +197,12 @@ export default {
         //通过上边计算得到的table高度的value值，减去table表格的header高度，剩下的通过dom节点直接强行赋给table表格的body
         wapper[0].style.height = this.tableHeight + "px";
       }, 100);
-    },
+    }
   },
-  created: function () {
+  created: function() {
     this.backColMapRelation = JSON.parse(JSON.stringify(this.colMapRelation));
     this.calcHeightx();
-  },
+  }
 };
 </script>
-<style scoped>
-</style>
+<style scoped></style>

@@ -5,16 +5,7 @@
             "sourceDecimal": "",
             "sourceFieldLength": "",
             "checkTargetFieldType": "VARCHAR",
-            "targetFieldType": [
-                {
-                    "value": "VARCHAR",
-                    "lable": "VARCHAR[]"
-                },
-                {
-                    "value": "CHAR",
-                    "lable": "CHAR"
-                }
-            ],
+            "targetFieldType": "aaa",
             "targetPrecision": "",
             "targetDecimal": "",
             "targetFieldLength": ""
