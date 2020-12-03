@@ -1,136 +1,134 @@
 <template>
-  <div style="padding: 0px 50px 0px">
-    <el-container>
-      <el-main style="padding-bottom: 0px"
-        ><el-table
-          :data="colMapRelation"
-          border
-          stripe
-          :height="tableHeight"
-          style="width: 100%"
+  <el-container>
+    <el-main style="padding-bottom: 0px"
+      ><el-table
+        :data="colMapRelation"
+        border
+        stripe
+        :height="tableHeight"
+        style="width: 100%"
+      >
+        <el-table-column type="selection" min-width="2%"> </el-table-column>
+        <el-table-column
+          prop="sourceFieldType"
+          label="源数据类型"
+          min-width="10%"
         >
-          <el-table-column type="selection" min-width="2%"> </el-table-column>
-          <el-table-column
-            prop="sourceFieldType"
-            label="源数据类型"
-            min-width="10%"
-          >
-          </el-table-column>
-          <el-table-column prop="sourcePrecision" label="精度" min-width="10%">
-          </el-table-column>
-          <el-table-column prop="sourceDecimal" label="小数点" min-width="10%">
-          </el-table-column>
-          <el-table-column
-            prop="sourceFieldLength"
-            label="数据长度"
-            min-width="10%"
-          >
-          </el-table-column>
-          <el-table-column
-            prop="targetFieldType"
-            label="目标数据类型"
-            min-width="10%"
-          >
-            <template slot-scope="scope">
-              <el-select
-                v-model="scope.row.checkTargetFieldType"
-                placeholder="请选择"
+        </el-table-column>
+        <el-table-column prop="sourcePrecision" label="精度" min-width="10%">
+        </el-table-column>
+        <el-table-column prop="sourceDecimal" label="小数点" min-width="10%">
+        </el-table-column>
+        <el-table-column
+          prop="sourceFieldLength"
+          label="数据长度"
+          min-width="10%"
+        >
+        </el-table-column>
+        <el-table-column
+          prop="targetFieldType"
+          label="目标数据类型"
+          min-width="10%"
+        >
+          <template slot-scope="scope">
+            <el-select
+              v-model="scope.row.checkTargetFieldType"
+              placeholder="请选择"
+            >
+              <el-option
+                v-for="item in scope.row.targetFieldType"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
               >
-                <el-option
-                  v-for="item in scope.row.targetFieldType"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                >
-                </el-option>
-              </el-select>
-            </template>
-          </el-table-column>
-          <el-table-column prop="targetPrecision" label="精度" min-width="10%">
-          </el-table-column>
-          <el-table-column prop="targetDecimal" label="小数点" min-width="10%">
-          </el-table-column>
-          <el-table-column
-            prop="targetFieldLength"
-            label="数据长度倍数"
-            min-width="10%"
-          >
-          </el-table-column> </el-table
-      ></el-main>
-      <el-footer>
-        <el-table
-          @selection-change="handleSelectionChange"
-          :data="colMapRelationTemp"
-          border
-          stripe
-          :show-header="false"
-          :height="100"
-          style="width: 100%"
+              </el-option>
+            </el-select>
+          </template>
+        </el-table-column>
+        <el-table-column prop="targetPrecision" label="精度" min-width="10%">
+        </el-table-column>
+        <el-table-column prop="targetDecimal" label="小数点" min-width="10%">
+        </el-table-column>
+        <el-table-column
+          prop="targetFieldLength"
+          label="数据长度倍数"
+          min-width="10%"
         >
-          <el-table-column type="selection" min-width="2%"> </el-table-column>
+        </el-table-column> </el-table
+    ></el-main>
+    <el-footer style="height: 140px">
+      <el-table
+        @selection-change="handleSelectionChange"
+        :data="colMapRelationTemp"
+        border
+        stripe
+        :show-header="false"
+        :height="100"
+        style="width: 100%"
+      >
+        <el-table-column type="selection" min-width="2%"> </el-table-column>
 
-          <el-table-column
-            prop="sourceFieldType"
-            label="源数据类型"
-            min-width="10%"
-          >
-            <template slot-scope="scope">
-              <el-input v-model="scope.row.sourceFieldType"></el-input>
-            </template>
-          </el-table-column>
-          <el-table-column prop="sourcePrecision" label="精度" min-width="10%">
-          </el-table-column>
-          <el-table-column prop="sourceDecimal" label="小数点" min-width="10%">
-          </el-table-column>
-          <el-table-column
-            prop="sourceFieldLength"
-            label="数据长度"
-            min-width="10%"
-          >
-          </el-table-column>
-          <el-table-column
-            prop="checkTargetFieldType"
-            label="目标数据类型"
-            min-width="10%"
-          >
-            <template slot-scope="scope">
-              <el-input v-model="scope.row.checkTargetFieldType"></el-input>
-            </template>
-          </el-table-column>
-          <el-table-column prop="targetPrecision" label="精度" min-width="10%">
-          </el-table-column>
-          <el-table-column prop="targetDecimal" label="小数点" min-width="10%">
-          </el-table-column>
-          <el-table-column
-            prop="targetFieldLength"
-            label="数据长度倍数"
-            min-width="10%"
-          >
-          </el-table-column>
-        </el-table>
-        <el-button
-          type="primary"
-          plain
-          style="float: right; margin-left: 10px"
-          @click="btnclickReset()"
-          >重置</el-button
+        <el-table-column
+          prop="sourceFieldType"
+          label="源数据类型"
+          min-width="10%"
         >
-        <el-button
-          type="primary"
-          plain
-          style="float: right"
-          @click="addOrDelete(0)"
-          >删除行</el-button
-        ><el-button
-          type="primary"
-          plain
-          style="float: right"
-          @click="addOrDelete(1)"
-          >添加行</el-button
+          <template slot-scope="scope">
+            <el-input v-model="scope.row.sourceFieldType"></el-input>
+          </template>
+        </el-table-column>
+        <el-table-column prop="sourcePrecision" label="精度" min-width="10%">
+        </el-table-column>
+        <el-table-column prop="sourceDecimal" label="小数点" min-width="10%">
+        </el-table-column>
+        <el-table-column
+          prop="sourceFieldLength"
+          label="数据长度"
+          min-width="10%"
         >
-      </el-footer>
-    </el-container>
-  </div>
+        </el-table-column>
+        <el-table-column
+          prop="checkTargetFieldType"
+          label="目标数据类型"
+          min-width="10%"
+        >
+          <template slot-scope="scope">
+            <el-input v-model="scope.row.checkTargetFieldType"></el-input>
+          </template>
+        </el-table-column>
+        <el-table-column prop="targetPrecision" label="精度" min-width="10%">
+        </el-table-column>
+        <el-table-column prop="targetDecimal" label="小数点" min-width="10%">
+        </el-table-column>
+        <el-table-column
+          prop="targetFieldLength"
+          label="数据长度倍数"
+          min-width="10%"
+        >
+        </el-table-column>
+      </el-table>
+      <el-button
+        type="primary"
+        plain
+        style="float: right; margin-left: 10px"
+        @click="btnclickReset()"
+        >重置</el-button
+      >
+      <el-button
+        type="primary"
+        plain
+        style="float: right"
+        @click="addOrDelete(0)"
+        >删除行</el-button
+      ><el-button
+        type="primary"
+        plain
+        style="float: right"
+        @click="addOrDelete(1)"
+        >添加行</el-button
+      >
+    </el-footer>
+  </el-container>
 </template>
 <script>
 import colMapRelation from "../constant/step3colMapRelation";

@@ -1,47 +1,49 @@
 <template>
-  <div>
-    <el-container>
-      <el-header>
-        <el-row
-          ><el-col :span="3"
-            >目的库
-            <el-select
-              style="width: 130px"
-              @change="handleSelectionChange"
-              v-model="checkSourcePattern"
-              placeholder="请选择"
-            >
-              <el-option
-                v-for="item in sourcePattern"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              >
-              </el-option>
-            </el-select>
-          </el-col>
-        </el-row>
-        <el-row> </el-row>
-      </el-header>
-      <el-main style="padding: 0px 20px">
-        <step5TablePane ref="step5TablePane"></step5TablePane>
-      </el-main>
-      <el-fotter> </el-fotter>
-    </el-container>
-  </div>
+  <el-table
+    :data="objData"
+    border
+    stripe
+    :height="tableHeight"
+    style="width: 100%"
+  >
+    <el-table-column type="selection" min-width="2%"> </el-table-column>
+    <el-table-column type="index" label="行号" min-width="2%">
+    </el-table-column>
+    <el-table-column
+      sortable
+      prop="sourceLineName"
+      label="源对象名"
+      min-width="10%"
+    >
+    </el-table-column>
+    <el-table-column
+      sortable
+      prop="targetLineName"
+      label="目的对象名"
+      min-width="10%"
+    >
+      <template slot-scope="scope">
+        <el-input v-model="scope.row.targetLineName"></el-input>
+      </template>
+    </el-table-column>
+
+    <el-table-column sortable prop="defaultValue" label="定义" min-width="70%">
+      <template slot-scope="scope">
+        <el-input v-model="scope.row.defaultValue"></el-input>
+      </template>
+    </el-table-column>
+  </el-table>
 </template>
 <script>
-import objData from "../constant/step5Tab";
-import objData02 from "../constant/step5Tab02";
-import step5TablePane from "./subcontent/step5-tablePane";
+import objData from "../../constant/step5Tab";
+import objData02 from "../../constant/step5Tab02";
 export default {
-  components: {
-    step5TablePane: step5TablePane,
-  },
+  components: {},
   data() {
     return {
       objData: objData,
       objData02: objData02,
+      tableHeight: 550,
       lineTypeList: [
         { value: "VARCHAR", label: "VARCHAR" },
         { value: "VARCHAR1", label: "VARCHAR1" },
@@ -61,13 +63,11 @@ export default {
   methods: {
     handleSelectionChange(val) {
       if (val === "ZG") {
-        this.$refs["step5TablePane"].objData = JSON.parse(
-          JSON.stringify(this.$refs["step5TablePane"].$options.data().objData02)
+        this.objData = JSON.parse(
+          JSON.stringify(this.$options.data().objData02)
         );
       } else {
-        this.$refs["step5TablePane"].objData = JSON.parse(
-          JSON.stringify(this.$refs["step5TablePane"].$options.data().objData)
-        );
+        this.objData = JSON.parse(JSON.stringify(this.$options.data().objData));
       }
       console.log("val===", val);
     },

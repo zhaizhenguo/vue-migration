@@ -1,9 +1,14 @@
 <template>
-  <div>
-    <el-header style="height: auto">
+  <div class="fontColor">
+    <el-header class="header">
       <el-row class="headerTitle">跨平台迁移工具</el-row>
       <el-row>
-        <el-steps :active="nowProcess">
+        <el-steps
+          process-status="process"
+          finish-status="finish"
+          :active="nowProcessStep"
+          align-center
+        >
           <!-- https://www.cnblogs.com/5201314m/p/12356017.html -->
           <!-- <el-step title="步骤 1"
             ><img slot="icon" src="./img/111.jpg"
@@ -17,21 +22,39 @@
             v-for="item in stepDesc"
             :key="item.title"
             :title="item.title"
-            :icon="item.icon"
           ></el-step>
         </el-steps>
       </el-row>
-      <el-row style="margin-top: 10px">{{ getDesc }}</el-row>
+      <el-row class="headerDesc">{{ getDesc }}</el-row>
     </el-header>
     <!-- <el-main :style="`height:${contentHeight}px;padding: 45px 20px;`"> -->
-    <el-main :style="'height:' + contentHeight + 'px;padding: 25px 20px 0px;'">
-      <step1 v-show="nowProcess === 1" ref="step1"></step1>
-      <step2 v-show="nowProcess === 2" ref="step2"></step2>
-      <step3 v-show="nowProcess === 3" ref="step3"></step3>
-      <step4 v-show="nowProcess === 4" ref="step4"></step4>
-      <step5 v-show="nowProcess === 5" ref="step5"></step5>
+    <el-main class="main" :style="'height:' + contentHeight + 'px;'">
+      <el-card class="box-card">
+        <step1 v-show="nowProcess === 1" ref="step1"></step1>
+        <step2 v-show="nowProcess === 2" ref="step2"></step2>
+        <step3 v-show="nowProcess === 3" ref="step3"></step3>
+        <step4 v-show="nowProcess === 4" ref="step4"></step4>
+        <step5 v-show="nowProcess === 5" ref="step5"></step5>
+        <step6 v-show="nowProcess === 6" ref="step6"></step6>
+        <step7 v-show="nowProcess === 7" ref="step7"></step7>
+      </el-card>
     </el-main>
-    <el-footer style="text-align: right">
+    <el-footer class="footer">
+      <el-button
+        v-show="nowProcess === stepDesc.length"
+        type="primary"
+        @click="btnclickExport()"
+        :loading="sumbitLoading"
+        >导出</el-button
+      >
+      <el-button
+        v-show="nowProcess === stepDesc.length"
+        type="primary"
+        @click="btnclickParamConfig()"
+        :loading="sumbitLoading"
+        >参数配置</el-button
+      >
+
       <el-button
         v-show="nowProcess === 2"
         type="primary"
@@ -58,6 +81,11 @@
       >
     </el-footer>
     <div class="szBrand">2008-2020 神州通用数据技术有限公司</div>
+    <dialogParamConfig
+      v-if="dialogParamConfigVisible"
+      :dialogParamConfigVisible="dialogParamConfigVisible"
+      @closeParamConfig="closeParamConfig"
+    ></dialogParamConfig>
   </div>
 </template>
 <script>
@@ -67,6 +95,9 @@ import step2 from "./content/step2";
 import step3 from "./content/step3";
 import step4 from "./content/step4";
 import step5 from "./content/step5";
+import step6 from "./content/step6";
+import step7 from "./content/step7";
+import dialogParamConfig from "./dialog/dialogParamConfig";
 import api from "./asset/api";
 export default {
   name: "oscar",
@@ -76,6 +107,9 @@ export default {
     step3: step3,
     step4: step4,
     step5: step5,
+    step6: step6,
+    step7: step7,
+    dialogParamConfig: dialogParamConfig,
   },
   data() {
     return {
@@ -83,14 +117,18 @@ export default {
       stepData: {},
       sumbitLoading: false,
       stepDesc: stepDesc,
-      nowProcess: 4,
+      nowProcessStep: 0,
       value: "",
       options: [],
+      dialogParamConfigVisible: false,
     };
   },
   computed: {
+    nowProcess() {
+      return this.nowProcessStep + 1;
+    },
     getDesc() {
-      return this.stepDesc[this.nowProcess - 1].desc;
+      return this.stepDesc[this.nowProcessStep].desc;
     },
   },
   created() {
@@ -117,9 +155,9 @@ export default {
         // console.log("this.stepData===", this.stepData);
         // this.stepData["step" + this.nowProcess] = getData;
         // console.log("this.stepData===", this.stepData);
-        this.nowProcess++;
+        this.nowProcessStep++;
       } else {
-        this.nowProcess--;
+        this.nowProcessStep--;
       }
     },
     btnclickSumbit() {
@@ -137,17 +175,38 @@ export default {
     btnclickReset() {
       this.$refs.step2.btnclickReset();
     },
+    btnclickExport() {
+      this.$refs.step2.btnclickExport();
+    },
+    btnclickParamConfig() {
+      this.dialogParamConfigVisible = true;
+    },
+    closeParamConfig() {
+      this.dialogParamConfigVisible = false;
+    },
   },
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.header {
+  height: auto !important;
+  padding: 0 100px;
+}
+.main {
+  padding: 25px 150px 0px;
+}
+.footer {
+  text-align: right;
+  padding: 0 150px;
+}
 .headerTitle {
   text-align: center;
   font-size: 25px;
   font-weight: bold;
   margin: 15px 0;
+  color: black;
 }
 .szBrand {
   font-size: small;
@@ -155,5 +214,18 @@ export default {
   bottom: 10px;
   left: 50%;
   transform: translateX(-50%);
+  color: #606266;
+}
+.headerDesc {
+  margin: 10px 0px 0px 50px;
+  color: #606266;
+  font-size: 15px;
+}
+.fontColor {
+  color: #606266;
+}
+.box-card {
+  width: auto;
+  height: auto;
 }
 </style>

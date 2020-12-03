@@ -36,7 +36,7 @@
   </div>
 </template>
 <script>
-import migrationParamOptions from "../constant/migrationParamOptions";
+import migrationParamOptions from "../../constant/migrationParamOptions";
 export default {
   data() {
     return {

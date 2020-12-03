@@ -1,56 +1,44 @@
 [
     {
-      "title": "步骤 1",
-      "icon": "el-icon-upload",
-      "iconHover": "dd",
-      "desc": "步骤 1111111111111111"
+        "title": "设置迁移数据库参数",
+        "icon": "el-icon-upload",
+        "iconHover": "dd",
+        "desc": "请配置源数据库和目标数据库连接参数。如无法连接成功,请与数据库管理员联系"
     },
     {
-      "title": "步骤 2",
-      "icon": "el-icon-upload",
-      "iconHover": "dd",
-      "desc": "步骤 2222222222222222"
+        "title": "设置参数",
+        "icon": "el-icon-upload",
+        "iconHover": "dd",
+        "desc": "请配置迁移参数、性能参数、迁移监控参数"
     },
     {
-      "title": "步骤 3",
-      "icon": "el-icon-upload",
-      "iconHover": "dd",
-      "desc": "步骤 3"
+        "title": "设置数据类型映射关系",
+        "icon": "el-icon-upload",
+        "iconHover": "dd",
+        "desc": "请配置源数据库到目标数据库的列数据类型映射关系"
     },
     {
-      "title": "步骤 4",
-      "icon": "el-icon-upload",
-      "iconHover": "dd",
-      "desc": "步骤 4"
+        "title": "数据对象选择",
+        "icon": "el-icon-upload",
+        "iconHover": "dd",
+        "desc": "前选择要迁移的数据对象(表空间、表、视图、或存储过程等),并设置各自的名称和操作方式,可强制迁移对象到指定目标模式中"
     },
     {
-      "title": "步骤 5",
-      "icon": "el-icon-upload",
-      "iconHover": "dd",
-      "desc": "步骤 5"
+        "title": "设置列转换规则",
+        "icon": "el-icon-upload",
+        "iconHover": "dd",
+        "desc": "请选择要迁移的列,并设置其转换规则"
     },
     {
-      "title": "步骤 6",
-      "icon": "el-icon-upload",
-      "iconHover": "dd",
-      "desc": "步骤 6"
+        "title": "迁移其他数据对象",
+        "icon": "el-icon-upload",
+        "iconHover": "dd",
+        "desc": "前选择要迁移的检查约束、索引、外键或触发器等"
     },
     {
-      "title": "步骤 7",
-      "icon": "el-icon-upload",
-      "iconHover": "dd",
-      "desc": "步骤 7"
-    },
-    {
-      "title": "步骤 8",
-      "icon": "el-icon-upload",
-      "iconHover": "dd",
-      "desc": "步骤 8"
-    },
-    {
-      "title": "步骤 9",
-      "icon": "el-icon-upload",
-      "iconHover": "dd",
-      "desc": "步骤 9"
+        "title": "迁移预览",
+        "icon": "el-icon-upload",
+        "iconHover": "dd",
+        "desc": "请查看您的迁移配置是否正确"
     }
-  ]
+]

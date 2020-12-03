@@ -1,12 +1,12 @@
 <template>
-  <div style="padding: 0px 50px 0px">
+  <div>
     <el-container>
-      <el-header>
+      <el-header style="height: auto">
         <el-row
-          ><el-col :span="3"
+          ><el-col :span="4"
             >源模式
             <el-select
-              style="width: 130px"
+              class="selectDiv"
               @change="handleSelectionChange"
               v-model="checkSourcePattern"
               placeholder="请选择"
@@ -19,10 +19,10 @@
               >
               </el-option>
             </el-select> </el-col
-          ><el-col :span="3"
+          ><el-col :span="4"
             >对象类型
             <el-select
-              style="width: 130px"
+              class="selectDiv"
               @change="handleSelectionChange"
               v-model="checkSourcePattern"
               placeholder="请选择"
@@ -35,10 +35,10 @@
               >
               </el-option>
             </el-select> </el-col
-          ><el-col :span="3"
+          ><el-col :span="4"
             >迁移范围
             <el-select
-              style="width: 130px"
+              class="selectDiv"
               @change="handleSelectionChange"
               v-model="checkSourcePattern"
               placeholder="请选择"
@@ -96,14 +96,16 @@
               >
             </el-upload>
           </el-col>
-          <el-col :span="3" class="qzqy">
+        </el-row>
+        <el-row
+          ><el-col :span="3" class="qzqy">
             开启强制迁移
             <el-switch v-model="isOpenSwitch"> </el-switch>
-            <div style="float: right" v-show="isOpenSwitch">
+            <div style="float: right; padding: 0px 10px" v-show="isOpenSwitch">
               迁移到
               <el-select
                 :disabled="!isOpenSwitch"
-                style="width: 130px"
+                class="selectDiv"
                 @change="handleSelectionChange"
                 v-model="checkSourcePattern"
                 placeholder="请选择"
@@ -119,139 +121,10 @@
             </div>
           </el-col>
         </el-row>
-        <el-row> </el-row>
       </el-header>
-      <el-main style="padding: 0px 20px"
-        ><el-table
-          :data="objData"
-          border
-          stripe
-          :height="tableHeight"
-          style="width: 100%"
-        >
-          <el-table-column type="selection" min-width="2%"> </el-table-column>
-          <el-table-column type="index" label="行号" min-width="2%">
-          </el-table-column>
-          <el-table-column
-            sortable
-            prop="sourceTableName"
-            label="源表名"
-            min-width="10%"
-          >
-          </el-table-column>
-          <el-table-column
-            sortable
-            prop="targetTableName"
-            label="目标表名"
-            min-width="10%"
-          >
-            <template slot-scope="scope">
-              <el-input v-model="scope.row.targetTableName"></el-input>
-            </template>
-          </el-table-column>
-          <el-table-column
-            sortable
-            prop="checkOperatingMode"
-            label="操作方式"
-            min-width="10%"
-          >
-            <template slot-scope="scope">
-              <el-select
-                v-model="scope.row.checkOperatingMode"
-                placeholder="请选择"
-              >
-                <el-option
-                  v-for="item in operatingMode"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                >
-                </el-option>
-              </el-select>
-            </template>
-          </el-table-column>
-          <el-table-column
-            sortable
-            prop="checkTableSpace"
-            label="表空间"
-            min-width="10%"
-          >
-            <template slot-scope="scope">
-              <el-select
-                v-model="scope.row.checkTableSpace"
-                placeholder="请选择"
-              >
-                <el-option
-                  v-for="item in tableSpace"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                >
-                </el-option>
-              </el-select>
-            </template>
-          </el-table-column>
-          <el-table-column
-            sortable
-            prop="initSize"
-            label="初始大小(K)"
-            min-width="10%"
-          >
-          </el-table-column>
-          <el-table-column
-            sortable
-            prop="incrementSize"
-            label="增长量(K)"
-            min-width="10%"
-          >
-          </el-table-column>
-          <el-table-column
-            sortable
-            prop="maxSize"
-            label="最大值"
-            min-width="10%"
-          >
-          </el-table-column>
-          <el-table-column
-            sortable
-            prop="freeRatio"
-            label="空闲比"
-            min-width="10%"
-          >
-          </el-table-column>
-          <el-table-column
-            sortable
-            prop="minUseRatio"
-            label="最小使用比"
-            min-width="10%"
-          >
-          </el-table-column>
-          <el-table-column
-            sortable
-            prop="checkOutputLog"
-            label="输出日志"
-            min-width="10%"
-            ><template slot-scope="scope">
-              <el-select
-                v-model="scope.row.checkOutputLog"
-                placeholder="请选择"
-              >
-                <el-option
-                  v-for="item in outputLog"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                >
-                </el-option>
-              </el-select>
-            </template>
-          </el-table-column>
-          <el-table-column sortable prop="filter" label="过滤" min-width="10%">
-            <template slot-scope="scope">
-              <el-input v-model="scope.row.filter"></el-input>
-            </template>
-          </el-table-column> </el-table
-      ></el-main>
+      <el-main style="padding: 0px 20px">
+        <step4Tabs ref="step4Tabs"></step4Tabs>
+      </el-main>
       <el-fotter> </el-fotter>
     </el-container>
     <dialogSQLData
@@ -266,9 +139,11 @@
 import objData from "../constant/step4Tab";
 import objData02 from "../constant/step4Tab02";
 import dialogSQLData from "../dialog/dialogSQLData";
+import step4Tabs from "./subcontent/step4-tabs";
 export default {
   components: {
     dialogSQLData: dialogSQLData,
+    step4Tabs: step4Tabs,
   },
   data() {
     return {
@@ -302,14 +177,11 @@ export default {
     };
   },
   methods: {
+    tabHandleClick(tab, event) {
+      console.log(this.getParam());
+    },
     handleSelectionChange(val) {
-      if (val === "ZG") {
-        this.objData = JSON.parse(
-          JSON.stringify(this.$options.data().objData02)
-        );
-      } else {
-        this.objData = JSON.parse(JSON.stringify(this.$options.data().objData));
-      }
+      this.$refs["step4Tabs"].handleSourceDataSelectionChange(val);
       console.log("val===", val);
     },
     btnPointSQL() {
@@ -345,12 +217,16 @@ export default {
 </script>
 <style scoped>
 .qzqy {
-  padding-left: 50px;
+  padding: 10px 0px;
+  height: 50px;
   line-height: 32px;
   width: auto;
 }
 .btnCom {
   width: 120px;
   margin-left: 20px;
+}
+.selectDiv {
+  width: 150px;
 }
 </style>

@@ -74,7 +74,7 @@
           ></el-input>
         </div>
       </el-col>
-      <el-col :span="8"
+      <el-col :span="12"
         ><div class="divCommon">
           <div class="textDivsmall">迁移方式</div>
           <el-radio
@@ -112,11 +112,12 @@
           </el-checkbox-group>
         </div>
       </el-col>
-      <el-col :span="6"
+      <el-col :span="8"
         ><div class="divCommon" style="margin-top: 15px; margin-left: -10px">
           <el-radio v-model="importData" style="margin-right: 0px" label="1"
             >大批量数据导入区</el-radio
           ><el-input
+            size="mini"
             :disabled="importData == 0"
             class="elementDiv"
             v-model="importLineSize"
@@ -135,7 +136,7 @@
   </div>
 </template>
 <script>
-import migrationParamOptions from "../constant/migrationParamOptions";
+import migrationParamOptions from "../../constant/migrationParamOptions";
 export default {
   data() {
     return {

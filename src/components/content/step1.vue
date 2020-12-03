@@ -1,17 +1,17 @@
 <template>
   <div>
     <div class="contentFlex">
-      <form1 ref="formSource" class="leftContent"></form1>
+      <step1Form ref="formSource" class="leftContent"></step1Form>
       <i class="el-icon-d-arrow-right centerContent"></i>
-      <form1 ref="formTarget" class="rightContent"></form1>
+      <step1Form ref="formTarget" class="rightContent"></step1Form>
     </div>
   </div>
 </template>
 <script>
-import form1 from "./form1";
+import step1Form from "./subcontent/step1-form";
 export default {
   components: {
-    form1: form1,
+    step1Form: step1Form,
   },
   data() {
     return {};

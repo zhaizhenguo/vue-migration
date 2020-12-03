@@ -57,8 +57,8 @@
   </div>
 </template>
 <script>
-import dialogPointDriver from "../dialog/dialogPointDriver";
-import dialogDriverData from "../dialog/dialogDriverData";
+import dialogPointDriver from "../../dialog/dialogPointDriver";
+import dialogDriverData from "../../dialog/dialogDriverData";
 export default {
   components: {
     dialogPointDriver: dialogPointDriver,
