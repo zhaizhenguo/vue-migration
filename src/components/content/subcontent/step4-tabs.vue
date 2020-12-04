@@ -3,22 +3,23 @@
     <el-tab-pane label="表" name="step4TablePane">
       <step4TablePane
         :tableHeight="tableHeight"
-        @getData="getData"
         ref="step4TablePane"
+        @getPaneData="getPaneData"
       ></step4TablePane>
     </el-tab-pane>
 
     <el-tab-pane label="视图" name="step4ViewPane">
       <step4ViewPane
         :tableHeight="tableHeight"
-        @getData="getData"
         ref="step4ViewPane"
+        @getPaneData="getPaneData"
       ></step4ViewPane>
     </el-tab-pane>
 
     <el-tab-pane label="序列" name="step4SequencePane"
       ><step4SequencePane
         :tableHeight="tableHeight"
+        @getPaneData="getPaneData"
         ref="step4SequencePane"
       ></step4SequencePane
     ></el-tab-pane>
@@ -26,6 +27,7 @@
     <el-tab-pane label="表空间" name="step4TableSpacePane"
       ><step4TableSpacePane
         :tableHeight="tableHeight"
+        @getPaneData="getPaneData"
         ref="step4TableSpacePane"
       ></step4TableSpacePane
     ></el-tab-pane>
@@ -33,6 +35,7 @@
     <el-tab-pane label="同义词" name="step4SynonymsPane"
       ><step4SynonymsPane
         :tableHeight="tableHeight"
+        @getPaneData="getPaneData"
         ref="step4SynonymsPane"
       ></step4SynonymsPane
     ></el-tab-pane>
@@ -40,6 +43,7 @@
     <el-tab-pane label="物化视图" name="step4MaterializedViewPane"
       ><step4MaterializedViewPane
         :tableHeight="tableHeight"
+        @getPaneData="getPaneData"
         ref="step4MaterializedViewPane"
       ></step4MaterializedViewPane
     ></el-tab-pane>
@@ -47,6 +51,7 @@
     <el-tab-pane label="存储过程" name="step4ProcedurePane"
       ><step4ProcedurePane
         :tableHeight="tableHeight"
+        @getPaneData="getPaneData"
         ref="step4ProcedurePane"
       ></step4ProcedurePane
     ></el-tab-pane>
@@ -54,6 +59,7 @@
     <el-tab-pane label="包" name="step4PackagePane"
       ><step4PackagePane
         :tableHeight="tableHeight"
+        @getPaneData="getPaneData"
         ref="step4PackagePane"
       ></step4PackagePane
     ></el-tab-pane>
@@ -61,6 +67,7 @@
     <el-tab-pane label="函数" name="step4FunctionPane"
       ><step4FunctionPane
         :tableHeight="tableHeight"
+        @getPaneData="getPaneData"
         ref="step4FunctionPane"
       ></step4FunctionPane
     ></el-tab-pane>
@@ -68,6 +75,7 @@
     <el-tab-pane label="自定义类型" name="step4UserFunctionPane"
       ><step4UserFunctionPane
         :tableHeight="tableHeight"
+        @getPaneData="getPaneData"
         ref="step4UserFunctionPane"
       ></step4UserFunctionPane
     ></el-tab-pane>
@@ -95,7 +103,7 @@ export default {
     step4ProcedurePane: step4ProcedurePane,
     step4PackagePane: step4PackagePane,
     step4FunctionPane: step4FunctionPane,
-    step4UserFunctionPane: step4UserFunctionPane
+    step4UserFunctionPane: step4UserFunctionPane,
   },
   data() {
     return {
@@ -103,12 +111,13 @@ export default {
       tabPaneData: {},
       tableHeight: 457,
       sourceData: "",
-      activeName: "step4TablePane"
+      activeName: "step4TablePane",
     };
   },
   methods: {
-    getData(key, value) {
+    getPaneData(key, value) {
       this.tabPaneData[key] = value;
+      console.log("this.tabPaneData====", this.tabPaneData);
     },
     handleSourceDataSelectionChange(val) {
       this.sourceData = val;
@@ -123,18 +132,15 @@ export default {
           JSON.stringify(this.$refs[[this.activeName]].$options.data().objData)
         );
       }
-      console.log("this.sourceData===", this.sourceData);
     },
     tabHandleClick(tab, event) {
+      //   this.handleSourceDataSelectionChange(this.sourceData);
       this.selectRow = this.tabPaneData[this.activeName] || [];
       this.$refs[this.activeName].selectRow(this.selectRow);
-      console.log(this.selectRow);
-      this.handleSourceDataSelectionChange(this.sourceData);
-      console.log(this.activeName);
     },
     getData() {
       return {
-        objData
+        objData,
       };
     },
     calcHeightx() {
@@ -146,12 +152,12 @@ export default {
         //通过上边计算得到的table高度的value值，减去table表格的header高度，剩下的通过dom节点直接强行赋给table表格的body
         wapper[0].style.height = this.tableHeight + "px";
       }, 100);
-    }
+    },
   },
-  created: function() {
+  created: function () {
     this.calcHeightx();
   },
-  computed: {}
+  computed: {},
 };
 </script>
 <style scoped></style>

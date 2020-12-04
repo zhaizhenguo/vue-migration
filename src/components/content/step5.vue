@@ -3,8 +3,8 @@
     <el-container>
       <el-header>
         <el-row
-          ><el-col :span="3"
-            >目的库
+          ><el-col :span="24"
+            >目的表
             <el-select
               style="width: 130px"
               @change="handleSelectionChange"
@@ -24,7 +24,10 @@
         <el-row> </el-row>
       </el-header>
       <el-main style="padding: 0px 20px">
-        <step5TablePane ref="step5TablePane"></step5TablePane>
+        <step5TablePane
+          @getPaneData="getPaneData"
+          ref="step5TablePane"
+        ></step5TablePane>
       </el-main>
       <el-fotter> </el-fotter>
     </el-container>
@@ -42,6 +45,7 @@ export default {
     return {
       objData: objData,
       objData02: objData02,
+      tabLineData: {},
       lineTypeList: [
         { value: "VARCHAR", label: "VARCHAR" },
         { value: "VARCHAR1", label: "VARCHAR1" },
@@ -59,6 +63,10 @@ export default {
     };
   },
   methods: {
+    getPaneData(key, value) {
+      this.tabLineData[key] = value;
+      console.log("this.tabLineData====", this.tabLineData);
+    },
     handleSelectionChange(val) {
       if (val === "ZG") {
         this.$refs["step5TablePane"].objData = JSON.parse(

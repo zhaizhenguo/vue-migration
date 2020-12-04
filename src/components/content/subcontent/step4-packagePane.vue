@@ -6,6 +6,10 @@
       stripe
       :height="tableHeight"
       style="width: 100%"
+      :highlight-current-row="true"
+      @select-all="selectAll"
+      @select="select"
+      ref="table"
     >
       <el-table-column type="selection" min-width="2%"> </el-table-column>
       <el-table-column type="index" label="行号" min-width="2%">
@@ -55,6 +59,18 @@ export default {
     };
   },
   methods: {
+    selectRow(rows) {
+      let tableRef = this.$refs.table;
+      rows.forEach((row) => {
+        tableRef.toggleRowSelection(row, true);
+      });
+    },
+    selectAll(selection) {
+      this.$emit("getPaneData", "step4PackagePane", selection);
+    },
+    select(selection) {
+      this.$emit("getPaneData", "step4PackagePane", selection);
+    },
     handleSelectionChange(val) {
       if (val === "ZG") {
         this.objData = JSON.parse(

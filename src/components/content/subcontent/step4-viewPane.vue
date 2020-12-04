@@ -6,6 +6,7 @@
       stripe
       :height="tableHeight"
       style="width: 100%"
+      :highlight-current-row="true"
       @select-all="selectAll"
       @select="select"
       ref="table"
@@ -50,30 +51,30 @@ export default {
   props: {
     tableHeight: {
       type: Number,
-      default: function() {
+      default: function () {
         return 500;
-      }
-    }
+      },
+    },
   },
   components: {},
   data() {
     return {
       objData: objData,
-      objData02: objData02
+      objData02: objData02,
     };
   },
   methods: {
     selectRow(rows) {
-      let tableRef = this.$ref.table;
-      rows.forEach(row => {
-        tableRef.toggleRowSelection(row);
+      let tableRef = this.$refs.table;
+      rows.forEach((row) => {
+        tableRef.toggleRowSelection(row, true);
       });
     },
     selectAll(selection) {
-      this.$emit("getData", "step4ViewPane", selection);
+      this.$emit("getPaneData", "step4ViewPane", selection);
     },
     select(selection) {
-      this.$emit("getData", "step4ViewPane", selection);
+      this.$emit("getPaneData", "step4ViewPane", selection);
     },
     handleSelectionChange(val) {
       if (val === "ZG") {
@@ -88,12 +89,12 @@ export default {
 
     getData() {
       return {
-        objData
+        objData,
       };
-    }
+    },
   },
-  created: function() {},
-  computed: {}
+  created: function () {},
+  computed: {},
 };
 </script>
 <style scoped></style>
