@@ -54,6 +54,7 @@
         <el-row class="databaseTitle"
           ><el-col :span="24">【新建表】</el-col>
         </el-row>
+
         <el-row style="line-height: 32px; text-align: center">
           <el-col :span="1">&nbsp;</el-col>
           <el-col :span="9">PUBLIC.DBMS_LOCK_ALLOCATED</el-col>
