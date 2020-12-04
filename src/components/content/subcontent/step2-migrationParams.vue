@@ -1,21 +1,22 @@
 <template>
-  <div>
-    <el-checkbox-group
-      @change="handleCheckedCitiesChange"
-      style=""
-      v-model="migrationParams.checkedmigrationParams"
-    >
-      <el-checkbox
-        class="lable01"
-        v-for="data in migrationParams.allTheParams"
-        :label="data.key"
-        :key="data.key"
-        :disabled="data.disabled"
-        >{{ data.lable }}</el-checkbox
+  <el-form :rules="rules" label-width="100px" v-model="migrationParams">
+    <el-form-item label="" style="margin-left: -100px">
+      <el-checkbox-group
+        @change="handleCheckedCitiesChange"
+        style=""
+        v-model="migrationParams.checkedmigrationParams"
       >
-    </el-checkbox-group>
-    <div class="div01">
-      迁移错误策略
+        <el-checkbox
+          class="lable01"
+          v-for="data in migrationParams.allTheParams"
+          :label="data.key"
+          :key="data.key"
+          :disabled="data.disabled"
+          >{{ data.lable }}</el-checkbox
+        >
+      </el-checkbox-group>
+    </el-form-item>
+    <el-form-item label="迁移错误策略">
       <el-radio
         style="margin-left: 15px"
         v-model="migrationParams.errorStrategy"
@@ -25,15 +26,16 @@
       <el-radio v-model="migrationParams.errorStrategy" label="1"
         >遇错忽略</el-radio
       >
-    </div>
-    <div class="div01" style="padding: 0px 0px">
-      列长度倍数<el-input
-        style="width: 100px; padding-left: 35px"
-        v-model="migrationParams.lengthUnit"
-        type="number"
-      ></el-input>
-    </div>
-  </div>
+    </el-form-item>
+    <el-form-item
+      :inline="true"
+      label="列长度倍数"
+      style="width=100px;    float: left;"
+      prop="lengthUnit"
+    >
+      <el-input v-model="migrationParams.lengthUnit" type="number"></el-input>
+    </el-form-item>
+  </el-form>
 </template>
 <script>
 import migrationParamOptions from "../../constant/migrationParamOptions";
@@ -45,6 +47,11 @@ export default {
         allTheParams: migrationParamOptions.allTheParams,
         errorStrategy: "1",
         lengthUnit: 1.0,
+      },
+      rules: {
+        lengthUnit: [
+          { required: true, message: "请输入列长度倍数", trigger: "change" },
+        ],
       },
     };
   },

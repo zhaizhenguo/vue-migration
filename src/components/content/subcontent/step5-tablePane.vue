@@ -8,9 +8,11 @@
     :highlight-current-row="true"
     @select-all="selectAll"
     @select="select"
+    :row-key="getRowKey"
     ref="table"
   >
-    <el-table-column type="selection" min-width="2%"> </el-table-column>
+    <el-table-column type="selection" reserve-selection="true" min-width="2%">
+    </el-table-column>
     <el-table-column type="index" label="行号" min-width="2%">
     </el-table-column>
     <el-table-column
@@ -100,7 +102,10 @@ export default {
       objData: objData,
       objData02: objData02,
       tableHeight: 550,
-
+      lineTypeList: [
+        { value: "SYSDBA", label: "SYSDBA" },
+        { value: "ZG", label: "ZG" },
+      ],
       whetherList: [
         { value: 0, label: "是" },
         { value: 1, label: "否" },
@@ -113,6 +118,10 @@ export default {
     };
   },
   methods: {
+    getRowKey(row) {
+      console.log("row============", row);
+      //   return row.id;
+    },
     selectRow(rows) {
       let tableRef = this.$refs.table;
       rows.forEach((row) => {
