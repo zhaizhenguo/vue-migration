@@ -104,27 +104,27 @@ export default {
       tableHeight: 550,
       lineTypeList: [
         { value: "SYSDBA", label: "SYSDBA" },
-        { value: "ZG", label: "ZG" },
+        { value: "ZG", label: "ZG" }
       ],
       whetherList: [
         { value: 0, label: "是" },
-        { value: 1, label: "否" },
+        { value: 1, label: "否" }
       ],
       sourcePattern: [
         { value: "SYSDBA", label: "SYSDBA" },
-        { value: "ZG", label: "ZG" },
+        { value: "ZG", label: "ZG" }
       ],
-      checkSourcePattern: "SYSDBA",
+      checkSourcePattern: "SYSDBA"
     };
   },
   methods: {
     getRowKey(row) {
-      console.log("row============", row);
-      //   return row.id;
+      console.log("row.sourceLineName============", row.sourceLineName);
+      return row.sourceLineName;
     },
     selectRow(rows) {
       let tableRef = this.$refs.table;
-      rows.forEach((row) => {
+      rows.forEach(row => {
         tableRef.toggleRowSelection(row, true);
       });
     },
@@ -132,6 +132,7 @@ export default {
       this.$emit("getPaneData", "step4TablePane", selection);
     },
     select(selection) {
+      console.log("selection=====", selection);
       this.$emit("getPaneData", "step4TablePane", selection);
     },
     handleSelectionChange(val) {
@@ -147,7 +148,7 @@ export default {
 
     getData() {
       return {
-        objData,
+        objData
       };
     },
     calcHeightx() {
@@ -159,13 +160,12 @@ export default {
         //通过上边计算得到的table高度的value值，减去table表格的header高度，剩下的通过dom节点直接强行赋给table表格的body
         wapper[0].style.height = this.tableHeight + "px";
       }, 100);
-    },
+    }
   },
-  created: function () {
+  created: function() {
     this.calcHeightx();
   },
-  computed: {},
+  computed: {}
 };
 </script>
-<style scoped>
-</style>
+<style scoped></style>
