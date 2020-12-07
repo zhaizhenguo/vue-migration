@@ -148,13 +148,22 @@ export default {
     btnclick(isDown) {
       if (isDown) {
         //保存数据逻辑
-        // let getData = this.$refs["step" + this.nowProcess].getData();
-        // if (!getData) {
-        //   return;
-        // }
-        // console.log("this.stepData===", this.stepData);
-        // this.stepData["step" + this.nowProcess] = getData;
-        // console.log("this.stepData===", this.stepData);
+        let getData = this.$refs["step" + this.nowProcess].getData();
+        if (!getData) {
+          return;
+        }
+        console.log("step" + this.nowProcess + ":this.getData===", getData);
+        this.stepData["step" + this.nowProcess] = getData;
+        this.stepData["step" + this.nowProcess] = getData;
+        console.log(
+          "step" + this.nowProcess + ":this.stepData===",
+          this.stepData
+        );
+
+        let initData = this.$refs["step" + (this.nowProcess + 1)].initData;
+        if (typeof initData === "function") {
+          initData();
+        }
         this.nowProcessStep++;
       } else {
         this.nowProcessStep--;

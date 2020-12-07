@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-table
-      :data="objData"
+      :data="tableData"
       border
       stripe
       :height="tableHeight"
@@ -45,8 +45,6 @@
   </div>
 </template>
 <script>
-import objData from "../../constant/step5Tab";
-import objData02 from "../../constant/step5Tab02";
 export default {
   props: {
     tableHeight: {
@@ -55,13 +53,16 @@ export default {
         return 500;
       },
     },
+    tableData: {
+      type: Array,
+      default: function () {
+        return {};
+      },
+    },
   },
   components: {},
   data() {
-    return {
-      objData: objData,
-      objData02: objData02,
-    };
+    return {};
   },
   methods: {
     selectRow(rows) {
@@ -71,26 +72,17 @@ export default {
       });
     },
     selectAll(selection) {
-      this.$emit("getPaneData", "step4MaterializedViewPane", selection);
+      this.$emit("getSelectPaneData", "materializedView", selection);
     },
     select(selection) {
-      this.$emit("getPaneData", "step4MaterializedViewPane", selection);
+      this.$emit("getSelectPaneData", "materializedView", selection);
     },
     handleSelectionChange(val) {
-      if (val === "ZG") {
-        this.objData = JSON.parse(
-          JSON.stringify(this.$options.data().objData02)
-        );
-      } else {
-        this.objData = JSON.parse(JSON.stringify(this.$options.data().objData));
-      }
       console.log("val===", val);
     },
 
     getData() {
-      return {
-        objData,
-      };
+      return {};
     },
   },
   created: function () {},

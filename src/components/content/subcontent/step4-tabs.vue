@@ -1,82 +1,92 @@
 <template>
   <el-tabs type="border-card" v-model="activeName" @tab-click="tabHandleClick">
-    <el-tab-pane label="表" name="step4TablePane">
+    <el-tab-pane label="表" name="table">
       <step4TablePane
         :tableHeight="tableHeight"
-        ref="step4TablePane"
-        @getPaneData="getPaneData"
+        :tableData="table"
+        ref="table"
+        @getSelectPaneData="getSelectPaneData"
       ></step4TablePane>
     </el-tab-pane>
 
-    <el-tab-pane label="视图" name="step4ViewPane">
+    <el-tab-pane label="视图" name="view">
       <step4ViewPane
         :tableHeight="tableHeight"
-        ref="step4ViewPane"
-        @getPaneData="getPaneData"
+        :tableData="view"
+        ref="view"
+        @getSelectPaneData="getSelectPaneData"
       ></step4ViewPane>
     </el-tab-pane>
 
-    <el-tab-pane label="序列" name="step4SequencePane"
+    <el-tab-pane label="序列" name="sequence"
       ><step4SequencePane
         :tableHeight="tableHeight"
-        @getPaneData="getPaneData"
-        ref="step4SequencePane"
+        :tableData="sequence"
+        @getSelectPaneData="getSelectPaneData"
+        ref="sequence"
       ></step4SequencePane
     ></el-tab-pane>
 
-    <el-tab-pane label="表空间" name="step4TableSpacePane"
+    <el-tab-pane label="表空间" name="tablespace"
       ><step4TableSpacePane
         :tableHeight="tableHeight"
-        @getPaneData="getPaneData"
-        ref="step4TableSpacePane"
+        :tableData="tablespace"
+        @getSelectPaneData="getSelectPaneData"
+        ref="tablespace"
       ></step4TableSpacePane
     ></el-tab-pane>
 
-    <el-tab-pane label="同义词" name="step4SynonymsPane"
+    <el-tab-pane label="同义词" name="synonyms"
       ><step4SynonymsPane
         :tableHeight="tableHeight"
-        @getPaneData="getPaneData"
-        ref="step4SynonymsPane"
+        :tableData="synonyms"
+        @getSelectPaneData="getSelectPaneData"
+        ref="synonyms"
       ></step4SynonymsPane
     ></el-tab-pane>
 
-    <el-tab-pane label="物化视图" name="step4MaterializedViewPane"
+    <el-tab-pane label="物化视图" name="materializedView"
       ><step4MaterializedViewPane
         :tableHeight="tableHeight"
-        @getPaneData="getPaneData"
-        ref="step4MaterializedViewPane"
+        :tableData="materializedView"
+        @getSelectPaneData="getSelectPaneData"
+        ref="materializedView"
       ></step4MaterializedViewPane
     ></el-tab-pane>
 
-    <el-tab-pane label="存储过程" name="step4ProcedurePane"
+    <el-tab-pane label="存储过程" name="procedure"
       ><step4ProcedurePane
         :tableHeight="tableHeight"
-        @getPaneData="getPaneData"
-        ref="step4ProcedurePane"
+        :tableData="procedure"
+        @getSelectPaneData="getSelectPaneData"
+        ref="procedure"
       ></step4ProcedurePane
     ></el-tab-pane>
 
-    <el-tab-pane label="包" name="step4PackagePane"
+    <el-tab-pane label="包" name="packageData"
       ><step4PackagePane
         :tableHeight="tableHeight"
-        @getPaneData="getPaneData"
-        ref="step4PackagePane"
+        :tableData="packageData"
+        @getSelectPaneData="getSelectPaneData"
+        ref="packageData"
       ></step4PackagePane
     ></el-tab-pane>
 
-    <el-tab-pane label="函数" name="step4FunctionPane"
+    <el-tab-pane label="函数" name="functionData"
       ><step4FunctionPane
         :tableHeight="tableHeight"
-        @getPaneData="getPaneData"
-        ref="step4FunctionPane"
+        :tableData="functionData"
+        @getSelectPaneData="getSelectPaneData"
+        ref="functionData"
       ></step4FunctionPane
     ></el-tab-pane>
 
-    <el-tab-pane label="自定义类型" name="step4UserFunctionPane"
+    <el-tab-pane label="自定义类型" name="userFunction"
       ><step4UserFunctionPane
         :tableHeight="tableHeight"
-        @getPaneData="getPaneData"
-        ref="step4UserFunctionPane"
+        :tableData="userFunction"
+        @getSelectPaneData="getSelectPaneData"
+        ref="userFunction"
       ></step4UserFunctionPane
     ></el-tab-pane>
   </el-tabs>
@@ -105,39 +115,75 @@ export default {
     step4FunctionPane: step4FunctionPane,
     step4UserFunctionPane: step4UserFunctionPane,
   },
+  props: {
+    checkSourcePattern: {
+      type: String,
+      default: function () {
+        return "";
+      },
+    },
+    modleData: {
+      type: Object,
+      default: function () {
+        return {};
+      },
+    },
+    selectModleData: {
+      type: Object,
+      default: function () {
+        return {};
+      },
+    },
+  },
   data() {
     return {
+      table: [],
+      view: [],
+      sequence: [],
+      tablespace: [],
+      synonyms: [],
+      materializedView: [],
+      procedure: [],
+      packageData: [],
+      functionData: [],
+      userFunction: [],
       selectRow: [],
-      tabPaneData: {},
       tableHeight: 457,
       sourceData: "",
-      activeName: "step4TablePane",
+      activeName: "table",
     };
   },
   methods: {
-    getPaneData(key, value) {
-      this.tabPaneData[key] = value;
-      console.log("this.tabPaneData====", this.tabPaneData);
+    getPaneData() {
+      this.table = this.modleData[this.checkSourcePattern].table;
+      this.view = this.modleData[this.checkSourcePattern].view;
+      this.sequence = this.modleData[this.checkSourcePattern].sequence;
+      this.tablespace = this.modleData[this.checkSourcePattern].tablespace;
+      this.synonyms = this.modleData[this.checkSourcePattern].synonyms;
+      this.materializedView = this.modleData[
+        this.checkSourcePattern
+      ].materializedView;
+      this.procedure = this.modleData[this.checkSourcePattern].procedure;
+      this.packageData = this.modleData[this.checkSourcePattern].packageData;
+      this.functionData = this.modleData[this.checkSourcePattern].functionData;
+      this.userFunction = this.modleData[this.checkSourcePattern].userFunction;
     },
-    handleSourceDataSelectionChange(val) {
-      this.sourceData = val;
-      if (this.sourceData === "ZG") {
-        this.$refs[this.activeName].objData = JSON.parse(
-          JSON.stringify(
-            this.$refs[[this.activeName]].$options.data().objData02
-          )
-        );
-      } else {
-        this.$refs[[this.activeName]].objData = JSON.parse(
-          JSON.stringify(this.$refs[[this.activeName]].$options.data().objData)
-        );
-      }
+    getSelectPaneData(key, value) {
+      this.selectModleData[this.checkSourcePattern][key] = value;
+      console.log("this.selectModleData====", this.selectModleData);
     },
-    tabHandleClick(tab, event) {
-      //   this.handleSourceDataSelectionChange(this.sourceData);
-      this.selectRow = this.tabPaneData[this.activeName] || [];
+    setSelectPaneData(key, value) {
+      console.log("setSelectPaneData============");
+      this.selectRow =
+        this.selectModleData[this.checkSourcePattern][this.activeName] || [];
       this.$refs[this.activeName].selectRow(this.selectRow);
     },
+
+    tabHandleClick(tab, event) {
+      console.log("activeName============", this.activeName);
+      //   this.setSelectPaneData();
+    },
+
     getData() {
       return {
         objData,

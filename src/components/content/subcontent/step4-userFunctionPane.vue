@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-table
-      :data="objData"
+      :data="tableData"
       border
       stripe
       :height="tableHeight"
@@ -55,6 +55,12 @@ export default {
         return 500;
       },
     },
+    tableData: {
+      type: Array,
+      default: function () {
+        return {};
+      },
+    },
   },
   components: {},
   data() {
@@ -71,10 +77,10 @@ export default {
       });
     },
     selectAll(selection) {
-      this.$emit("getPaneData", "step4UserFunctionPane", selection);
+      this.$emit("getSelectPaneData", "userFunction", selection);
     },
     select(selection) {
-      this.$emit("getPaneData", "step4UserFunctionPane", selection);
+      this.$emit("getSelectPaneData", "userFunction", selection);
     },
     handleSelectionChange(val) {
       if (val === "ZG") {

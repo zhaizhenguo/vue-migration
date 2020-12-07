@@ -29,7 +29,7 @@
           ref="step5TablePane"
         ></step5TablePane>
       </el-main>
-      <el-fotter> </el-fotter>
+      <el-footer> </el-footer>
     </el-container>
   </div>
 </template>
@@ -63,6 +63,7 @@ export default {
     };
   },
   methods: {
+    initData(sourceData) {},
     getPaneData(key, value) {
       this.tabLineData[key] = value;
       console.log("this.tabLineData====", this.tabLineData);

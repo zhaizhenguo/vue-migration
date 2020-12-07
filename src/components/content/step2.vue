@@ -38,6 +38,7 @@ export default {
     };
   },
   methods: {
+    initData(sourceData) {},
     handleClick(tab, event) {
       console.log(this.getParam());
     },

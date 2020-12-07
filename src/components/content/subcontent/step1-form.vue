@@ -115,13 +115,14 @@ export default {
     },
     getData() {
       let param;
-      this.$refs.form.validate((valid) => {
-        if (valid) {
-          param = this.getParam();
-        } else {
-          param = false;
-        }
-      });
+      param = this.getParam();
+    //   this.$refs.form.validate((valid) => {
+    //     if (valid) {
+    //       param = this.getParam();
+    //     } else {
+    //       param = false;
+    //     }
+    //   });
       return param;
     },
     getParam() {

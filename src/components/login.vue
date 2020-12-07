@@ -9,8 +9,10 @@ export default {
   methods: {
     login() {
       console.log("this===", this);
-      this.$router.push("/oscar");
-    }
-  }
+      this.$router.push("/oscar").catch((err) => {
+        console.log("输出报错", err);
+      });
+    },
+  },
 };
 </script>

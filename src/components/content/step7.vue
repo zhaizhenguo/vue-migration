@@ -87,6 +87,7 @@ export default {
     return {};
   },
   methods: {
+    initData(sourceData) {},
     getData() {
       return {};
     },

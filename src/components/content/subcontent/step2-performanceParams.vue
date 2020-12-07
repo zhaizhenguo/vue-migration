@@ -1,5 +1,5 @@
 <template>
-  <el-form :rules="rules" label-width="200px" v-model="form">
+  <el-form :rules="rules" label-width="100px" :model="form">
     <el-row>
       <el-col :span="6">
         <el-form-item label="源端迁移Fetch Size" prop="fetchSize">
@@ -10,7 +10,7 @@
         <el-form-item label="字符转换编码">
           <el-select v-model="form.encodingValue">
             <el-option
-              v-for="item in encodingOptions"
+              v-for="item in form.encodingOptions"
               :key="item.value"
               :label="item.label"
               :value="item.value"
@@ -21,7 +21,7 @@
         ><el-form-item label="创建日志">
           <el-select v-model="form.createLogValue">
             <el-option
-              v-for="item in createLogOptions"
+              v-for="item in form.createLogOptions"
               :key="item.value"
               :label="item.label"
               :value="item.value"
@@ -32,7 +32,7 @@
         ><el-form-item label="事务设置">
           <el-select v-model="form.transactionSetValue">
             <el-option
-              v-for="item in transactionSetOptions"
+              v-for="item in form.transactionSetOptions"
               :key="item.value"
               :label="item.label"
               :value="item.value"
@@ -79,19 +79,23 @@
         ><el-form-item label="其他参数">
           <el-radio v-model="form.importData" label="1"
             >大批量数据导入区</el-radio
-          ><el-input
-            size="mini"
-            :disabled="form.importData == 0"
-            v-model="form.importLineSize"
-            type="number"
-          ></el-input>
+          ><el-form-item prop="importLineSize">
+            <el-input
+              size="mini"
+              :disabled="form.importData == 0"
+              v-model="form.importLineSize"
+              type="number"
+            ></el-input
+          ></el-form-item>
           <el-radio v-model="form.importData" label="0"
             >大批量数据导入缓冲区(单位M)</el-radio
-          ><el-input
-            :disabled="form.importData == 1"
-            v-model="form.importBufferSize"
-            type="number"
-          ></el-input></el-form-item
+          ><el-form-item prop="importBufferSize"
+            ><el-input
+              :disabled="form.importData == 1"
+              v-model="form.importBufferSize"
+              type="number"
+            ></el-input>
+          </el-form-item> </el-form-item
       ></el-col>
     </el-row>
   </el-form>
@@ -163,14 +167,32 @@ export default {
         //大批量数据导入缓冲区（单位M）
         importBufferSize: "10",
       },
+      rules: {
+        fetchSize: [
+          {
+            required: true,
+            message: "请输入源端迁移Fetch Size",
+            trigger: "change",
+          },
+        ],
+        threadSize: [
+          { required: true, message: "请输入迁移线程", trigger: "change" },
+        ],
+        importLineSize: [
+          { required: true, message: "请输入", trigger: "change" },
+        ],
+        importBufferSize: [
+          { required: true, message: "请输入", trigger: "change" },
+        ],
+      },
     };
   },
   methods: {
     getData() {
-      return { form };
+      return { migrationParams: this.form };
     },
     handleCheckedCitiesChange(value) {
-      console.log("migrationParams======", { form });
+      console.log("migrationParams======", { migrationParams: this.form });
     },
     btnclickReset() {
       this.form = this.$options.data().form;

@@ -43,7 +43,7 @@
       <el-main style="padding: 0px 20px">
         <step6TablePane ref="step6TablePane"></step6TablePane>
       </el-main>
-      <el-fotter> </el-fotter>
+      <el-footer> </el-footer>
     </el-container>
   </div>
 </template>
@@ -86,6 +86,7 @@ export default {
     };
   },
   methods: {
+    initData(sourceData) {},
     handleSelectionChange(val) {
       if (Math.round(Math.random()) === 0) {
         this.$refs["step6TablePane"].objData = JSON.parse(

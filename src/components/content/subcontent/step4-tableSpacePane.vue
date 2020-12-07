@@ -1,6 +1,6 @@
 <template>
   <el-table
-    :data="objData"
+    :data="tableData"
     border
     stripe
     :height="tableHeight"
@@ -90,6 +90,12 @@ export default {
         return 500;
       },
     },
+    tableData: {
+      type: Array,
+      default: function () {
+        return {};
+      },
+    },
   },
   components: {},
   data() {
@@ -111,10 +117,10 @@ export default {
       });
     },
     selectAll(selection) {
-      this.$emit("getPaneData", "step4TableSpacePane", selection);
+      this.$emit("getSelectPaneData", "tableSpace", selection);
     },
     select(selection) {
-      this.$emit("getPaneData", "step4TableSpacePane", selection);
+      this.$emit("getSelectPaneData", "tableSpace", selection);
     },
     handleSelectionChange(val) {
       if (val === "ZG") {
