@@ -2,10 +2,12 @@
   <el-tabs type="border-card" v-model="activeName" @tab-click="tabHandleClick">
     <el-tab-pane label="表" name="table">
       <step4TablePane
+        @getTableResourceData="getTableResourceData"
+        @getSelectPaneData="getSelectPaneData"
         :tableHeight="tableHeight"
         :tableData="table"
+        :checkSourcePattern="checkSourcePattern"
         ref="table"
-        @getSelectPaneData="getSelectPaneData"
       ></step4TablePane>
     </el-tab-pane>
 
@@ -148,6 +150,8 @@ export default {
       functionData: [],
       userFunction: [],
       selectRow: [],
+      selectPatternList: [],
+      selectTableNameList: [],
       tableHeight: 457,
       sourceData: "",
       activeName: "table",
@@ -169,24 +173,50 @@ export default {
       this.userFunction = this.modleData[this.checkSourcePattern].userFunction;
     },
     getSelectPaneData(key, value) {
+      if (this.selectPatternList.indexOf(this.checkSourcePattern) === -1) {
+        this.selectPatternList.push(this.checkSourcePattern);
+      }
+      this.selectTableNameList[this.checkSourcePattern] = [];
+      value.forEach((element) => {
+        this.selectTableNameList[this.checkSourcePattern].push(
+          element.sourceTableName
+        );
+      });
       this.selectModleData[this.checkSourcePattern][key] = value;
+      console.log("this.selectPatternList====", this.selectPatternList);
+      console.log("this.selectTableNameList====", this.selectTableNameList);
       console.log("this.selectModleData====", this.selectModleData);
     },
-    setSelectPaneData(key, value) {
-      console.log("setSelectPaneData============");
+    setSelectPaneData() {
       this.selectRow =
         this.selectModleData[this.checkSourcePattern][this.activeName] || [];
       this.$refs[this.activeName].selectRow(this.selectRow);
     },
-
+    getTableResourceData(key, value, tableName) {
+      console.log(
+        "Top key===",
+        key,
+        "value===",
+        value,
+        "tableName===",
+        tableName
+      );
+      let index = this.selectTableNameList[this.checkSourcePattern].indexOf(
+        tableName
+      );
+      this.selectModleData[this.checkSourcePattern]["table"][index][
+        key
+      ] = value;
+    },
+    setTableResourceData() {},
     tabHandleClick(tab, event) {
-      console.log("activeName============", this.activeName);
-      //   this.setSelectPaneData();
+      this.setSelectPaneData();
     },
 
     getData() {
       return {
-        objData,
+        selectPatternList: this.selectPatternList,
+        selectModleData: this.selectModleData,
       };
     },
     calcHeightx() {

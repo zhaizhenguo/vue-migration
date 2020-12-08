@@ -34,7 +34,9 @@
         <step2 v-show="nowProcess === 2" ref="step2"></step2>
         <step3 v-show="nowProcess === 3" ref="step3"></step3>
         <step4 v-show="nowProcess === 4" ref="step4"></step4>
+
         <step5 v-show="nowProcess === 5" ref="step5"></step5>
+
         <step6 v-show="nowProcess === 6" ref="step6"></step6>
         <step7 v-show="nowProcess === 7" ref="step7"></step7>
       </el-card>
@@ -162,7 +164,7 @@ export default {
 
         let initData = this.$refs["step" + (this.nowProcess + 1)].initData;
         if (typeof initData === "function") {
-          initData();
+          initData(this.stepData);
         }
         this.nowProcessStep++;
       } else {

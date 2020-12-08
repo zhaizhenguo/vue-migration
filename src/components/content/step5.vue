@@ -1,50 +1,35 @@
 <template>
   <div>
-    <el-container>
-      <el-header>
-        <el-row
-          ><el-col :span="24"
-            >目的表
-            <el-select
-              style="width: 130px"
-              @change="handleSelectionChange"
-              v-model="checkSourcePattern"
-              placeholder="请选择"
-            >
-              <el-option
-                v-for="item in sourcePattern"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              >
-              </el-option>
-            </el-select>
-          </el-col>
-        </el-row>
-        <el-row> </el-row>
-      </el-header>
-      <el-main style="padding: 0px 20px">
+    <el-tabs
+      v-model="activePattern"
+      @tab-click="handleClick"
+      type="border-card"
+    >
+      <el-tab-pane
+        v-for="pattern in patternList"
+        :key="pattern"
+        :label="pattern"
+        :name="pattern"
+      >
         <step5TablePane
-          @getPaneData="getPaneData"
-          ref="step5TablePane"
-        ></step5TablePane>
-      </el-main>
-      <el-footer> </el-footer>
-    </el-container>
+          :selectModleData="selectModleData[pattern]"
+          @getSelectPaneData="getSelectPaneData"
+          :ref="pattern"
+        >
+        </step5TablePane>
+      </el-tab-pane>
+    </el-tabs>
   </div>
 </template>
 <script>
-import objData from "../constant/step5Tab";
-import objData02 from "../constant/step5Tab02";
-import step5TablePane from "./subcontent/step5-tablePane";
 export default {
-  components: {
-    step5TablePane: step5TablePane,
-  },
+  components: {},
   data() {
     return {
-      objData: objData,
-      objData02: objData02,
+      activePattern: "",
+      selectModleData: {},
+
+      patternList: [],
       tabLineData: {},
       lineTypeList: [
         { value: "VARCHAR", label: "VARCHAR" },
@@ -63,28 +48,36 @@ export default {
     };
   },
   methods: {
-    initData(sourceData) {},
-    getPaneData(key, value) {
+    initData(stepData) {
+      console.log("initData  this.stepData====", stepData);
+      if (
+        !!stepData &&
+        !!stepData.step4 &&
+        !!stepData.step4.selectPatternList &&
+        !!stepData.step4.selectModleData
+      ) {
+        this.patternList = stepData.step4.selectPatternList;
+        this.activePattern =
+          this.patternList.length > 0 ? this.patternList[0] : "";
+        this.selectModleData = stepData.step4.selectModleData;
+      }
+    },
+    handleClick(tab, event) {
+      //   this.$refs[this.activePattern].initData();
+      console.log("this.activePattern======", this.activePattern);
+      console.log(
+        "this.$refs[this.activePattern]======",
+        this.$refs[this.activePattern]
+      );
+      this.$refs[this.activePattern][0].initData();
+      console.log(tab, event);
+    },
+    getSelectPaneData(key, value) {
       this.tabLineData[key] = value;
       console.log("this.tabLineData====", this.tabLineData);
     },
-    handleSelectionChange(val) {
-      if (val === "ZG") {
-        this.$refs["step5TablePane"].objData = JSON.parse(
-          JSON.stringify(this.$refs["step5TablePane"].$options.data().objData02)
-        );
-      } else {
-        this.$refs["step5TablePane"].objData = JSON.parse(
-          JSON.stringify(this.$refs["step5TablePane"].$options.data().objData)
-        );
-      }
-      console.log("val===", val);
-    },
-
     getData() {
-      return {
-        objData,
-      };
+      return {};
     },
     calcHeightx() {
       let wapper = window.document.getElementsByClassName(

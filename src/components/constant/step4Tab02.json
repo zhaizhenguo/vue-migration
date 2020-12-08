@@ -1,6 +1,7 @@
     [
         {
-            "sourceTableName": "TEST02",
+            "primaryId": "2001",
+            "sourceTableName": "TEST",
             "targetTableName": "TEST02",
             "checkOperatingMode": "newTable",
             "checkTableSpace": "SYSTEM",
@@ -13,6 +14,7 @@
             "filter": ""
         },
         {
+            "primaryId": "2002",
             "sourceTableName": "TEST1102",
             "targetTableName": "TEST1102",
             "checkOperatingMode": "newTable",

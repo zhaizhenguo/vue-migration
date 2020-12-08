@@ -1,17 +1,6 @@
-    [
-        {
-            "primaryId": "1002",
-            "sourceTableName": "TEST",
-            "targetTableName": "TEST",
-            "checkOperatingMode": "newTable",
-            "checkTableSpace": "SYSTEM",
-            "initSize": "64",
-            "incrementSize": "64",
-            "maxSize": "0",
-            "freeRatio": "10",
-            "minUseRatio": "40",
-            "checkOutputLog": 0,
-            "filter": "",
+{
+    "SYSDBA": {
+        "TEST": {
             "line": [
                 {
                     "primaryId": "3001",
@@ -78,24 +67,12 @@
             "ttrigger": null,
             "fullIndex": null
         },
-        {
-            "primaryId": "1001",
-            "sourceTableName": "TEST11",
-            "targetTableName": "TEST11",
-            "checkOperatingMode": "newTable",
-            "checkTableSpace": "SYSTEM",
-            "initSize": "64",
-            "incrementSize": "64",
-            "maxSize": "0",
-            "freeRatio": "10",
-            "minUseRatio": "40",
-            "checkOutputLog": 0,
-            "filter": "",
+        "TEST11": {
             "line": [
                 {
                     "primaryId": "3001",
-                    "sourceLineName": "ID",
-                    "targetLineName": "ID",
+                    "sourceLineName": "ID11",
+                    "targetLineName": "ID11",
                     "checkType": "VARCHAR",
                     "type": [
                         {
@@ -157,4 +134,125 @@
             "ttrigger": null,
             "fullIndex": null
         }
-    ]
+    },
+    "ZG": {
+        "TEST": [
+            {
+                "primaryId": "3001",
+                "sourceLineName": "ID",
+                "targetLineName": "ID",
+                "checkType": "VARCHAR",
+                "type": [
+                    {
+                        "value": "VARCHAR",
+                        "label": "VARCHAR"
+                    },
+                    {
+                        "value": "VARCHAR2",
+                        "label": "VARCHAR2"
+                    }
+                ],
+                "length": "50",
+                "precision": "64",
+                "decimals": "64",
+                "ismajorKey": 0,
+                "canBeNull": 0,
+                "defaultValue": "40"
+            },
+            {
+                "primaryId": "3002",
+                "sourceLineName": "NAME",
+                "targetLineName": "NAME",
+                "checkType": "VARCHAR",
+                "type": [
+                    {
+                        "value": "VARCHAR",
+                        "label": "VARCHAR"
+                    },
+                    {
+                        "value": "VARCHAR2",
+                        "label": "VARCHAR2"
+                    }
+                ],
+                "length": "50",
+                "precision": "64",
+                "decimals": "64",
+                "ismajorKey": 0,
+                "canBeNull": 0,
+                "defaultValue": "40"
+            },
+            {
+                "primaryId": "3003",
+                "sourceLineName": "PASSWOED",
+                "targetLineName": "PASSWOED",
+                "checkType": "Date",
+                "type": "Date",
+                "length": "50",
+                "precision": "64",
+                "decimals": "64",
+                "ismajorKey": 0,
+                "canBeNull": 0,
+                "defaultValue": "40"
+            }
+        ],
+        "TEST1102": [
+            {
+                "primaryId": "3001",
+                "sourceLineName": "ID",
+                "targetLineName": "ID",
+                "checkType": "VARCHAR",
+                "type": [
+                    {
+                        "value": "VARCHAR",
+                        "label": "VARCHAR"
+                    },
+                    {
+                        "value": "VARCHAR2",
+                        "label": "VARCHAR2"
+                    }
+                ],
+                "length": "50",
+                "precision": "64",
+                "decimals": "64",
+                "ismajorKey": 0,
+                "canBeNull": 0,
+                "defaultValue": "40"
+            },
+            {
+                "primaryId": "3002",
+                "sourceLineName": "NAME",
+                "targetLineName": "NAME",
+                "checkType": "VARCHAR",
+                "type": [
+                    {
+                        "value": "VARCHAR",
+                        "label": "VARCHAR"
+                    },
+                    {
+                        "value": "VARCHAR2",
+                        "label": "VARCHAR2"
+                    }
+                ],
+                "length": "50",
+                "precision": "64",
+                "decimals": "64",
+                "ismajorKey": 0,
+                "canBeNull": 0,
+                "defaultValue": "40"
+            },
+            {
+                "primaryId": "3003",
+                "sourceLineName": "PASSWOED",
+                "targetLineName": "PASSWOED",
+                "checkType": "Date",
+                "type": "Date",
+                "length": "50",
+                "precision": "64",
+                "decimals": "64",
+                "ismajorKey": 0,
+                "canBeNull": 0,
+                "defaultValue": "40"
+            }
+        ]
+    }
+}

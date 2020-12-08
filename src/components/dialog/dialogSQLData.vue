@@ -1,7 +1,7 @@
 <template>
   <el-dialog
     title="SQL查询编译器"
-    :visible.sync="dialogSQLDataVisible"
+    :visible="dialogSQLDataVisible"
     :close-on-click-modal="false"
     @close="close"
     width="600px"

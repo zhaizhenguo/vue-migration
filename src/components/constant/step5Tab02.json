@@ -1,5 +1,6 @@
     [
         {
+            "primaryId": "4001",
             "sourceLineName": "ID02",
             "targetLineName": "ID02",
             "checkType": "VARCHAR02",
@@ -11,6 +12,7 @@
             "defaultValue": "40"
         },
         {
+            "primaryId": "4002",
             "sourceLineName": "NAME02",
             "targetLineName": "NAME02",
             "checkType": "VARCHAR02",
@@ -22,6 +24,7 @@
             "defaultValue": "40"
         },
         {
+            "primaryId": "4003",
             "sourceLineName": "PASSWOED02",
             "targetLineName": "PASSWOED02",
             "checkType": "VARCHAR",

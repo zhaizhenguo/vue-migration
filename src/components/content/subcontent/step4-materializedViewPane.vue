@@ -6,7 +6,6 @@
       stripe
       :height="tableHeight"
       style="width: 100%"
-      :highlight-current-row="true"
       @select-all="selectAll"
       @select="select"
       ref="table"
@@ -65,6 +64,9 @@ export default {
     return {};
   },
   methods: {
+    getRowKey(row) {
+      return row.primaryId;
+    },
     selectRow(rows) {
       let tableRef = this.$refs.table;
       rows.forEach((row) => {

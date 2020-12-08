@@ -1,35 +1,35 @@
-    [
-        {
-            "sourceLineName": "ID",
-            "targetLineName": "ID",
-            "checkType": "VARCHAR",
-            "length": "50",
-            "precision": "64",
-            "decimals": "64",
-            "ismajorKey": 0,
-            "canBeNull": 0,
-            "defaultValue": "40"
-        },
-        {
-            "sourceLineName": "NAME",
-            "targetLineName": "NAME",
-            "checkType": "VARCHAR",
-            "length": "50",
-            "precision": "64",
-            "decimals": "64",
-            "ismajorKey": 0,
-            "canBeNull": 0,
-            "defaultValue": "40"
-        },
-        {
-            "sourceLineName": "PASSWOED",
-            "targetLineName": "PASSWOED",
-            "checkType": "VARCHAR",
-            "length": "50",
-            "precision": "64",
-            "decimals": "64",
-            "ismajorKey": 0,
-            "canBeNull": 0,
-            "defaultValue": "40"
-        }
-    ]
+[
+    {
+        "sourceLineName": "ID",
+        "targetLineName": "ID",
+        "checkType": "VARCHAR",
+        "length": "50",
+        "precision": "64",
+        "decimals": "64",
+        "ismajorKey": 0,
+        "canBeNull": 0,
+        "defaultValue": "40"
+    },
+    {
+        "sourceLineName": "NAME",
+        "targetLineName": "NAME",
+        "checkType": "VARCHAR",
+        "length": "50",
+        "precision": "64",
+        "decimals": "64",
+        "ismajorKey": 0,
+        "canBeNull": 0,
+        "defaultValue": "40"
+    },
+    {
+        "sourceLineName": "PASSWOED",
+        "targetLineName": "PASSWOED",
+        "checkType": "VARCHAR",
+        "length": "50",
+        "precision": "64",
+        "decimals": "64",
+        "ismajorKey": 0,
+        "canBeNull": 0,
+        "defaultValue": "40"
+    }
+]

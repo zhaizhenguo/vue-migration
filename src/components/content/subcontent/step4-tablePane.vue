@@ -7,6 +7,7 @@
       :height="tableHeight"
       style="width: 100%"
       :highlight-current-row="true"
+      @cell-dblclick="celldbClick"
       @select-all="selectAll"
       @select="select"
       ref="table"
@@ -118,18 +119,31 @@
         </template>
       </el-table-column>
     </el-table>
-    <el-button @click="qqq">test</el-button>
+    <dialogTableLineData
+      v-if="dialogTableLineDataVisible"
+      :dialogTableLineDataVisible="dialogTableLineDataVisible"
+      :tableName="tableName"
+      :singleTableResourceData="singleTableResourceData"
+      @getTableResourceData="getTableResourceData"
+      @closeTableLineDialog="closeTableLineDialog"
+    ></dialogTableLineData>
   </div>
 </template>
 <script>
-import objData from "../../constant/step4Tab";
-import objData02 from "../../constant/step4Tab02";
+import dialogTableLineData from "../../dialog/dialogTableLineData";
+import tableResourceData from "../../constant/step4-tableResourceData.json";
 export default {
   props: {
     tableHeight: {
       type: Number,
       default: function () {
         return 500;
+      },
+    },
+    checkSourcePattern: {
+      type: String,
+      default: function () {
+        return "";
       },
     },
     tableData: {
@@ -139,14 +153,14 @@ export default {
       },
     },
   },
-  components: {},
+  components: {
+    dialogTableLineData: dialogTableLineData,
+    tableResourceData: tableResourceData,
+  },
   data() {
     return {
-      test: {},
-      objData: objData,
-      objData02: objData02,
       isOpenSwitch: false,
-      dialogSQLDataVisible: false,
+      dialogTableLineDataVisible: false,
       operatingMode: [
         { value: "newTable", label: "新建表" },
         { value: "heavyLoadData", label: "重载数据" },
@@ -162,19 +176,16 @@ export default {
         { value: 0, label: "是" },
         { value: 1, label: "否" },
       ],
-
-      sourcePattern: [
-        { value: "SYSDBA", label: "SYSDBA" },
-        { value: "ZG", label: "ZG" },
-      ],
-      checkSourcePattern: "SYSDBA",
-      //   this.sourcePattern[0].value,
+      singleTableResourceData: {},
+      tableName: "",
+      tableResourceData: tableResourceData,
     };
   },
-  created() {
-    console.log("zzg=====");
-  },
+  created() {},
   methods: {
+    getRowKey(row) {
+      return row.primaryId;
+    },
     selectRow(rows) {
       let tableRef = this.$refs.table;
       rows.forEach((row) => {
@@ -184,29 +195,31 @@ export default {
     selectAll(selection) {
       this.$emit("getSelectPaneData", "table", selection);
     },
-    select(selection) {
-      this.test = selection;
-      console.log("selection===", selection);
+    select(selection, row) {
       this.$emit("getSelectPaneData", "table", selection);
     },
-    qqq() {
-      console.log("this.test===", this.test);
+    getTableResourceData(key, value, tableName) {
+      this.$emit("getTableResourceData", key, value, tableName);
     },
-    handleSelectionChange(val) {
-      if (val === "ZG") {
-        this.objData = JSON.parse(
-          JSON.stringify(this.$options.data().objData02)
-        );
-      } else {
-        this.objData = JSON.parse(JSON.stringify(this.$options.data().objData));
-      }
-      console.log("val===", val);
+    celldbClick(row, column, cell, event) {
+      this.tableName = row.sourceTableName;
+      console.log("this.tableResourceData==", this.tableResourceData);
+      console.log("this.checkSourcePattern==", this.checkSourcePattern);
+      console.log("this.tableName==", this.tableName);
+
+      this.singleTableResourceData = this.tableResourceData[
+        this.checkSourcePattern
+      ][this.tableName];
+
+      console.log("row=====", row);
+      console.log(
+        "this.singleTableResourceData=====",
+        this.singleTableResourceData
+      );
+      this.dialogTableLineDataVisible = true;
     },
-    btnPointSQL() {
-      this.dialogSQLDataVisible = true;
-    },
-    closePointSQL() {
-      this.dialogSQLDataVisible = false;
+    closeTableLineDialog() {
+      this.dialogTableLineDataVisible = false;
     },
     getSqlData(data) {
       console.log("parent==========", data);

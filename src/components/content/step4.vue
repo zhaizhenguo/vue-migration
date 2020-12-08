@@ -173,9 +173,10 @@ export default {
       }
       this.$nextTick(() => {
         this.$refs["step4Tabs"].getPaneData();
+        this.$nextTick(() => {
+          this.$refs["step4Tabs"].setSelectPaneData();
+        });
       });
-      console.log("val===", val);
-      console.log("this.modleData===", this.modleData);
     },
     initData(sourceData) {
       this.sourcePattern = [
@@ -186,7 +187,6 @@ export default {
         this.selectModleData[modleData.value] = {};
       });
       console.log("this.selectModleData===", this.selectModleData);
-      this.selectModleData;
       let modleName = this.sourcePattern[0].value;
 
       this.checkSourcePattern = modleName;
@@ -237,9 +237,7 @@ export default {
       console.log("parent==========", data);
     },
     getData() {
-      return {
-        objData,
-      };
+      return this.$refs["step4Tabs"].getData();
     },
     calcHeightx() {
       console.log("step4====created");

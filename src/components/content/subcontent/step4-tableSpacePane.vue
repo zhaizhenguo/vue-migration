@@ -110,6 +110,9 @@ export default {
     };
   },
   methods: {
+    getRowKey(row) {
+      return row.primaryId;
+    },
     selectRow(rows) {
       let tableRef = this.$refs.table;
       rows.forEach((row) => {

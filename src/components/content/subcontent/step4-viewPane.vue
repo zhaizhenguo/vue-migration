@@ -7,6 +7,7 @@
       :height="tableHeight"
       style="width: 100%"
       :highlight-current-row="true"
+      @selection-change="handleSelectionChange"
       @select-all="selectAll"
       @select="select"
       ref="table"
@@ -70,6 +71,9 @@ export default {
     };
   },
   methods: {
+    getRowKey(row) {
+      return row.primaryId;
+    },
     selectRow(rows) {
       let tableRef = this.$refs.table;
       rows.forEach((row) => {
@@ -83,13 +87,6 @@ export default {
       this.$emit("getSelectPaneData", "view", selection);
     },
     handleSelectionChange(val) {
-      if (val === "ZG") {
-        this.objData = JSON.parse(
-          JSON.stringify(this.$options.data().objData02)
-        );
-      } else {
-        this.objData = JSON.parse(JSON.stringify(this.$options.data().objData));
-      }
       console.log("val===", val);
     },
 
