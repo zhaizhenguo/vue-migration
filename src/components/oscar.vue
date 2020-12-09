@@ -34,11 +34,11 @@
         <step2 v-show="nowProcess === 2" ref="step2"></step2>
         <step3 v-show="nowProcess === 3" ref="step3"></step3>
         <step4 v-show="nowProcess === 4" ref="step4"></step4>
-
-        <step5 v-show="nowProcess === 5" ref="step5"></step5>
-
-        <step6 v-show="nowProcess === 6" ref="step6"></step6>
-        <step7 v-show="nowProcess === 7" ref="step7"></step7>
+        <step5
+          v-show="nowProcess === 5"
+          :stepData="stepData"
+          ref="step5"
+        ></step5>
       </el-card>
     </el-main>
     <el-footer class="footer">
@@ -97,8 +97,6 @@ import step2 from "./content/step2";
 import step3 from "./content/step3";
 import step4 from "./content/step4";
 import step5 from "./content/step5";
-import step6 from "./content/step6";
-import step7 from "./content/step7";
 import dialogParamConfig from "./dialog/dialogParamConfig";
 import api from "./asset/api";
 export default {
@@ -109,8 +107,6 @@ export default {
     step3: step3,
     step4: step4,
     step5: step5,
-    step6: step6,
-    step7: step7,
     dialogParamConfig: dialogParamConfig,
   },
   data() {
@@ -154,9 +150,21 @@ export default {
         if (!getData) {
           return;
         }
-        console.log("step" + this.nowProcess + ":this.getData===", getData);
-        this.stepData["step" + this.nowProcess] = getData;
-        this.stepData["step" + this.nowProcess] = getData;
+        let resName = "step" + this.nowProcess;
+        switch (resName) {
+          case "step1":
+            this.stepData["databaseData"] = getData;
+            break;
+          case "step4":
+            this.stepData["patternData"] = getData.selectPatternData;
+            this.stepData["patternNameList"] = getData.selectPatternNameList;
+            this.stepData["patternParam"] = getData.patternParam;
+            break;
+          default:
+            this.stepData[resName] = getData;
+            break;
+        }
+
         console.log(
           "step" + this.nowProcess + ":this.stepData===",
           this.stepData

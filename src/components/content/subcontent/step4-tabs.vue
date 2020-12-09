@@ -3,6 +3,7 @@
     <el-tab-pane label="表" name="table">
       <step4TablePane
         @getTableResourceData="getTableResourceData"
+        @setTableResourceData="setTableResourceData"
         @getSelectPaneData="getSelectPaneData"
         :tableHeight="tableHeight"
         :tableData="table"
@@ -124,13 +125,13 @@ export default {
         return "";
       },
     },
-    modleData: {
+    patternData: {
       type: Object,
       default: function () {
         return {};
       },
     },
-    selectModleData: {
+    selectPatternData: {
       type: Object,
       default: function () {
         return {};
@@ -150,8 +151,8 @@ export default {
       functionData: [],
       userFunction: [],
       selectRow: [],
-      selectPatternList: [],
-      selectTableNameList: [],
+      selectPatternNameList: [],
+      selectTableNameList: {},
       tableHeight: 457,
       sourceData: "",
       activeName: "table",
@@ -159,37 +160,56 @@ export default {
   },
   methods: {
     getPaneData() {
-      this.table = this.modleData[this.checkSourcePattern].table;
-      this.view = this.modleData[this.checkSourcePattern].view;
-      this.sequence = this.modleData[this.checkSourcePattern].sequence;
-      this.tablespace = this.modleData[this.checkSourcePattern].tablespace;
-      this.synonyms = this.modleData[this.checkSourcePattern].synonyms;
-      this.materializedView = this.modleData[
+      this.table = this.patternData[this.checkSourcePattern].table;
+      this.view = this.patternData[this.checkSourcePattern].view;
+      this.sequence = this.patternData[this.checkSourcePattern].sequence;
+      this.tablespace = this.patternData[this.checkSourcePattern].tablespace;
+      this.synonyms = this.patternData[this.checkSourcePattern].synonyms;
+      this.materializedView = this.patternData[
         this.checkSourcePattern
       ].materializedView;
-      this.procedure = this.modleData[this.checkSourcePattern].procedure;
-      this.packageData = this.modleData[this.checkSourcePattern].packageData;
-      this.functionData = this.modleData[this.checkSourcePattern].functionData;
-      this.userFunction = this.modleData[this.checkSourcePattern].userFunction;
+      this.procedure = this.patternData[this.checkSourcePattern].procedure;
+      this.packageData = this.patternData[this.checkSourcePattern].packageData;
+      this.functionData = this.patternData[
+        this.checkSourcePattern
+      ].functionData;
+      this.userFunction = this.patternData[
+        this.checkSourcePattern
+      ].userFunction;
     },
     getSelectPaneData(key, value) {
-      if (this.selectPatternList.indexOf(this.checkSourcePattern) === -1) {
-        this.selectPatternList.push(this.checkSourcePattern);
+      if (this.selectPatternNameList.indexOf(this.checkSourcePattern) === -1) {
+        this.selectPatternNameList.push(this.checkSourcePattern);
       }
-      this.selectTableNameList[this.checkSourcePattern] = [];
-      value.forEach((element) => {
-        this.selectTableNameList[this.checkSourcePattern].push(
-          element.sourceTableName
-        );
-      });
-      this.selectModleData[this.checkSourcePattern][key] = value;
-      console.log("this.selectPatternList====", this.selectPatternList);
+      if (key === "table") {
+        this.selectTableNameList[this.checkSourcePattern] = [];
+        value.forEach((element) => {
+          this.selectTableNameList[this.checkSourcePattern].push(
+            element.sourceTableName
+          );
+        });
+      }
+
+      this.selectPatternData[this.checkSourcePattern][key] = value;
+
+      console.log("key====", key);
+      console.log("value====", value);
+
+      console.log("this.selectPatternNameList====", this.selectPatternNameList);
       console.log("this.selectTableNameList====", this.selectTableNameList);
-      console.log("this.selectModleData====", this.selectModleData);
+      console.log("this.selectPatternData====", this.selectPatternData);
+      this.selectPatternNameList.forEach((item) => {
+        if (
+          this.selectTableNameList[item].length !==
+          this.selectPatternData[item]["table"].length
+        ) {
+          alert("chucuol ");
+        }
+      });
     },
     setSelectPaneData() {
       this.selectRow =
-        this.selectModleData[this.checkSourcePattern][this.activeName] || [];
+        this.selectPatternData[this.checkSourcePattern][this.activeName] || [];
       this.$refs[this.activeName].selectRow(this.selectRow);
     },
     getTableResourceData(key, value, tableName) {
@@ -204,19 +224,28 @@ export default {
       let index = this.selectTableNameList[this.checkSourcePattern].indexOf(
         tableName
       );
-      this.selectModleData[this.checkSourcePattern]["table"][index][
+      this.selectPatternData[this.checkSourcePattern]["table"][index][
         key
       ] = value;
     },
-    setTableResourceData() {},
+    setTableResourceData(dialogTableLineObj) {
+      let index = this.selectTableNameList[this.checkSourcePattern].indexOf(
+        dialogTableLineObj.tableName
+      );
+      let rows = this.selectPatternData[this.checkSourcePattern]["table"][
+        index
+      ][dialogTableLineObj.activeName];
+      console.log("rows======", rows);
+      dialogTableLineObj.selectRow(rows);
+    },
     tabHandleClick(tab, event) {
       this.setSelectPaneData();
     },
 
     getData() {
       return {
-        selectPatternList: this.selectPatternList,
-        selectModleData: this.selectModleData,
+        selectPatternNameList: this.selectPatternNameList,
+        selectPatternData: this.selectPatternData,
       };
     },
     calcHeightx() {

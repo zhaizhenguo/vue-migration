@@ -18,10 +18,10 @@ export default {
   },
   methods: {
     getData() {
-      let formSourceDate = this.$refs.formSource.getData();
-      let formTargetDate = this.$refs.formTarget.getData();
-      if (formSourceDate && formTargetDate) {
-        return { formSourceDate, formTargetDate };
+      let sourceData = this.$refs.formSource.getData();
+      let targetData = this.$refs.formTarget.getData();
+      if (sourceData && targetData) {
+        return { sourceData, targetData };
       }
     },
   },

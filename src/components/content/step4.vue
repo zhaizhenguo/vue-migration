@@ -69,11 +69,14 @@
         <el-row
           ><el-col :span="3" class="qzqy">
             开启强制迁移
-            <el-switch v-model="isOpenSwitch"> </el-switch>
-            <div style="float: right; padding: 0px 10px" v-show="isOpenSwitch">
+            <el-switch v-model="isOpenConstraintMigrate"> </el-switch>
+            <div
+              style="float: right; padding: 0px 10px"
+              v-show="isOpenConstraintMigrate"
+            >
               迁移到
               <el-select
-                :disabled="!isOpenSwitch"
+                :disabled="!isOpenConstraintMigrate"
                 class="selectDiv"
                 v-model="checkConstraintMigrate"
                 placeholder="请选择"
@@ -92,8 +95,8 @@
       </el-header>
       <el-main style="padding: 0px 20px">
         <step4Tabs
-          :modleData="modleData"
-          :selectModleData="selectModleData"
+          :patternData="patternData"
+          :selectPatternData="selectPatternData"
           :checkSourcePattern="checkSourcePattern"
           ref="step4Tabs"
         ></step4Tabs>
@@ -128,10 +131,11 @@ export default {
       objDataView02: objDataView02,
       queryInput: "",
       tableHeight: 570,
-      isOpenSwitch: false,
+      isOpenConstraintMigrate: false,
       dialogSQLDataVisible: false,
-      modleData: {},
-      selectModleData: {},
+      patternData: {},
+      selectPatternData: {},
+      patternParam: {},
       operatingMode: [
         { value: "newTable", label: "新建表" },
         { value: "heavyLoadData", label: "重载数据" },
@@ -165,9 +169,9 @@ export default {
       console.log(this.getParam());
     },
     handleSelectionChange(val) {
-      if (!this.modleData[this.checkSourcePattern]) {
-        console.log("重新加载modleData");
-        this.modleData[this.checkSourcePattern] = this.getModleData(
+      if (!this.patternData[this.checkSourcePattern]) {
+        console.log("重新加载PatternData");
+        this.patternData[this.checkSourcePattern] = this.getPatternData(
           this.checkSourcePattern
         );
       }
@@ -183,25 +187,25 @@ export default {
         { value: "SYSDBA", label: "SYSDBA" },
         { value: "ZG", label: "ZG" },
       ];
-      this.sourcePattern.forEach((modleData) => {
-        this.selectModleData[modleData.value] = {};
+      this.sourcePattern.forEach((patternData) => {
+        this.selectPatternData[patternData.value] = {};
       });
-      console.log("this.selectModleData===", this.selectModleData);
-      let modleName = this.sourcePattern[0].value;
+      console.log("this.selectPatternData===", this.selectPatternData);
+      let patternName = this.sourcePattern[0].value;
 
-      this.checkSourcePattern = modleName;
+      this.checkSourcePattern = patternName;
 
       if (!!this.sourcePattern && this.sourcePattern.length > 0) {
-        this.modleData[modleName] = this.getModleData(modleName);
+        this.patternData[patternName] = this.getPatternData(patternName);
       }
       this.$nextTick(() => {
         this.$refs["step4Tabs"].getPaneData();
       });
 
-      console.log("this.modleData===", this.modleData);
+      console.log("this.patternData===", this.patternData);
     },
-    getModleData(modleName) {
-      return modleName === "SYSDBA"
+    getPatternData(patternName) {
+      return patternName === "SYSDBA"
         ? {
             table: this.objData,
             view: this.objDataView,
@@ -237,7 +241,16 @@ export default {
       console.log("parent==========", data);
     },
     getData() {
-      return this.$refs["step4Tabs"].getData();
+      let step4TabsData = this.$refs["step4Tabs"].getData();
+      step4TabsData["patternParam"] = this.getParam();
+      return step4TabsData;
+    },
+    getParam() {
+      return {
+        checkMigrationCircle: this.checkMigrationCircle,
+        isOpenConstraintMigrate: this.isOpenConstraintMigrate,
+        checkConstraintMigrate: this.checkConstraintMigrate,
+      };
     },
     calcHeightx() {
       console.log("step4====created");

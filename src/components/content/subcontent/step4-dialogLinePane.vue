@@ -1,44 +1,37 @@
 <template>
   <div>
     <el-table
-      :data="lineData"
+      :data="tableData"
       border
       stripe
-      :height="330"
+      :height="tableHeight"
       style="width: 100%"
       :highlight-current-row="true"
-      @cell-dblclick="celldbClick"
       @select-all="selectAll"
       @select="select"
-      row-key="getRowKey"
       ref="table"
     >
-      <el-table-column
-        :reserve-selection="true"
-        type="selection"
-        min-width="2%"
-      >
-      </el-table-column>
+      <el-table-column type="selection" min-width="2%"> </el-table-column>
       <el-table-column type="index" label="行号" min-width="2%">
       </el-table-column>
       <el-table-column
         sortable
         prop="sourceLineName"
         label="源列名"
-        min-width="10%"
+        min-width="11%"
       >
       </el-table-column>
       <el-table-column
         sortable
         prop="targetLineName"
         label="目的列名"
-        min-width="10%"
+        min-width="15%"
       >
         <template slot-scope="scope">
           <el-input v-model="scope.row.targetLineName"></el-input>
         </template>
       </el-table-column>
-      <el-table-column sortable prop="checkType" label="类型" min-width="10%">
+      <el-table-column sortable prop="checkType" label="类型" min-width="14%">
         <template slot-scope="scope">
           <el-select
             v-if="typeof scope.row.type === 'object'"
@@ -61,9 +54,9 @@
           <el-input v-model="scope.row.length"></el-input>
         </template>
       </el-table-column>
-      <el-table-column sortable prop="precision" label="精度" min-width="10%">
+      <el-table-column sortable prop="precision" label="精度" min-width="8%">
       </el-table-column>
-      <el-table-column sortable prop="decimals" label="小数位" min-width="10%">
+      <el-table-column sortable prop="decimals" label="小数位" min-width="8%">
       </el-table-column>
       <el-table-column sortable prop="ismajorKey" label="主键" min-width="10%">
         <template slot-scope="scope">
@@ -107,14 +100,19 @@
 <script>
 export default {
   props: {
-    lineData: {
+    tableHeight: {
+      type: Number,
+      default: function () {
+        return 500;
+      },
+    },
+    tableData: {
       type: Array,
       default: function () {
         return [];
       },
     },
   },
-  components: {},
   data() {
     return {
       whetherList: [
@@ -124,35 +122,22 @@ export default {
     };
   },
   methods: {
-    initData() {},
-    getRowKey(row) {
-      return row.sourceLineName;
-    },
     selectAll(selection) {
       this.$emit("getTableResourceData", "line", selection);
     },
     select(selection) {
-      console.log("selection=====", selection);
       this.$emit("getTableResourceData", "line", selection);
     },
-    getData() {
-      return {};
+    selectRow(rows) {
+      let tableRef = this.$refs["table"];
+      rows.forEach((row) => {
+        tableRef.toggleRowSelection(row, true);
+      });
     },
-    calcHeightx() {
-      let wapper = window.document.getElementsByClassName(
-        "el-table__body-wrapper"
-      );
-      //必须加延时，要不然赋不上去值
-      setTimeout(() => {
-        //通过上边计算得到的table高度的value值，减去table表格的header高度，剩下的通过dom节点直接强行赋给table表格的body
-        wapper[0].style.height = this.tableHeight + "px";
-      }, 100);
+    selectAllRow() {
+      this.$refs["table"].toggleAllSelection();
     },
   },
-  created: function () {
-    this.calcHeightx();
-  },
-  computed: {},
 };
 </script>
 <style scoped></style>

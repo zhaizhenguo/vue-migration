@@ -118,13 +118,26 @@
           <el-input v-model="scope.row.filter"></el-input>
         </template>
       </el-table-column>
+      <el-table-column label="操作" min-width="8%">
+        <template slot-scope="scope">
+          <el-button
+            icon="el-icon-setting"
+            type="primary"
+            plain
+            @click="celldbClick(scope.row)"
+            >设置</el-button
+          >
+        </template>
+      </el-table-column>
     </el-table>
     <dialogTableLineData
       v-if="dialogTableLineDataVisible"
+      ref="dialogTableLine"
       :dialogTableLineDataVisible="dialogTableLineDataVisible"
       :tableName="tableName"
       :singleTableResourceData="singleTableResourceData"
       @getTableResourceData="getTableResourceData"
+      @setTableResourceData="setTableResourceData"
       @closeTableLineDialog="closeTableLineDialog"
     ></dialogTableLineData>
   </div>
@@ -191,29 +204,31 @@ export default {
       rows.forEach((row) => {
         tableRef.toggleRowSelection(row, true);
       });
+      console.log("this.$refs.table.selection====", this.$refs.table.selection);
     },
     selectAll(selection) {
       this.$emit("getSelectPaneData", "table", selection);
     },
     select(selection, row) {
+      console.log("select   回显后！！");
       this.$emit("getSelectPaneData", "table", selection);
     },
     getTableResourceData(key, value, tableName) {
       this.$emit("getTableResourceData", key, value, tableName);
     },
-    celldbClick(row, column, cell, event) {
+    setTableResourceData(dialogTableLineObj) {
+      this.$emit("setTableResourceData", dialogTableLineObj);
+    },
+    celldbClick(row) {
+      let tableRef = this.$refs.table;
       this.tableName = row.sourceTableName;
-      console.log("this.tableResourceData==", this.tableResourceData);
-      console.log("this.checkSourcePattern==", this.checkSourcePattern);
-      console.log("this.tableName==", this.tableName);
-
+      tableRef.toggleRowSelection(row, true);
+      this.$emit("getSelectPaneData", "table", tableRef.selection);
       this.singleTableResourceData = this.tableResourceData[
         this.checkSourcePattern
       ][this.tableName];
-
-      console.log("row=====", row);
       console.log(
-        "this.singleTableResourceData=====",
+        "this.singleTableResourceData==",
         this.singleTableResourceData
       );
       this.dialogTableLineDataVisible = true;
@@ -231,6 +246,7 @@ export default {
     },
   },
   computed: {},
+  created() {},
 };
 </script>
 <style scoped>

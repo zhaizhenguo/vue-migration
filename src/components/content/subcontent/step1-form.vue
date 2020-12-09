@@ -24,14 +24,14 @@
           <el-form-item label="端口号" prop="port">
             <el-input v-model="form.port"></el-input>
           </el-form-item>
-          <el-form-item label="数据库" prop="data">
-            <el-input v-model="form.data"></el-input>
+          <el-form-item label="数据库" prop="dataBase">
+            <el-input v-model="form.dataBase"></el-input>
           </el-form-item>
-          <el-form-item label="用户名" prop="name">
-            <el-input v-model="form.name"></el-input>
+          <el-form-item label="用户名" prop="userName">
+            <el-input v-model="form.userName"></el-input>
           </el-form-item>
-          <el-form-item label="口令" prop="psd">
-            <el-input v-model="form.psd" show-password></el-input>
+          <el-form-item label="口令" prop="password">
+            <el-input v-model="form.password" show-password></el-input>
           </el-form-item>
           <el-form-item label="可信通道">
             <el-switch v-model="form.bChannel"></el-switch>
@@ -71,26 +71,27 @@ export default {
       form: {
         dataSource: "shanghai",
         driver: "beijing",
-        server: "",
-        port: "",
-        data: "",
-        psd: "",
+        server: "localhost",
+        port: "3306",
+        userName: "zhaizhenguo",
+        dataBase: "TEST",
+        password: "112336554",
         bChannel: false,
       },
       rules: {
         server: [
-          { required: true, message: "请选择活动区域", trigger: "change" },
+          { required: true, message: "请输入服务器", trigger: "change" },
         ],
-        port: [
-          { required: true, message: "请选择活动区域", trigger: "change" },
+        port: [{ required: true, message: "请输入端口号", trigger: "change" }],
+        dataBase: [
+          { required: true, message: "请输入数据库", trigger: "change" },
         ],
-        data: [
-          { required: true, message: "请选择活动区域", trigger: "change" },
+        userName: [
+          { required: true, message: "请输入用户名", trigger: "change" },
         ],
-        name: [
-          { required: true, message: "请选择活动区域", trigger: "change" },
+        password: [
+          { required: true, message: "请输入密码", trigger: "change" },
         ],
-        psd: [{ required: true, message: "请选择活动区域", trigger: "change" }],
       },
       driverData: [],
       backDriverData: [],
@@ -116,13 +117,13 @@ export default {
     getData() {
       let param;
       param = this.getParam();
-    //   this.$refs.form.validate((valid) => {
-    //     if (valid) {
-    //       param = this.getParam();
-    //     } else {
-    //       param = false;
-    //     }
-    //   });
+      //   this.$refs.form.validate((valid) => {
+      //     if (valid) {
+      //       param = this.getParam();
+      //     } else {
+      //       param = false;
+      //     }
+      //   });
       return param;
     },
     getParam() {
@@ -131,8 +132,9 @@ export default {
         driver: this.form.driver,
         server: this.form.server,
         port: this.form.port,
-        data: this.form.data,
-        psd: this.form.psd,
+        userName: this.form.userName,
+        dataBase: this.form.dataBase,
+        password: this.form.password,
         bChannel: this.form.bChannel ? 1 : 0,
         driverData: this.driverData,
       };

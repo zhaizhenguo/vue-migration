@@ -24,18 +24,6 @@
         "desc": "前选择要迁移的数据对象(表空间、表、视图、或存储过程等),并设置各自的名称和操作方式,可强制迁移对象到指定目标模式中"
     },
     {
-        "title": "设置列转换规则",
-        "icon": "el-icon-upload",
-        "iconHover": "dd",
-        "desc": "请选择要迁移的列,并设置其转换规则"
-    },
-    {
-        "title": "迁移其他数据对象",
-        "icon": "el-icon-upload",
-        "iconHover": "dd",
-        "desc": "前选择要迁移的检查约束、索引、外键或触发器等"
-    },
-    {
         "title": "迁移预览",
         "icon": "el-icon-upload",
         "iconHover": "dd",

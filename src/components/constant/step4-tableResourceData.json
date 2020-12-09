@@ -1,6 +1,7 @@
 {
     "SYSDBA": {
         "TEST": {
+            "isSelectAllLineRow": true,
             "line": [
                 {
                     "primaryId": "3001",
@@ -60,14 +61,26 @@
                     "defaultValue": "40"
                 }
             ],
-            "majorKey": null,
+            "majorKey": [
+                {
+                    "sourceObjectName": "PASSWOED1",
+                    "targetObjectName": "PASSWOED1",
+                    "definition": "试试好不好用！！！！！！！！！！！"
+                },
+                {
+                    "sourceObjectName": "PASSWOED2",
+                    "targetObjectName": "PASSWOED2",
+                    "definition": "111试试好不好用！！！！！！！！！！！"
+                }
+            ],
             "constraint": null,
             "onlyConstraint": null,
             "index": null,
-            "ttrigger": null,
+            "trigger": null,
             "fullIndex": null
         },
         "TEST11": {
+            "isSelectAllLineRow": true,
             "line": [
                 {
                     "primaryId": "3001",
@@ -127,132 +140,183 @@
                     "defaultValue": "40"
                 }
             ],
-            "majorKey": null,
+            "majorKey": [
+                {
+                    "sourceObjectName": "PASSWOED1",
+                    "targetObjectName": "PASSWOED1",
+                    "definition": "试试好不好用！！！！！！！！！！！"
+                },
+                {
+                    "sourceObjectName": "PASSWOED2",
+                    "targetObjectName": "PASSWOED2",
+                    "definition": "111试试好不好用！！！！！！！！！！！"
+                }
+            ],
             "constraint": null,
             "onlyConstraint": null,
             "index": null,
-            "ttrigger": null,
+            "trigger": null,
             "fullIndex": null
         }
     },
     "ZG": {
-        "TEST": [
-            {
-                "primaryId": "3001",
-                "sourceLineName": "ID",
-                "targetLineName": "ID",
-                "checkType": "VARCHAR",
-                "type": [
-                    {
-                        "value": "VARCHAR",
-                        "label": "VARCHAR"
-                    },
-                    {
-                        "value": "VARCHAR2",
-                        "label": "VARCHAR2"
-                    }
-                ],
-                "length": "50",
-                "precision": "64",
-                "decimals": "64",
-                "ismajorKey": 0,
-                "canBeNull": 0,
-                "defaultValue": "40"
-            },
-            {
-                "primaryId": "3002",
-                "sourceLineName": "NAME",
-                "targetLineName": "NAME",
-                "checkType": "VARCHAR",
-                "type": [
-                    {
-                        "value": "VARCHAR",
-                        "label": "VARCHAR"
-                    },
-                    {
-                        "value": "VARCHAR2",
-                        "label": "VARCHAR2"
-                    }
-                ],
-                "length": "50",
-                "precision": "64",
-                "decimals": "64",
-                "ismajorKey": 0,
-                "canBeNull": 0,
-                "defaultValue": "40"
-            },
-            {
-                "primaryId": "3003",
-                "sourceLineName": "PASSWOED",
-                "targetLineName": "PASSWOED",
-                "checkType": "Date",
-                "type": "Date",
-                "length": "50",
-                "precision": "64",
-                "decimals": "64",
-                "ismajorKey": 0,
-                "canBeNull": 0,
-                "defaultValue": "40"
-            }
-        ],
-        "TEST1102": [
-            {
-                "primaryId": "3001",
-                "sourceLineName": "ID",
-                "targetLineName": "ID",
-                "checkType": "VARCHAR",
-                "type": [
-                    {
-                        "value": "VARCHAR",
-                        "label": "VARCHAR"
-                    },
-                    {
-                        "value": "VARCHAR2",
-                        "label": "VARCHAR2"
-                    }
-                ],
-                "length": "50",
-                "precision": "64",
-                "decimals": "64",
-                "ismajorKey": 0,
-                "canBeNull": 0,
-                "defaultValue": "40"
-            },
-            {
-                "primaryId": "3002",
-                "sourceLineName": "NAME",
-                "targetLineName": "NAME",
-                "checkType": "VARCHAR",
-                "type": [
-                    {
-                        "value": "VARCHAR",
-                        "label": "VARCHAR"
-                    },
-                    {
-                        "value": "VARCHAR2",
-                        "label": "VARCHAR2"
-                    }
-                ],
-                "length": "50",
-                "precision": "64",
-                "decimals": "64",
-                "ismajorKey": 0,
-                "canBeNull": 0,
-                "defaultValue": "40"
-            },
-            {
-                "primaryId": "3003",
-                "sourceLineName": "PASSWOED",
-                "targetLineName": "PASSWOED",
-                "checkType": "Date",
-                "type": "Date",
-                "length": "50",
-                "precision": "64",
-                "decimals": "64",
-                "ismajorKey": 0,
-                "canBeNull": 0,
-                "defaultValue": "40"
-            }
-        ]
+        "TEST": {
+            "isSelectAllLineRow": true,
+            "line": [
+                {
+                    "primaryId": "3001",
+                    "sourceLineName": "ID02",
+                    "targetLineName": "ID02",
+                    "checkType": "VARCHAR",
+                    "type": [
+                        {
+                            "value": "VARCHAR",
+                            "label": "VARCHAR"
+                        },
+                        {
+                            "value": "VARCHAR2",
+                            "label": "VARCHAR2"
+                        }
+                    ],
+                    "length": "50",
+                    "precision": "64",
+                    "decimals": "64",
+                    "ismajorKey": 0,
+                    "canBeNull": 0,
+                    "defaultValue": "40"
+                },
+                {
+                    "primaryId": "3002",
+                    "sourceLineName": "NAME",
+                    "targetLineName": "NAME",
+                    "checkType": "VARCHAR",
+                    "type": [
+                        {
+                            "value": "VARCHAR",
+                            "label": "VARCHAR"
+                        },
+                        {
+                            "value": "VARCHAR2",
+                            "label": "VARCHAR2"
+                        }
+                    ],
+                    "length": "50",
+                    "precision": "64",
+                    "decimals": "64",
+                    "ismajorKey": 0,
+                    "canBeNull": 0,
+                    "defaultValue": "40"
+                },
+                {
+                    "primaryId": "3003",
+                    "sourceLineName": "PASSWOED",
+                    "targetLineName": "PASSWOED",
+                    "checkType": "Date",
+                    "type": "Date",
+                    "length": "50",
+                    "precision": "64",
+                    "decimals": "64",
+                    "ismajorKey": 0,
+                    "canBeNull": 0,
+                    "defaultValue": "40"
+                }
+            ],
+            "majorKey": [
+                {
+                    "sourceObjectName": "PASSWOED1",
+                    "targetObjectName": "PASSWOED1",
+                    "definition": "试试好不好用！！！！！！！！！！！"
+                },
+                {
+                    "sourceObjectName": "PASSWOED2",
+                    "targetObjectName": "PASSWOED2",
+                    "definition": "111试试好不好用！！！！！！！！！！！"
+                }
+            ],
+            "constraint": null,
+            "onlyConstraint": null,
+            "index": null,
+            "trigger": null,
+            "fullIndex": null
+        },
+        "TEST1102": {
+            "isSelectAllLineRow": true,
+            "line": [
+                {
+                    "primaryId": "3001",
+                    "sourceLineName": "ID1102",
+                    "targetLineName": "ID1102",
+                    "checkType": "VARCHAR",
+                    "type": [
+                        {
+                            "value": "VARCHAR",
+                            "label": "VARCHAR"
+                        },
+                        {
+                            "value": "VARCHAR2",
+                            "label": "VARCHAR2"
+                        }
+                    ],
+                    "length": "50",
+                    "precision": "64",
+                    "decimals": "64",
+                    "ismajorKey": 0,
+                    "canBeNull": 0,
+                    "defaultValue": "40"
+                },
+                {
+                    "primaryId": "3002",
+                    "sourceLineName": "NAME",
+                    "targetLineName": "NAME",
+                    "checkType": "VARCHAR",
+                    "type": [
+                        {
+                            "value": "VARCHAR",
+                            "label": "VARCHAR"
+                        },
+                        {
+                            "value": "VARCHAR2",
+                            "label": "VARCHAR2"
+                        }
+                    ],
+                    "length": "50",
+                    "precision": "64",
+                    "decimals": "64",
+                    "ismajorKey": 0,
+                    "canBeNull": 0,
+                    "defaultValue": "40"
+                },
+                {
+                    "primaryId": "3003",
+                    "sourceLineName": "PASSWOED",
+                    "targetLineName": "PASSWOED",
+                    "checkType": "Date",
+                    "type": "Date",
+                    "length": "50",
+                    "precision": "64",
+                    "decimals": "64",
+                    "ismajorKey": 0,
+                    "canBeNull": 0,
+                    "defaultValue": "40"
+                }
+            ],
+            "majorKey": [
+                {
+                    "sourceObjectName": "PASSWOED1",
+                    "targetObjectName": "PASSWOED1",
+                    "definition": "试试好不好用！！！！！！！！！！！"
+                },
+                {
+                    "sourceObjectName": "PASSWOED2",
+                    "targetObjectName": "PASSWOED2",
+                    "definition": "111试试好不好用！！！！！！！！！！！"
+                }
+            ],
+            "constraint": null,
+            "onlyConstraint": null,
+            "index": null,
+            "trigger": null,
+            "fullIndex": null
+        }
     }
 }

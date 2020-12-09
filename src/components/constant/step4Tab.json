@@ -1,6 +1,7 @@
     [
         {
             "primaryId": "1002",
+            "patternName": "SYSDBA",
             "sourceTableName": "TEST",
             "targetTableName": "TEST",
             "checkOperatingMode": "newTable",
@@ -80,6 +81,7 @@
         },
         {
             "primaryId": "1001",
+            "patternName": "SYSDBA",
             "sourceTableName": "TEST11",
             "targetTableName": "TEST11",
             "checkOperatingMode": "newTable",

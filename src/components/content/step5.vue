@@ -1,100 +1,83 @@
 <template>
-  <div>
-    <el-tabs
-      v-model="activePattern"
-      @tab-click="handleClick"
-      type="border-card"
+  <el-timeline class="timelineDiv">
+    <el-timeline-item type="primary" timestamp="数据库连接信息" placement="top">
+      <databaseCard ref="databaseCard"></databaseCard>
+    </el-timeline-item>
+    <el-timeline-item
+      v-for="(tableData, index) in allTableData"
+      :key="index"
+      type="primary"
+      timestamp="迁移对象"
+      placement="top"
     >
-      <el-tab-pane
-        v-for="pattern in patternList"
-        :key="pattern"
-        :label="pattern"
-        :name="pattern"
-      >
-        <step5TablePane
-          :selectModleData="selectModleData[pattern]"
-          @getSelectPaneData="getSelectPaneData"
-          :ref="pattern"
-        >
-        </step5TablePane>
-      </el-tab-pane>
-    </el-tabs>
-  </div>
+      <movingObjectCard
+        :tableData="tableData"
+        :patternParam="patternParam"
+        :targetPatternName="targetPatternName"
+      ></movingObjectCard>
+    </el-timeline-item>
+
+    <el-timeline-item type="primary" placement="top"></el-timeline-item>
+  </el-timeline>
 </template>
 <script>
+import databaseCard from "./subcontent/step5-databaseCard";
+import movingObjectCard from "./subcontent/step5-movingObjectCard";
 export default {
-  components: {},
+  props: {
+    stepData: {
+      type: Object,
+      default: function () {
+        return {};
+      },
+    },
+  },
+  components: {
+    databaseCard: databaseCard,
+    movingObjectCard: movingObjectCard,
+  },
   data() {
     return {
-      activePattern: "",
-      selectModleData: {},
-
-      patternList: [],
-      tabLineData: {},
-      lineTypeList: [
-        { value: "VARCHAR", label: "VARCHAR" },
-        { value: "VARCHAR1", label: "VARCHAR1" },
-        { value: "VARCHAR2", label: "VARCHAR2" },
-      ],
-      whetherList: [
-        { value: 0, label: "是" },
-        { value: 1, label: "否" },
-      ],
-      sourcePattern: [
-        { value: "SYSDBA", label: "SYSDBA" },
-        { value: "ZG", label: "ZG" },
-      ],
-      checkSourcePattern: "SYSDBA",
+      allTableData: [],
+      targetPatternName: "",
     };
   },
   methods: {
-    initData(stepData) {
-      console.log("initData  this.stepData====", stepData);
+    initData(sourceData) {
+      this.targetPatternName = "";
       if (
-        !!stepData &&
-        !!stepData.step4 &&
-        !!stepData.step4.selectPatternList &&
-        !!stepData.step4.selectModleData
+        !!this.stepData.patternParam &&
+        this.stepData.patternParam.isOpenConstraintMigrate
       ) {
-        this.patternList = stepData.step4.selectPatternList;
-        this.activePattern =
-          this.patternList.length > 0 ? this.patternList[0] : "";
-        this.selectModleData = stepData.step4.selectModleData;
+        this.targetPatternName = this.stepData.patternParam.checkConstraintMigrate;
       }
-    },
-    handleClick(tab, event) {
-      //   this.$refs[this.activePattern].initData();
-      console.log("this.activePattern======", this.activePattern);
-      console.log(
-        "this.$refs[this.activePattern]======",
-        this.$refs[this.activePattern]
-      );
-      this.$refs[this.activePattern][0].initData();
-      console.log(tab, event);
-    },
-    getSelectPaneData(key, value) {
-      this.tabLineData[key] = value;
-      console.log("this.tabLineData====", this.tabLineData);
+      console.log("this.targetPatternName===", this.targetPatternName);
+      this.allTableData = [];
+      this.stepData.patternNameList.forEach((element) => {
+        let tableData = this.stepData.patternData[element]["table"];
+        if (!!tableData) {
+          this.allTableData = this.allTableData.concat(tableData);
+        }
+      });
+      console.log("allTableData=====", this.allTableData);
+
+      this.$refs.databaseCard.initData(this.stepData.databaseData);
     },
     getData() {
       return {};
     },
-    calcHeightx() {
-      let wapper = window.document.getElementsByClassName(
-        "el-table__body-wrapper"
-      );
-      //必须加延时，要不然赋不上去值
-      setTimeout(() => {
-        //通过上边计算得到的table高度的value值，减去table表格的header高度，剩下的通过dom节点直接强行赋给table表格的body
-        wapper[0].style.height = this.tableHeight + "px";
-      }, 100);
+  },
+  created: function () {},
+  computed: {
+    patternParam() {
+      return this.stepData.patternParam;
     },
   },
-  created: function () {
-    this.calcHeightx();
-  },
-  computed: {},
 };
 </script>
 <style scoped>
+.timelineDiv {
+  max-height: 610px;
+  overflow: auto;
+}
 </style>

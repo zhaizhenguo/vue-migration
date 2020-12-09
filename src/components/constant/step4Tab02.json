@@ -1,6 +1,7 @@
     [
         {
             "primaryId": "2001",
+            "patternName": "ZG",
             "sourceTableName": "TEST",
             "targetTableName": "TEST02",
             "checkOperatingMode": "newTable",
@@ -15,6 +16,7 @@
         },
         {
             "primaryId": "2002",
+            "patternName": "ZG",
             "sourceTableName": "TEST1102",
             "targetTableName": "TEST1102",
             "checkOperatingMode": "newTable",
