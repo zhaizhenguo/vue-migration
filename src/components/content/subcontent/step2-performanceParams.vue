@@ -1,5 +1,10 @@
 <template>
-  <el-form :rules="rules" label-width="100px" :model="form">
+  <el-form
+    style="padding-top: 20px"
+    :rules="rules"
+    label-width="150px"
+    :model="form"
+  >
     <el-row>
       <el-col :span="6">
         <el-form-item label="源端迁移Fetch Size" prop="fetchSize">
@@ -75,28 +80,42 @@
           </el-checkbox-group>
         </el-form-item>
       </el-col>
-      <el-col :span="10"
+      <el-col :span="18"
         ><el-form-item label="其他参数">
-          <el-radio v-model="form.importData" label="1"
-            >大批量数据导入区</el-radio
-          ><el-form-item prop="importLineSize">
-            <el-input
-              size="mini"
-              :disabled="form.importData == 0"
-              v-model="form.importLineSize"
-              type="number"
-            ></el-input
-          ></el-form-item>
-          <el-radio v-model="form.importData" label="0"
-            >大批量数据导入缓冲区(单位M)</el-radio
-          ><el-form-item prop="importBufferSize"
-            ><el-input
-              :disabled="form.importData == 1"
-              v-model="form.importBufferSize"
-              type="number"
-            ></el-input>
-          </el-form-item> </el-form-item
-      ></el-col>
+          <el-row>
+            <el-col style="width: 220px">
+              <el-radio v-model="form.importData" label="1"
+                >大批量数据导入区(单位行)</el-radio
+              >
+            </el-col>
+            <el-col style="width: 100px; height: 38px">
+              <el-form-item prop="importLineSize">
+                <el-input
+                  size="mini"
+                  :disabled="form.importData == 0"
+                  v-model="form.importLineSize"
+                  type="number"
+                ></el-input
+              ></el-form-item>
+            </el-col>
+          </el-row>
+
+          <el-row>
+            <el-col style="width: 220px">
+              <el-radio v-model="form.importData" label="0"
+                >大批量数据导入缓冲区(单位M)</el-radio
+              ></el-col
+            ><el-col style="width: 100px"
+              ><el-form-item prop="importBufferSize"
+                ><el-input
+                  size="mini"
+                  :disabled="form.importData == 1"
+                  v-model="form.importBufferSize"
+                  type="number"
+                ></el-input>
+              </el-form-item> </el-col></el-row
+        ></el-form-item>
+      </el-col>
     </el-row>
   </el-form>
 </template>

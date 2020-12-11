@@ -155,6 +155,9 @@ export default {
           case "step1":
             this.stepData["databaseData"] = getData;
             break;
+          case "step3":
+            this.stepData["colMapRelation"] = getData;
+            break;
           case "step4":
             this.stepData["patternData"] = getData.selectPatternData;
             this.stepData["patternNameList"] = getData.selectPatternNameList;
@@ -180,7 +183,6 @@ export default {
       }
     },
     btnclickSumbit() {
-      this.$refs["step3"].calResultData();
       //   this.sumbitLoading = true;
       //   api.postPay({}, response => {
       //     this.sumbitLoading = false;
@@ -211,10 +213,9 @@ export default {
 <style scoped>
 .header {
   height: auto !important;
-  padding: 0 100px;
 }
 .main {
-  padding: 25px 150px 0px;
+  padding: 25px 100px 0px 70px;
 }
 .footer {
   text-align: right;
@@ -244,6 +245,7 @@ export default {
   color: #606266;
 }
 .box-card {
+  color: #606266;
   width: auto;
   height: auto;
 }

@@ -1,0 +1,74 @@
+[
+    {
+        "paneName": "view",
+        "paneLabel": "视图",
+        "headerData": {
+            "sourceName": "源视图名",
+            "targetName": "目的视图名",
+            "definition": "视图定义"
+        }
+    },
+    {
+        "paneName": "sequence",
+        "paneLabel": "序列",
+        "headerData": {
+            "sourceName": "源序列名",
+            "targetName": "目的序列名",
+            "definition": "序列定义"
+        }
+    },
+    {
+        "paneName": "synonyms",
+        "paneLabel": "同义词",
+        "headerData": {
+            "sourceName": "源同义词",
+            "targetName": "目的同义词",
+            "definition": "同义词定义"
+        }
+    },
+    {
+        "paneName": "materializedView",
+        "paneLabel": "物化视图",
+        "headerData": {
+            "sourceName": "源视图名",
+            "targetName": "目的视图名",
+            "definition": "视图定义"
+        }
+    },
+    {
+        "paneName": "procedure",
+        "paneLabel": "存储过程",
+        "headerData": {
+            "sourceName": "源存储过程名",
+            "targetName": "目的存储过程名",
+            "definition": "存储过程定义"
+        }
+    },
+    {
+        "paneName": "packageData",
+        "paneLabel": "包",
+        "headerData": {
+            "sourceName": "源包名",
+            "targetName": "目的包名",
+            "definition": "包定义"
+        }
+    },
+    {
+        "paneName": "functionData",
+        "paneLabel": "函数",
+        "headerData": {
+            "sourceName": "源函数名",
+            "targetName": "目的函数名",
+            "definition": "函数定义"
+        }
+    },
+    {
+        "paneName": "userFunction",
+        "paneLabel": "自定义类型",
+        "headerData": {
+            "sourceName": "源自定义名",
+            "targetName": "目的自定义名",
+            "definition": "自定义定义"
+        }
+    }
+]

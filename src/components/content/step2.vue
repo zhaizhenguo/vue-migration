@@ -1,6 +1,11 @@
 <template>
   <div>
-    <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
+    <el-tabs
+      style="height: 400px"
+      v-model="activeName"
+      type="card"
+      @tab-click="handleClick"
+    >
       <el-tab-pane label="迁移参数" name="migrationParams">
         <migrationParams
           ref="migrationParams"
@@ -68,6 +73,6 @@ export default {
 </script>
 <style scoped>
 .paramDiv {
-  padding: 30px 100px 10px;
+  padding: 0px 30px 10px;
 }
 </style>

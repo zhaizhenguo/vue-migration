@@ -1,5 +1,5 @@
 <template>
-  <el-form :rules="rules" label-width="100px" v-model="migrationParams">
+  <el-form :rules="rules" label-width="100px" :model="migrationParams">
     <el-form-item label="" style="margin-left: -100px">
       <el-checkbox-group
         @change="handleCheckedCitiesChange"
@@ -27,12 +27,7 @@
         >遇错忽略</el-radio
       >
     </el-form-item>
-    <el-form-item
-      :inline="true"
-      label="列长度倍数"
-      style="width=100px;    float: left;"
-      prop="lengthUnit"
-    >
+    <el-form-item label="列长度倍数" style="float: left" prop="lengthUnit">
       <el-input v-model="migrationParams.lengthUnit" type="number"></el-input>
     </el-form-item>
   </el-form>
@@ -46,7 +41,7 @@ export default {
         checkedmigrationParams: migrationParamOptions.checkedParams,
         allTheParams: migrationParamOptions.allTheParams,
         errorStrategy: "1",
-        lengthUnit: 1.0,
+        lengthUnit: 1,
       },
       rules: {
         lengthUnit: [

@@ -12,7 +12,8 @@
             "freeRatio": "10",
             "minUseRatio": "40",
             "checkOutputLog": 0,
-            "filter": ""
+            "filter": "",
+            "line": ""
         },
         {
             "primaryId": "2002",

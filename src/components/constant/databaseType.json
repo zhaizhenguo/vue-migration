@@ -1,0 +1,46 @@
+[
+    {
+        "value": "ShenTong",
+        "label": "ShenTong"
+    },
+    {
+        "value": "KSTORE",
+        "label": "KSTORE"
+    },
+    {
+        "value": "Oracle",
+        "label": "Oracle"
+    },
+    {
+        "value": "MySQL",
+        "label": "MySQL"
+    },
+    {
+        "value": "SQL Server",
+        "label": "SQL Server"
+    },
+    {
+        "value": "IBM DB2",
+        "label": "IBM DB2"
+    },
+    {
+        "value": "General JDBC",
+        "label": "General JDBC"
+    },
+    {
+        "value": "DM V7",
+        "label": "DM V7"
+    },
+    {
+        "value": "Kingbase",
+        "label": "Kingbase"
+    },
+    {
+        "value": "KingbaseESV8",
+        "label": "KingbaseESV8"
+    },
+    {
+        "value": "PostgreSQL",
+        "label": "PostgreSQL"
+    }
+]

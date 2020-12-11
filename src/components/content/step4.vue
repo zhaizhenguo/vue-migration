@@ -3,7 +3,7 @@
     <el-container>
       <el-header style="height: auto">
         <el-row
-          ><el-col :span="4"
+          ><el-col :span="5"
             >源模式
             <el-select
               class="selectDiv"
@@ -19,7 +19,7 @@
               >
               </el-option>
             </el-select> </el-col
-          ><el-col :span="4"
+          ><el-col :span="5"
             >迁移范围
             <el-select class="selectDiv" v-model="checkMigrationCircle">
               <el-option
@@ -101,7 +101,6 @@
           ref="step4Tabs"
         ></step4Tabs>
       </el-main>
-      <el-footer> </el-footer>
     </el-container>
     <dialogSQLData
       v-if="dialogSQLDataVisible"
@@ -159,9 +158,9 @@ export default {
         { value: 0, label: "是" },
         { value: 1, label: "否" },
       ],
-
       sourcePattern: [],
       checkSourcePattern: "",
+      isInitData: false,
     };
   },
   methods: {
@@ -176,33 +175,29 @@ export default {
         );
       }
       this.$nextTick(() => {
-        this.$refs["step4Tabs"].getPaneData();
-        this.$nextTick(() => {
-          this.$refs["step4Tabs"].setSelectPaneData();
-        });
+        this.$refs["step4Tabs"].setSelectPaneData();
       });
     },
     initData(sourceData) {
-      this.sourcePattern = [
-        { value: "SYSDBA", label: "SYSDBA" },
-        { value: "ZG", label: "ZG" },
-      ];
-      this.sourcePattern.forEach((patternData) => {
-        this.selectPatternData[patternData.value] = {};
-      });
-      console.log("this.selectPatternData===", this.selectPatternData);
-      let patternName = this.sourcePattern[0].value;
+      if (!this.isInitData) {
+        this.sourcePattern = [
+          { value: "SYSDBA", label: "SYSDBA" },
+          { value: "ZG", label: "ZG" },
+        ];
+        this.sourcePattern.forEach((patternData) => {
+          this.selectPatternData[patternData.value] = {};
+        });
+        console.log("this.selectPatternData===", this.selectPatternData);
+        let patternName = this.sourcePattern[0].value;
 
-      this.checkSourcePattern = patternName;
+        this.checkSourcePattern = patternName;
 
-      if (!!this.sourcePattern && this.sourcePattern.length > 0) {
-        this.patternData[patternName] = this.getPatternData(patternName);
+        if (!!this.sourcePattern && this.sourcePattern.length > 0) {
+          this.patternData[patternName] = this.getPatternData(patternName);
+        }
+        this.isInitData = true;
+        console.log("this.patternData===", this.patternData);
       }
-      this.$nextTick(() => {
-        this.$refs["step4Tabs"].getPaneData();
-      });
-
-      console.log("this.patternData===", this.patternData);
     },
     getPatternData(patternName) {
       return patternName === "SYSDBA"
@@ -210,7 +205,7 @@ export default {
             table: this.objData,
             view: this.objDataView,
             sequence: this.objDataView,
-            tablespace: this.objDataView,
+            tableSpace: this.objDataView,
             synonyms: this.objDataView,
             materializedView: this.objDataView,
             procedure: this.objDataView,
@@ -222,7 +217,7 @@ export default {
             table: this.objData02,
             view: this.objDataView02,
             sequence: this.objDataView02,
-            tablespace: this.objDataView02,
+            tableSpace: this.objDataView02,
             synonyms: this.objDataView02,
             materializedView: this.objDataView02,
             procedure: this.objDataView02,
@@ -282,6 +277,6 @@ export default {
   margin-left: 20px;
 }
 .selectDiv {
-  width: 150px;
+  width: 65%;
 }
 </style>

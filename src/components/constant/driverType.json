@@ -1,0 +1,54 @@
+[
+    {
+        "value": "ShenTong JDBC Driver",
+        "label": "ShenTong JDBC Driver"
+    },
+    {
+        "value": "KSTORE JDBC Driver",
+        "label": "KSTORE JDBC Driver"
+    },
+    {
+        "value": "Oracle JDBC Driver",
+        "label": "Oracle JDBC Driver"
+    },
+    {
+        "value": "Oracle8i JDBC Driver",
+        "label": "Oracle8i JDBC Driver"
+    },
+    {
+        "value": "Oracle12c JDBC Driver",
+        "label": "Oracle12c JDBC Driver"
+    },
+    {
+        "value": "MySQL JDBC Driver",
+        "label": "MySQL JDBC Driver"
+    },
+    {
+        "value": "MySQL8 JDBC Driver",
+        "label": "MySQL8 JDBC Driver"
+    },
+    {
+        "value": "SQL Server JDBC Driver",
+        "label": "SQL Server JDBC Driver"
+    },
+    {
+        "value": "IBM DB2 JDBC Driver",
+        "label": "IBM DB2 JDBC Driver"
+    },
+    {
+        "value": "DM V7 JDBC Driver",
+        "label": "DM V7 JDBC Driver"
+    },
+    {
+        "value": "KB JDBC Driver",
+        "label": "KB JDBC Driver"
+    },
+    {
+        "value": "KB8 JDBC Driver",
+        "label": "KB8 JDBC Driver"
+    },
+    {
+        "value": "PostgreSQL JDBC Driver",
+        "label": "PostgreSQL JDBC Driver"
+    }
+]

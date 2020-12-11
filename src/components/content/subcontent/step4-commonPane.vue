@@ -7,47 +7,44 @@
       :height="tableHeight"
       style="width: 100%"
       :highlight-current-row="true"
-      @selection-change="handleSelectionChange"
       @select-all="selectAll"
       @select="select"
       ref="table"
     >
-      <el-table-column type="selection" min-width="2%"> </el-table-column>
-      <el-table-column type="index" label="行号" min-width="2%">
+      <el-table-column type="selection" min-width="1%"> </el-table-column>
+      <el-table-column type="index" label="行号" min-width="1%">
       </el-table-column>
       <el-table-column
         sortable
-        prop="sourceLineName"
-        label="源视图名"
-        min-width="10%"
+        prop="sourceName"
+        :label="headerData.sourceName"
+        min-width="15%"
       >
       </el-table-column>
       <el-table-column
         sortable
-        prop="targetLineName"
-        label="目的视图名"
-        min-width="10%"
+        prop="targetName"
+        :label="headerData.targetName"
+        min-width="18%"
       >
         <template slot-scope="scope">
-          <el-input v-model="scope.row.targetLineName"></el-input>
+          <el-input v-model="scope.row.targetName"></el-input>
         </template>
       </el-table-column>
       <el-table-column
         sortable
-        prop="checkType"
-        label="视图定义"
-        min-width="70%"
+        prop="definition"
+        :label="headerData.definition"
+        min-width="65%"
       >
         <template slot-scope="scope">
-          <el-input v-model="scope.row.checkType"></el-input>
+          <el-input v-model="scope.row.definition"></el-input>
         </template>
       </el-table-column>
     </el-table>
   </div>
 </template>
 <script>
-import objData from "../../constant/step5Tab";
-import objData02 from "../../constant/step5Tab02";
 export default {
   props: {
     tableHeight: {
@@ -59,16 +56,25 @@ export default {
     tableData: {
       type: Array,
       default: function () {
+        return [];
+      },
+    },
+    headerData: {
+      type: Object,
+      default: function () {
         return {};
+      },
+    },
+    paneName: {
+      type: String,
+      default: function () {
+        return "";
       },
     },
   },
   components: {},
   data() {
-    return {
-      objData: objData,
-      objData02: objData02,
-    };
+    return {};
   },
   methods: {
     getRowKey(row) {
@@ -81,19 +87,13 @@ export default {
       });
     },
     selectAll(selection) {
-      this.$emit("getSelectPaneData", "view", selection);
+      this.$emit("getSelectPaneData", this.paneName, selection);
     },
     select(selection) {
-      this.$emit("getSelectPaneData", "view", selection);
+      this.$emit("getSelectPaneData", this.paneName, selection);
     },
-    handleSelectionChange(val) {
-      console.log("val===", val);
-    },
-
     getData() {
-      return {
-        objData,
-      };
+      return {};
     },
   },
   created: function () {},

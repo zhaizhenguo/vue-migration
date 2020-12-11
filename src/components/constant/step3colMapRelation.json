@@ -5,7 +5,16 @@
             "sourceDecimal": "",
             "sourceFieldLength": "",
             "checkTargetFieldType": "VARCHAR",
-            "targetFieldType": "aaa",
+            "targetFieldType": [
+                {
+                    "value": "VARCHAR22",
+                    "lable": "VARCHAR22[]"
+                },
+                {
+                    "value": "CHAR",
+                    "lable": "CHAR"
+                }
+            ],
             "targetPrecision": "",
             "targetDecimal": "",
             "targetFieldLength": ""
@@ -79,6 +88,106 @@
             "targetFieldType": [
                 {
                     "value": "VARCHAR22",
+                    "lable": "VARCHAR22[]"
+                },
+                {
+                    "value": "CHAR",
+                    "lable": "CHAR"
+                }
+            ],
+            "targetPrecision": "",
+            "targetDecimal": "",
+            "targetFieldLength": ""
+        },
+        {
+            "sourceFieldType": "VARCHAR",
+            "sourcePrecision": "",
+            "sourceDecimal": "",
+            "sourceFieldLength": "",
+            "checkTargetFieldType": "VARCHAR22",
+            "targetFieldType": [
+                {
+                    "value": "VARCHAR22",
+                    "lable": "VARCHAR22[]"
+                },
+                {
+                    "value": "CHAR",
+                    "lable": "CHAR"
+                }
+            ],
+            "targetPrecision": "",
+            "targetDecimal": "",
+            "targetFieldLength": ""
+        },
+        {
+            "sourceFieldType": "VARCHAR",
+            "sourcePrecision": "",
+            "sourceDecimal": "",
+            "sourceFieldLength": "",
+            "checkTargetFieldType": "VARCHAR22",
+            "targetFieldType": [
+                {
+                    "value": "VARCHAR22",
+                    "lable": "VARCHAR22[]"
+                },
+                {
+                    "value": "CHAR",
+                    "lable": "CHAR"
+                }
+            ],
+            "targetPrecision": "",
+            "targetDecimal": "",
+            "targetFieldLength": ""
+        },
+        {
+            "sourceFieldType": "VARCHAR",
+            "sourcePrecision": "",
+            "sourceDecimal": "",
+            "sourceFieldLength": "",
+            "checkTargetFieldType": "VARCHAR22",
+            "targetFieldType": [
+                {
+                    "value": "VARCHAR22",
+                    "lable": "VARCHAR22[]"
+                },
+                {
+                    "value": "CHAR",
+                    "lable": "CHAR"
+                }
+            ],
+            "targetPrecision": "",
+            "targetDecimal": "",
+            "targetFieldLength": ""
+        },
+        {
+            "sourceFieldType": "VARCHAR",
+            "sourcePrecision": "",
+            "sourceDecimal": "",
+            "sourceFieldLength": "",
+            "checkTargetFieldType": "VARCHAR22",
+            "targetFieldType": [
+                {
+                    "value": "VARCHAR22",
+                    "lable": "VARCHAR22[]"
+                },
+                {
+                    "value": "CHAR",
+                    "lable": "CHAR"
+                }
+            ],
+            "targetPrecision": "",
+            "targetDecimal": "",
+            "targetFieldLength": ""
+        },
+        {
+            "sourceFieldType": "VARCHAR",
+            "sourcePrecision": "",
+            "sourceDecimal": "",
+            "sourceFieldLength": "",
+            "checkTargetFieldType": "VARCHAR55",
+            "targetFieldType": [
+                {
+                    "value": "VARCHAR55",
                     "lable": "VARCHAR22[]"
                 },
                 {

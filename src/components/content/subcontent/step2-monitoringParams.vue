@@ -15,7 +15,7 @@
       </el-col>
     </el-row>
     <el-row>
-      <el-col :span="10"
+      <el-col :span="18"
         ><div class="divCommon">
           单表进度预估策略
           <el-radio

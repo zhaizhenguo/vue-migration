@@ -4,7 +4,7 @@
     :visible.sync="dialogParamConfigVisible"
     :close-on-click-modal="false"
     @close="close"
-    width="800px"
+    width="1370px"
   >
     <step-2 ref="step2"></step-2>
     <div slot="footer" class="dialog-footer" style="margin: -30px 20px">

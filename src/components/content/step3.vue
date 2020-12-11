@@ -1,114 +1,21 @@
 <template>
   <el-container>
-    <el-main style="padding-bottom: 0px"
-      ><el-table
-        :data="colMapRelation"
-        border
-        stripe
-        :height="tableHeight"
-        style="width: 100%"
-      >
-        <el-table-column type="selection" min-width="2%"> </el-table-column>
-        <el-table-column
-          prop="sourceFieldType"
-          label="源数据类型"
-          min-width="10%"
-        >
-        </el-table-column>
-        <el-table-column prop="sourcePrecision" label="精度" min-width="10%">
-        </el-table-column>
-        <el-table-column prop="sourceDecimal" label="小数点" min-width="10%">
-        </el-table-column>
-        <el-table-column
-          prop="sourceFieldLength"
-          label="数据长度"
-          min-width="10%"
-        >
-        </el-table-column>
-        <el-table-column
-          prop="targetFieldType"
-          label="目标数据类型"
-          min-width="10%"
-        >
-          <template slot-scope="scope">
-            <el-select
-              v-if="typeof scope.row.targetFieldType === 'object'"
-              v-model="scope.row.checkTargetFieldType"
-              placeholder="请选择"
-            >
-              <el-option
-                v-for="item in scope.row.targetFieldType"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              >
-              </el-option>
-            </el-select>
-            <el-input v-model="scope.row.targetFieldType" v-else></el-input>
-          </template>
-        </el-table-column>
-        <el-table-column prop="targetPrecision" label="精度" min-width="10%">
-        </el-table-column>
-        <el-table-column prop="targetDecimal" label="小数点" min-width="10%">
-        </el-table-column>
-        <el-table-column
-          prop="targetFieldLength"
-          label="数据长度倍数"
-          min-width="10%"
-        >
-        </el-table-column> </el-table
-    ></el-main>
-    <el-footer style="height: 140px">
-      <el-table
-        @selection-change="handleSelectionChange"
-        :data="colMapRelationTemp"
-        border
-        stripe
-        :show-header="false"
-        :height="100"
-        style="width: 100%"
-      >
-        <el-table-column type="selection" min-width="2%"> </el-table-column>
-
-        <el-table-column
-          prop="sourceFieldType"
-          label="源数据类型"
-          min-width="10%"
-        >
-          <template slot-scope="scope">
-            <el-input v-model="scope.row.sourceFieldType"></el-input>
-          </template>
-        </el-table-column>
-        <el-table-column prop="sourcePrecision" label="精度" min-width="10%">
-        </el-table-column>
-        <el-table-column prop="sourceDecimal" label="小数点" min-width="10%">
-        </el-table-column>
-        <el-table-column
-          prop="sourceFieldLength"
-          label="数据长度"
-          min-width="10%"
-        >
-        </el-table-column>
-        <el-table-column
-          prop="checkTargetFieldType"
-          label="目标数据类型"
-          min-width="10%"
-        >
-          <template slot-scope="scope">
-            <el-input v-model="scope.row.checkTargetFieldType"></el-input>
-          </template>
-        </el-table-column>
-        <el-table-column prop="targetPrecision" label="精度" min-width="10%">
-        </el-table-column>
-        <el-table-column prop="targetDecimal" label="小数点" min-width="10%">
-        </el-table-column>
-        <el-table-column
-          prop="targetFieldLength"
-          label="数据长度倍数"
-          min-width="10%"
-        >
-        </el-table-column>
-      </el-table>
+    <el-main style="padding-bottom: 0px">
+      <tableForm
+        ref="topTableForm"
+        :tableData="colMapRelation"
+        :tableHeight="tableHeight"
+      ></tableForm>
+    </el-main>
+    <el-footer style="height: 180px">
+      <tableForm
+        ref="bottomTableForm"
+        :tableData="colMapRelationTemp"
+        :tableHeight="bottomTableHeight"
+        :isShowHeader="false"
+        :firstColumnIsText="false"
+        :emptyText="bottomTableEmptyText"
+      ></tableForm>
       <el-button
         type="primary"
         plain
@@ -134,22 +41,32 @@
 </template>
 <script>
 import colMapRelation from "../constant/step3colMapRelation";
+import tableForm from "./subcontent/step3-tableForm";
 export default {
+  components: {
+    tableForm: tableForm,
+  },
   data() {
     return {
       colMapRelation: colMapRelation,
       backColMapRelation: null,
       colMapRelationTemp: [],
-      multipleSelection: [],
-      tableHeight: 450,
+      tableHeight: 400,
+      bottomTableHeight: 150,
+      bottomTableEmptyText: "请添加自定义映射列",
     };
   },
   methods: {
-    initData(sourceData) {},
-    handleSelectionChange(val) {
-      this.multipleSelection = val;
+    initData(sourceData) {
+      this.$refs.bottomTableForm.calcHeightx();
+      this.$refs.topTableForm.calcHeightx();
     },
     getData() {
+      if (!this.$refs.bottomTableForm.getValidate()) {
+        return;
+      }
+
+      this.calResultData();
       return {
         colMapRelation,
       };
@@ -172,21 +89,34 @@ export default {
           targetFieldLength: "",
         });
       } else {
-        if (this.multipleSelection.length) {
-          //   this.multipleSelection.forEach(function(item) {});
-          this.multipleSelection.forEach((item) => {
+        let selectTableData = this.$refs.bottomTableForm.selectTableData;
+        if (selectTableData.length) {
+          selectTableData.forEach((item) => {
             let index = this.colMapRelationTemp.indexOf(item);
             if (index != -1) {
               this.colMapRelationTemp.splice(index, 1);
             }
           });
+        } else {
+          this.$message.error("请勾选要删除的自定义映射列");
         }
       }
     },
     btnclickReset() {
-      this.colMapRelation = JSON.parse(JSON.stringify(this.backColMapRelation));
-      this.colMapRelationTemp = [];
-      this.colMapRelationTemp = [];
+      this.$confirm("此操作将删除您的自定义映射列, 是否继续?", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(() => {
+          this.colMapRelation = JSON.parse(
+            JSON.stringify(this.backColMapRelation)
+          );
+          this.colMapRelationTemp = [];
+          this.colMapRelationTemp = [];
+          this.$message("内容已重置");
+        })
+        .catch(() => {});
     },
 
     calcHeightx() {

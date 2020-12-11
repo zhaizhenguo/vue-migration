@@ -23,7 +23,9 @@
     <el-row class="databaseTitle"
       ><el-col :span="24">【映射列】</el-col>
     </el-row>
+
     <el-row
+      class="lineColor"
       v-for="(lineData, index) in tableData.line"
       :key="index"
       style="line-height: 32px; text-align: center"
@@ -82,6 +84,9 @@ export default {
 };
 </script>
 <style scoped>
+.lineColor:nth-of-type(even) {
+  background-color: #f5f7fa;
+}
 .databaseTitle {
   font-weight: 700;
   padding: 5px 0px;

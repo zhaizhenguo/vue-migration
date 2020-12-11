@@ -72,7 +72,7 @@
         },
         {
             "key": "015",
-            "lable": "Mysql数据编码转换(是否转码可用Navicat工具查看数据显示是否正常)",
+            "lable": "Mysql数据编码转换(可用Navicat查看数据显示是否正常)",
             "disabled": false
         }
     ],

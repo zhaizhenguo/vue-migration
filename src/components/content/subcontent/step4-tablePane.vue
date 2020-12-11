@@ -12,21 +12,21 @@
       @select="select"
       ref="table"
     >
-      <el-table-column type="selection" min-width="2%"> </el-table-column>
-      <el-table-column type="index" label="行号" min-width="2%">
+      <el-table-column type="selection" min-width="1%"> </el-table-column>
+      <el-table-column type="index" label="行号" min-width="1%">
       </el-table-column>
       <el-table-column
         sortable
         prop="sourceTableName"
         label="源表名"
-        min-width="10%"
+        min-width="9%"
       >
       </el-table-column>
       <el-table-column
         sortable
         prop="targetTableName"
         label="目标表名"
-        min-width="10%"
+        min-width="13%"
       >
         <template slot-scope="scope">
           <el-input v-model="scope.row.targetTableName"></el-input>
@@ -36,7 +36,7 @@
         sortable
         prop="checkOperatingMode"
         label="操作方式"
-        min-width="10%"
+        min-width="9%"
       >
         <template slot-scope="scope">
           <el-select
@@ -57,7 +57,7 @@
         sortable
         prop="checkTableSpace"
         label="表空间"
-        min-width="10%"
+        min-width="11%"
       >
         <template slot-scope="scope">
           <el-select v-model="scope.row.checkTableSpace" placeholder="请选择">
@@ -71,36 +71,17 @@
           </el-select>
         </template>
       </el-table-column>
-      <el-table-column
-        sortable
-        prop="initSize"
-        label="初始大小(K)"
-        min-width="10%"
-      >
+      <el-table-column prop="initSize" label="初始大小(K)" min-width="7%">
       </el-table-column>
-      <el-table-column
-        sortable
-        prop="incrementSize"
-        label="增长量(K)"
-        min-width="10%"
-      >
+      <el-table-column prop="incrementSize" label="增长量(K)" min-width="6%">
       </el-table-column>
-      <el-table-column sortable prop="maxSize" label="最大值" min-width="10%">
+      <el-table-column prop="maxSize" label="最大值" min-width="5%">
       </el-table-column>
-      <el-table-column sortable prop="freeRatio" label="空闲比" min-width="10%">
+      <el-table-column prop="freeRatio" label="空闲比" min-width="5%">
       </el-table-column>
-      <el-table-column
-        sortable
-        prop="minUseRatio"
-        label="最小使用比"
-        min-width="10%"
-      >
+      <el-table-column prop="minUseRatio" label="最小使用比" min-width="7%">
       </el-table-column>
-      <el-table-column
-        sortable
-        prop="checkOutputLog"
-        label="输出日志"
-        min-width="10%"
+      <el-table-column prop="checkOutputLog" label="输出日志" min-width="7%"
         ><template slot-scope="scope">
           <el-select v-model="scope.row.checkOutputLog" placeholder="请选择">
             <el-option
@@ -113,20 +94,19 @@
           </el-select>
         </template>
       </el-table-column>
-      <el-table-column sortable prop="filter" label="过滤" min-width="10%">
+      <el-table-column sortable prop="filter" label="过滤" min-width="7%">
         <template slot-scope="scope">
           <el-input v-model="scope.row.filter"></el-input>
         </template>
       </el-table-column>
-      <el-table-column label="操作" min-width="8%">
+      <el-table-column label="操作" min-width="5%">
         <template slot-scope="scope">
           <el-button
             icon="el-icon-setting"
             type="primary"
             plain
             @click="celldbClick(scope.row)"
-            >设置</el-button
-          >
+          ></el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -210,7 +190,6 @@ export default {
       this.$emit("getSelectPaneData", "table", selection);
     },
     select(selection, row) {
-      console.log("select   回显后！！");
       this.$emit("getSelectPaneData", "table", selection);
     },
     getTableResourceData(key, value, tableName) {

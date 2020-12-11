@@ -36,26 +36,26 @@ export default {
   data() {
     return {
       value: "",
-      options: []
+      options: [],
     };
   },
   created() {
-    api.getShopList({}, response => {
+    api.getShopList({}, (response) => {
       console.log("getShopList===", response);
       this.options = response.data.content;
     });
   },
   methods: {
     btnClick() {
-      api.postPay({}, response => {
+      api.postPay({}, (response) => {
         console.log("postPay===", response);
         this.$message({
           message: response.data.content,
-          type: "success"
+          type: "success",
         });
       });
-    }
-  }
+    },
+  },
 };
 </script>
 
