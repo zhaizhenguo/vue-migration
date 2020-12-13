@@ -105,7 +105,7 @@ export default {
         captcha: this.loginForm.captcha,
       };
 
-      Cookies.set("token", "假装是个token"); // 放置token到Cookie
+      Cookies.set("oscar-token", "假装是个token"); // 放置token到Cookie
       sessionStorage.setItem("user", userInfo.account); // 保存用户到本地会话
       this.$router.push("/oscar").catch((err) => {}); // 登录成功，跳转到主页
       this.loading = false;
