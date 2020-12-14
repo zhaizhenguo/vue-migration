@@ -21,8 +21,8 @@
   </el-timeline>
 </template>
 <script>
-import databaseCard from "./subcontent/step5-databaseCard";
-import movingObjectCard from "./subcontent/step5-movingObjectCard";
+import databaseCard from "./Subcontent/step5-databaseCard";
+import movingObjectCard from "./Subcontent/step5-movingObjectCard";
 export default {
   props: {
     stepData: {
@@ -77,7 +77,7 @@ export default {
 </script>
 <style scoped>
 .timelineDiv {
-  max-height: 610px;
+  max-height: 600px;
   overflow: auto;
 }
 </style>

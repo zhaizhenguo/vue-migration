@@ -123,8 +123,8 @@
   </div>
 </template>
 <script>
-import dialogTableLineData from "../../dialog/dialogTableLineData";
-import tableResourceData from "../../constant/step4-tableResourceData.json";
+import dialogTableLineData from "../../Dialog/DialogTableLineData";
+import tableResourceData from "@/components/Constant/step4-tableResourceData.json";
 export default {
   props: {
     tableHeight: {

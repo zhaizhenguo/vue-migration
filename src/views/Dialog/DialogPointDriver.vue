@@ -49,7 +49,7 @@
   </el-dialog>
 </template>
 <script>
-import driverType from "../constant/driverType";
+import driverType from "@/components/Constant/driverType";
 export default {
   props: {
     dialogPointDriverVisible: {

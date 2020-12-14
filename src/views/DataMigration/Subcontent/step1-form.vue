@@ -90,10 +90,10 @@
   </div>
 </template>
 <script>
-import dialogPointDriver from "../../dialog/dialogPointDriver";
-import dialogDriverData from "../../dialog/dialogDriverData";
-import databaseType from "../../constant/databaseType";
-import driverType from "../../constant/driverType";
+import dialogPointDriver from "../../Dialog/DialogPointDriver";
+import dialogDriverData from "../../Dialog/DialogDriverData";
+import databaseType from "@/components/Constant/databaseType";
+import driverType from "@/components/Constant/driverType";
 
 export default {
   components: {

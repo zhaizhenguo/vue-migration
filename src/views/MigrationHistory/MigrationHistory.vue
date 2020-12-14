@@ -27,9 +27,9 @@
 
 <script>
 // import other from "./other/other";
-import api from "./asset/api";
+import api from "@/components/Asset/Api";
 export default {
-  name: "HelloWorld",
+  name: "migrationHistory",
   //   components: {
   //     other1: other
   //   },

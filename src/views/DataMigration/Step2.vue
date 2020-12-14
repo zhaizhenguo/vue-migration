@@ -28,9 +28,9 @@
   </div>
 </template>
 <script>
-import migrationParams from "./subcontent/step2-migrationParams";
-import performanceParams from "./subcontent/step2-performanceParams.vue";
-import monitoringParams from "./subcontent/step2-monitoringParams.vue";
+import migrationParams from "./Subcontent/step2-migrationParams";
+import performanceParams from "./Subcontent/step2-performanceParams";
+import monitoringParams from "./Subcontent/step2-monitoringParams";
 export default {
   components: {
     migrationParams: migrationParams,

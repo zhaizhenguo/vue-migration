@@ -33,7 +33,7 @@
   </el-form>
 </template>
 <script>
-import migrationParamOptions from "../../constant/migrationParamOptions";
+import migrationParamOptions from "@/components/Constant/migrationParamOptions";
 export default {
   data() {
     return {

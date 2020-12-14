@@ -1,7 +1,7 @@
 <template>
   <div class="fontColor">
     <el-header class="header">
-      <el-row class="headerTitle">跨平台迁移工具</el-row>
+      <!-- <el-row class="headerTitle">跨平台迁移工具</el-row> -->
       <el-row>
         <el-steps
           process-status="process"
@@ -91,16 +91,16 @@
   </div>
 </template>
 <script>
-import stepDesc from "./constant/stepDesc";
-import step1 from "./content/step1";
-import step2 from "./content/step2";
-import step3 from "./content/step3";
-import step4 from "./content/step4";
-import step5 from "./content/step5";
-import dialogParamConfig from "./dialog/dialogParamConfig";
-import api from "./asset/api";
+import stepDesc from "@/components/Constant/stepDesc";
+import step1 from "./Step1";
+import step2 from "./Step2";
+import step3 from "./Step3";
+import step4 from "./Step4";
+import step5 from "./Step5";
+import dialogParamConfig from "../Dialog/DialogParamConfig";
+import api from "@/components/Asset/Api";
 export default {
-  name: "oscar",
+  name: "dataMigration",
   components: {
     step1: step1,
     step2: step2,
@@ -111,7 +111,7 @@ export default {
   },
   data() {
     return {
-      contentHeight: window.innerHeight - 230,
+      contentHeight: window.innerHeight - 250,
       stepData: {},
       sumbitLoading: false,
       stepDesc: stepDesc,

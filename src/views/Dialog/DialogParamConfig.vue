@@ -14,8 +14,7 @@
   </el-dialog>
 </template>
 <script>
-import step2 from "../content/step2";
-import Step2 from "../content/step2.vue";
+import step2 from "../DataMigration/Step2";
 export default {
   components: {
     step2: step2,

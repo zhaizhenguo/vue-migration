@@ -1,10 +1,10 @@
 import Vue from "vue";
 import Router from "vue-router";
-import oscar from "@/components/oscar";
-import login from "@/components/login";
-import home from "@/components/home";
-import HelloWorld from "@/components/HelloWorld";
-import test from "@/components/test";
+import dataMigration from "@/views/DataMigration/DataMigration";
+import login from "@/views/Login";
+import home from "@/views/Home";
+import migrationHistory from "@/views/MigrationHistory/MigrationHistory";
+import systemSetting from "@/views/SystemSetting/SystemSetting";
 import Cookies from "js-cookie";
 
 Vue.use(Router);
@@ -27,19 +27,19 @@ const router = new Router({
             component: home,
             children: [
                 {
-                    path: "/oscar",
-                    name: "oscar",
-                    component: oscar
+                    path: "/dataMigration",
+                    name: "dataMigration",
+                    component: dataMigration
                 },
                 {
-                    path: "/HelloWorld",
-                    name: "HelloWorld",
-                    component: HelloWorld
+                    path: "/migrationHistory",
+                    name: "migrationHistory",
+                    component: migrationHistory
                 },
                 {
-                    path: "/test",
-                    name: "test",
-                    component: test
+                    path: "/systemSetting",
+                    name: "systemSetting",
+                    component: systemSetting
                 }
             ]
         }
@@ -49,10 +49,11 @@ router.beforeEach((to, from, next) => {
     // 登录界面登录成功之后，会把用户信息保存在会话
     // 存在时间为会话生命周期，页面关闭即失效。
     let token = Cookies.get('oscar-token')
+    console.log("token====",token);
     // let userName = sessionStorage.getItem('user')
     if (to.path === '/login') {
         if (token) {
-            next({ path: '/oscar' })
+            next({ path: '/dataMigration' })
         } else {
             next()
         }

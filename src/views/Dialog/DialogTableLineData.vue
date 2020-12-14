@@ -86,8 +86,8 @@
   </el-dialog>
 </template>
 <script>
-import step4LinePane from "../content/subcontent/step4-dialogLinePane";
-import step4CommonPane from "../content/subcontent/step4-dialogCommonPane";
+import step4LinePane from "../DataMigration/Subcontent/step4-dialogLinePane";
+import step4CommonPane from "../DataMigration/Subcontent/step4-dialogCommonPane";
 export default {
   props: {
     dialogTableLineDataVisible: {

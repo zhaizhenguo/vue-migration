@@ -40,8 +40,8 @@
   </el-container>
 </template>
 <script>
-import colMapRelation from "../constant/step3colMapRelation";
-import tableForm from "./subcontent/step3-tableForm";
+import colMapRelation from "@/components/Constant/step3colMapRelation";
+import tableForm from "./Subcontent/step3-tableForm";
 export default {
   components: {
     tableForm: tableForm,

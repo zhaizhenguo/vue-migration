@@ -94,10 +94,6 @@ export default {
   },
   methods: {
     login() {
-      console.log("this===", this);
-      this.$router.push("/oscar").catch((err) => {});
-    },
-    login() {
       this.loading = true;
       let userInfo = {
         account: this.loginForm.account,
@@ -107,7 +103,7 @@ export default {
 
       Cookies.set("oscar-token", "假装是个token"); // 放置token到Cookie
       sessionStorage.setItem("user", userInfo.account); // 保存用户到本地会话
-      this.$router.push("/oscar").catch((err) => {}); // 登录成功，跳转到主页
+      this.$router.push("/dataMigration").catch((err) => {}); // 登录成功，跳转到主页
       this.loading = false;
     },
     refreshCaptcha: function () {

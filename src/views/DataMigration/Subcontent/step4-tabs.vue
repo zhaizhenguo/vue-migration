@@ -53,7 +53,7 @@
 import step4TablePane from "./step4-tablePane";
 import step4CommonPane from "./step4-commonPane";
 import step4TableSpacePane from "./step4-tableSpacePane";
-import commonPaneData from "./../../constant/step4CommonPane";
+import commonPaneData from "@/components/Constant/step4CommonPane";
 export default {
   components: {
     step4TablePane: step4TablePane,
@@ -85,7 +85,7 @@ export default {
       selectRow: [],
       selectPatternNameList: [],
       selectTableNameList: {},
-      tableHeight: 457,
+      tableHeight: 447,
       sourceData: "",
       activeName: "table",
       commonPaneData: commonPaneData,

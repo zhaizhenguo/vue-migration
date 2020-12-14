@@ -8,7 +8,7 @@
   </div>
 </template>
 <script>
-import step1Form from "./subcontent/step1-form";
+import step1Form from "./Subcontent/step1-form";
 export default {
   components: {
     step1Form: step1Form,

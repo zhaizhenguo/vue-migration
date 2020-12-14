@@ -111,12 +111,12 @@
   </div>
 </template>
 <script>
-import objData from "../constant/step4Tab";
-import objData02 from "../constant/step4Tab02";
-import objDataView from "../constant/step5Tab";
-import objDataView02 from "../constant/step5Tab02";
-import dialogSQLData from "../dialog/dialogSQLData";
-import step4Tabs from "./subcontent/step4-tabs";
+import objData from "@/components/Constant/step4Tab";
+import objData02 from "@/components/Constant/step4Tab02";
+import objDataView from "@/components/Constant/step5Tab";
+import objDataView02 from "@/components/Constant/step5Tab02";
+import dialogSQLData from "../Dialog/DialogSQLData";
+import step4Tabs from "./Subcontent/step4-tabs";
 export default {
   components: {
     dialogSQLData: dialogSQLData,
