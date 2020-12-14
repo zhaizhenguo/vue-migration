@@ -1,6 +1,11 @@
 <template>
   <div>
-    <el-row style="height: 60px"> <HeadBar></HeadBar> </el-row>
+    <el-header><HeadBar></HeadBar></el-header>
+    <el-container>
+      <el-aside width="200px"><NavBar> </NavBar></el-aside>
+      <el-main><MainContent> </MainContent></el-main>
+    </el-container>
+    <!-- <el-row style="height: 60px"> <HeadBar></HeadBar></el-row>
     <el-row>
       <el-col :span="3">
         <NavBar> </NavBar>
@@ -8,7 +13,7 @@
       <el-col :span="21" style="padding: 20px 0px 0px">
         <MainContent> </MainContent>
       </el-col>
-    </el-row>
+    </el-row> -->
   </div>
 </template>
 

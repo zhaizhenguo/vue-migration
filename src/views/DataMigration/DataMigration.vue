@@ -141,7 +141,7 @@ export default {
   },
   methods: {
     getContentHeight() {
-      this.contentHeight = window.innerHeight - 230;
+      //   this.contentHeight = window.innerHeight - 230;
     },
     btnclick(isDown) {
       if (isDown) {

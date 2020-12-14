@@ -1,5 +1,6 @@
 <template>
   <el-menu
+    style="height: 100%"
     :default-active="$route.path"
     class="el-menu-vertical-demo"
     @select="handleSelect"
