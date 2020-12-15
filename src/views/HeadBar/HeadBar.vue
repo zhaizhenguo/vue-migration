@@ -19,9 +19,12 @@
           v-popover:popover-personal
         >
           <!-- 用户信息 -->
-          <span class="user-info"
-            ><img :src="user.avatar" />{{ user.name }}</span
-          >
+          <span class="user-info">{{ user.name }}</span>
+          <i
+            style="font-size: 20px; color: white"
+            class="fa fa-user-o"
+            aria-hidden="true"
+          ></i>
           <el-popover
             ref="popover-personal"
             placement="bottom-end"
@@ -90,6 +93,7 @@ export default {
 .logo {
   top: 0px;
   height: 60px;
+  width: 200px;
   line-height: 60px;
   cursor: pointer;
   border-color: rgba(180, 190, 190, 0.8);
@@ -97,10 +101,9 @@ export default {
   border-style: solid;
 }
 .logoDiv {
+  text-align: center;
   font-size: 25px;
   color: white;
-  text-align: left;
-  padding-left: 20px;
 }
 .img {
   width: 40px;

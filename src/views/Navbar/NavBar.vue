@@ -5,28 +5,53 @@
     class="el-menu-vertical-demo"
     @select="handleSelect"
   >
-    <el-menu-item
+    <!-- <el-menu-item
       v-for="item in menuArray"
       :key="item.index"
       :index="item.index"
     >
       <i :class="item.icon" aria-hidden="true"></i>
       <span slot="title">{{ item.lable }}</span>
-    </el-menu-item>
+    </el-menu-item> -->
+    <MenuTree
+      v-for="item in menuArray"
+      :key="item.index"
+      :menu="item"
+    ></MenuTree>
   </el-menu>
 </template> 
 <script>
+import MenuTree from "@/components/MenuTree";
 export default {
+  components: {
+    MenuTree: MenuTree,
+  },
   data() {
     return {
       menuArray: [
-        { icon: "fa fa-exchange ", index: "/dataMigration", lable: "数据迁移" },
+        { icon: "fa fa-exchange ", index: "/dataMigration", name: "数据迁移" },
         {
           icon: "fa fa-history ",
           index: "/migrationHistory",
-          lable: "迁移历史",
+          name: "迁移历史",
         },
-        { icon: "fa fa-cog", index: "/systemSetting", lable: "系统设置" },
+        {
+          icon: "fa fa-cog",
+          index: "/systemSetting",
+          name: "系统设置",
+          children: [
+            {
+              icon: "fa fa-user-circle-o",
+              index: "/userManagement",
+              name: "用户管理",
+            },
+            {
+              icon: "el-icon-view",
+              index: "/roleManagement ",
+              name: "角色管理",
+            },
+          ],
+        },
       ],
     };
   },

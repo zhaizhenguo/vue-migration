@@ -5,6 +5,7 @@ import login from "@/views/Login";
 import home from "@/views/Home";
 import migrationHistory from "@/views/MigrationHistory/MigrationHistory";
 import systemSetting from "@/views/SystemSetting/SystemSetting";
+import userManagement from "@/views/SystemSetting/UserManagement";
 import Cookies from "js-cookie";
 
 Vue.use(Router);
@@ -37,9 +38,9 @@ const router = new Router({
                     component: migrationHistory
                 },
                 {
-                    path: "/systemSetting",
-                    name: "systemSetting",
-                    component: systemSetting
+                    path: "/userManagement",
+                    name: "userManagement",
+                    component: userManagement,
                 }
             ]
         }

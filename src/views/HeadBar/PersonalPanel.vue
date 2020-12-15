@@ -9,7 +9,7 @@
           <span>{{ user.role }}</span>
         </div>
       </div>
-      <div class="personal-footer" @click="changPassword">
+      <div class="personal-footer" @click="changePassword">
         <li class="fa fa-key">修改密码</li>
       </div>
       <div class="personal-footer" @click="logout">
@@ -49,7 +49,7 @@ export default {
     };
   },
   methods: {
-    changPassword() {
+    changePassword() {
       this.dialogChangePasswordVisible = true;
     },
     // 退出登录

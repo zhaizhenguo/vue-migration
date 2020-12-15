@@ -1,0 +1,72 @@
+[
+    {
+        "type": "表",
+        "count": 25,
+        "successCount": 25,
+        "failCount": 0,
+        "successContent": [
+            "PUBLIC.AQ$_QUEUE_TABLES",
+            "PUBLIC.AQ$_QUEUE_TABLES",
+            "PUBLIC.AQ$_QUEUE_TABLES",
+            "PUBLIC.AQ$_QUEUE_TABLES",
+            "PUBLIC.AQ$_QUEUE_TABLES",
+            "PUBLIC.AQ$_QUEUE_TABLES",
+            "PUBLIC.AQ$_QUEUE_TABLES",
+            "PUBLIC.AQ$_QUEUE_TABLES",
+            "PUBLIC.AQ$_QUEUE_TABLES"
+        ]
+    },
+    {
+        "type": "表空间",
+        "count": 20,
+        "successCount": 19,
+        "failCount": 1,
+        "failContent": [
+            "UNDOTS01",
+            "UNDOTS01",
+            "UNDOTS01",
+            "UNDOTS01",
+            "UNDOTS01",
+            "UNDOTS015sdfasdfsadf",
+            "UNDOTS01",
+            "UNDOTS01",
+            "UNDOTS015",
+            "UNDOTS01",
+            "UNDOTS01",
+            "UNDOTS01",
+            "UNDOTS01",
+            "UNDOTS01",
+            "UNDOTS015"
+        ]
+    },
+    {
+        "type": "表数据",
+        "count": 20,
+        "successCount": 19,
+        "failCount": 1
+    },
+    {
+        "type": "唯一约束",
+        "count": 15,
+        "successCount": 0,
+        "failCount": 15
+    },
+    {
+        "type": "唯一约束",
+        "count": 15,
+        "successCount": 0,
+        "failCount": 15
+    },
+    {
+        "type": "唯一约束",
+        "count": 15,
+        "successCount": 0,
+        "failCount": 15
+    },
+    {
+        "type": "唯一约束",
+        "count": 15,
+        "successCount": 0,
+        "failCount": 15
+    }
+]

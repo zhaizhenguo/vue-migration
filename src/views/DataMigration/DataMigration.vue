@@ -28,7 +28,7 @@
       <el-row class="headerDesc">{{ getDesc }}</el-row>
     </el-header>
     <!-- <el-main :style="`height:${contentHeight}px;padding: 45px 20px;`"> -->
-    <el-main class="main" :style="'height:' + contentHeight + 'px;'">
+    <el-main class="main">
       <el-card class="box-card">
         <step1 v-show="nowProcess === 1" ref="step1"></step1>
         <step2 v-show="nowProcess === 2" ref="step2"></step2>
@@ -216,10 +216,12 @@ export default {
 }
 .main {
   padding: 25px 100px 0px 70px;
+  height: calc(100vh - 250px);
 }
 .footer {
   text-align: right;
   padding: 0 150px;
+  height: 100% !important;
 }
 .headerTitle {
   text-align: center;
