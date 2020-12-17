@@ -7,6 +7,7 @@
     >
       <el-form-item label="迁移时间">
         <el-date-picker
+          :size="size"
           v-model="migrationQueryData.migrationDate"
           type="daterange"
           unlink-panels
@@ -19,6 +20,7 @@
       </el-form-item>
       <el-form-item label="迁移状态">
         <el-select
+          :size="size"
           v-model="migrationQueryData.migrationState"
           placeholder="请选择"
         >
@@ -28,87 +30,38 @@
       </el-form-item>
       <el-form-item>
         <el-input
+          :size="size"
           v-model="migrationQueryData.migrationInput"
           placeholder="请输入"
         ></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="queryMigrationData">查询</el-button>
+        <st-button
+          icon="fa fa-search"
+          type="primary"
+          :plain="true"
+          :size="size"
+          label="查询"
+          @click="findPage(null)"
+        ></st-button>
       </el-form-item>
     </el-form>
 
-    <el-table
-      :stripe="true"
-      @cell-dblclick="btnQueryDetails"
-      class="table"
-      :data="tableData"
-      border
+    <st-table
+      ref="table"
+      :data="pageResult"
+      :height="'calc(80vh - 250px)'"
+      :operationColumnMinWidth="'11%'"
+      :columns="filterColumns"
+      :showBatchDelete="false"
+      :showOperationBtnCheck="true"
+      :showOperationBtnEdit="false"
+      :showOperationBtnDelete="false"
+      @handleCheck="handleCheck"
+      @dblClick="handleCheck"
+      @findPage="findPage"
     >
-      <el-table-column sortable prop="operator" label="操作人" min-width="10%">
-      </el-table-column>
-      <el-table-column sortable prop="IP" label="IP" min-width="10%">
-      </el-table-column>
-      <el-table-column
-        sortable
-        prop="sourceDatabase"
-        label="源数据库"
-        min-width="10%"
-      >
-      </el-table-column>
-
-      <el-table-column
-        sortable
-        prop="targetDatabase"
-        label="目标数据库"
-        min-width="10%"
-      >
-      </el-table-column>
-      <el-table-column
-        sortable
-        prop="startTime"
-        label="开始时间"
-        min-width="10%"
-      >
-      </el-table-column>
-      <el-table-column sortable prop="endTime" label="结束时间" min-width="10%">
-      </el-table-column>
-      <el-table-column
-        sortable
-        prop="migrationElapsedTime"
-        label="迁移用时"
-        min-width="10%"
-      >
-      </el-table-column>
-      <el-table-column
-        sortable
-        prop="migrationState"
-        label="迁移状态"
-        min-width="10%"
-        :formatter="migrationStateFormat"
-      >
-      </el-table-column>
-      <el-table-column label="操作" min-width="5%">
-        <template slot-scope="scope">
-          <el-button
-            class="fa fa-info-circle"
-            type="primary"
-            plain
-            @click="btnQueryDetails(scope.row)"
-          ></el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-    <el-pagination
-      style="float: right"
-      @size-change="handleSizeChange"
-      :page-sizes="[10, 20, 50]"
-      :page-size="10"
-      layout=" prev, pager, next,sizes,total"
-      :current-page="migrationData.page + 1"
-      :total="migrationData.total"
-      @current-change="changePage"
-    >
-    </el-pagination>
+    </st-table>
     <dialogMigrationReport
       v-if="dialogMigrationReportVisible"
       :dialogMigrationReportVisible="dialogMigrationReportVisible"
@@ -120,26 +73,35 @@
 
 <script>
 import api from "@/components/Asset/Api";
+import { format } from "@/utils/datetime";
 import migrationDataJson from "@/components/Constant/migrationData";
 import dialogMigrationReport from "../Dialog/DialogMigrationReport";
-
+import StTable from "@/views/Core/StTable";
+import StButton from "@/views/Core/StButton";
 export default {
   name: "migrationHistory",
   components: {
+    StTable: StTable,
+    StButton: StButton,
     dialogMigrationReport: dialogMigrationReport,
   },
   data() {
     return {
+      size: "small",
       rowData: {},
       migrationDataJson: migrationDataJson,
-      migrationData: { page: null, total: null },
-      tableData: [],
+      tableHeight: "calc(80vh - 250px)",
       migrationQueryData: {
         migrationDate: null,
         migrationState: null,
         migrationInput: null,
       },
       dialogMigrationReportVisible: false,
+
+      filterColumns: [],
+      pageRequest: { pageNum: 1, pageSize: 10 },
+      pageResult: {},
+
       pickerOptions: {
         shortcuts: [
           {
@@ -175,39 +137,64 @@ export default {
     };
   },
   created() {
-    this.queryMigrationData();
+    this.findPage(null);
   },
   methods: {
-    btnQueryDetails(row) {
-      console.log("row======", row);
-      this.rowData = row;
+    handleCheck(data) {
+      this.rowData = JSON.parse(JSON.stringify(data.row));
+      console.log("rowData======", this.rowData);
       this.dialogMigrationReportVisible = true;
     },
     closeDialogMigrationReport() {
       this.dialogMigrationReportVisible = false;
     },
-    changePage(page) {
-      console.log("page=======", page);
-      this.queryMigrationData();
-      //在element-ui中，不管点击上一页还是下一页又或是具体的某一页也好，都会使page发生改变
-      //将page放入watch(侦听器)
-      //当page值发生改变时，将会触发对应函数
-    },
-    handleSizeChange(page) {
-      console.log("handleSizeChange page=======", page);
-    },
-    queryMigrationData() {
-      console.log("migrationQueryData", this.migrationQueryData);
-      api.postPay({}, (response) => {
-        this.migrationData = this.migrationDataJson;
-        this.tableData = this.migrationDataJson.content;
-        console.log("response===", response);
+    findPage(data) {
+      console.log("findPage");
+      if (!!data) {
+        this.pageRequest = data.pageRequest;
+      }
+      Object.assign(this.pageRequest, this.migrationQueryData);
+      console.log("pageRequest", this.pageRequest);
 
-        this.$message({
-          message: "查询成功",
-          type: "success",
-        });
+      api.postUser(this.pageRequest, (response) => {
+        this.pageResult = this.migrationDataJson;
+        console.log("pageResult", this.pageResult);
+        !!data ? data.callback() : "";
       });
+      this.$refs.table.doLayout();
+    },
+
+    initColumns() {
+      this.columns = [
+        { prop: "operator", label: "操作人", minWidth: "11%" },
+        { prop: "ip", label: "IP", minWidth: "11%" },
+        { prop: "sourceDatabase", label: "源数据库", minWidth: "11%" },
+        { prop: "targetDatabase", label: "目标数据库", minWidth: "11%" },
+        {
+          prop: "startTime",
+          label: "开始时间",
+          minWidth: "11%",
+          formatter: this.dateFormat,
+        },
+        {
+          prop: "endTime",
+          label: "结束时间",
+          minWidth: "11%",
+          formatter: this.dateFormat,
+        },
+        { prop: "migrationElapsedTime", label: "迁移用时", minWidth: "11%" },
+        {
+          prop: "migrationState",
+          label: "迁移状态",
+          minWidth: "11%",
+          formatter: this.migrationStateFormat,
+        },
+      ];
+      this.filterColumns = this.columns;
+      //    JSON.parse(JSON.stringify(this.columns));
+    },
+    dateFormat(row, column, cellValue, index) {
+      return format(row[column.property]);
     },
     migrationStateFormat(row) {
       if (row.migrationState === 0) {
@@ -217,13 +204,12 @@ export default {
       }
     },
   },
+  mounted() {
+    this.initColumns();
+  },
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.table {
-  height: calc(80vh - 100px);
-  width: 100%;
-}
 </style>

@@ -79,7 +79,7 @@
         @click="btnclickSumbit()"
         :loading="sumbitLoading"
         :disabled="nowProcess !== stepDesc.length"
-        >完成</el-button
+        >{{ sumbitLabel }}</el-button
       >
     </el-footer>
     <div class="szBrand">2008-2020 神州通用数据技术有限公司</div>
@@ -88,6 +88,13 @@
       :dialogParamConfigVisible="dialogParamConfigVisible"
       @closeParamConfig="closeParamConfig"
     ></dialogParamConfig>
+    <dialogMigrationPlan
+      ref="dialogMigrationPlan"
+      v-if="dialogMigrationPlanVisible"
+      :dialogMigrationPlanVisible="dialogMigrationPlanVisible"
+      @closeDialogMigrationPlan="closeDialogMigrationPlan"
+    >
+    </dialogMigrationPlan>
   </div>
 </template>
 <script>
@@ -98,6 +105,7 @@ import step3 from "./Step3";
 import step4 from "./Step4";
 import step5 from "./Step5";
 import dialogParamConfig from "../Dialog/DialogParamConfig";
+import dialogMigrationPlan from "../Dialog/DialogMigrationPlan";
 import api from "@/components/Asset/Api";
 export default {
   name: "dataMigration",
@@ -108,17 +116,20 @@ export default {
     step4: step4,
     step5: step5,
     dialogParamConfig: dialogParamConfig,
+    dialogMigrationPlan: dialogMigrationPlan,
   },
   data() {
     return {
       contentHeight: window.innerHeight - 250,
       stepData: {},
+      sumbitLabel: "完成",
       sumbitLoading: false,
       stepDesc: stepDesc,
-      nowProcessStep: 0,
+      nowProcessStep: 4,
       value: "",
       options: [],
       dialogParamConfigVisible: false,
+      dialogMigrationPlanVisible: false,
     };
   },
   computed: {
@@ -183,6 +194,13 @@ export default {
       }
     },
     btnclickSumbit() {
+      console.log("!!btnclickSumbit");
+
+      this.dialogMigrationPlanVisible = true;
+      this.$nextTick(() => {
+        this.$refs.dialogMigrationPlan.test();
+      });
+
       //   this.sumbitLoading = true;
       //   api.postPay({}, response => {
       //     this.sumbitLoading = false;
@@ -204,6 +222,9 @@ export default {
     },
     closeParamConfig() {
       this.dialogParamConfigVisible = false;
+    },
+    closeDialogMigrationPlan() {
+      this.dialogMigrationPlanVisible = false;
     },
   },
 };

@@ -4,5 +4,8 @@ export default {
   },
   postPay(params, response, hostName) {
     window.vue._$request.post("api/postPay", params, response, hostName);
+  },
+  postUser(params, response, hostName) {
+    window.vue._$request.post("api/postPay", params, response, hostName);
   }
 };

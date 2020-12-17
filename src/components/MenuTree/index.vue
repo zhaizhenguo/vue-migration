@@ -31,7 +31,7 @@ export default {
   methods: {
     handleRoute(menu) {
       // 通过菜单URL跳转至指定路由
-      this.$router.push(path);
+      this.$router.push(menu.index).catch((err) => {});
     },
   },
 };

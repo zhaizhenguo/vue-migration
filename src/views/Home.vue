@@ -9,15 +9,6 @@
         ></el-main>
       </el-container>
     </el-container>
-    <!-- <el-row style="height: 60px"> <HeadBar></HeadBar></el-row>
-    <el-row>
-      <el-col :span="3">
-        <NavBar> </NavBar>
-      </el-col>
-      <el-col :span="21" style="padding: 20px 0px 0px">
-        <MainContent> </MainContent>
-      </el-col>
-    </el-row> -->
   </div>
 </template>
 

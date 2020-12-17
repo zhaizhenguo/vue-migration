@@ -10,10 +10,12 @@
     @select="select"
     ref="table"
   >
-    <el-table-column type="selection" min-width="1%"> </el-table-column>
-    <el-table-column type="index" label="行号" min-width="1%">
+    <el-table-column align="center" type="selection" min-width="1%">
+    </el-table-column>
+    <el-table-column align="center" type="index" label="行号" min-width="1%">
     </el-table-column>
     <el-table-column
+      align="center"
       sortable
       prop="sourceLineName"
       label="表空间"
@@ -21,30 +23,66 @@
     >
     </el-table-column>
     <el-table-column
+      align="center"
       sortable
       prop="targetLineName"
       label="目的端名称"
       min-width="14%"
     >
       <template slot-scope="scope">
-        <el-input v-model="scope.row.targetLineName"></el-input>
+        <el-input size="mini" v-model="scope.row.targetLineName"></el-input>
       </template>
     </el-table-column>
-    <el-table-column prop="checkType" label="初始化大小(K)" min-width="10%">
+    <el-table-column
+      align="center"
+      prop="checkType"
+      label="初始化大小(K)"
+      min-width="10%"
+    >
     </el-table-column>
-    <el-table-column prop="length" label="增长量(K)" min-width="8%">
+    <el-table-column
+      align="center"
+      prop="length"
+      label="增长量(K)"
+      min-width="8%"
+    >
     </el-table-column>
-    <el-table-column prop="precision" label="空闲比" min-width="8%">
+    <el-table-column
+      align="center"
+      prop="precision"
+      label="空闲比"
+      min-width="8%"
+    >
     </el-table-column>
-    <el-table-column prop="decimals" label="最小使用比" min-width="8%">
+    <el-table-column
+      align="center"
+      prop="decimals"
+      label="最小使用比"
+      min-width="8%"
+    >
     </el-table-column>
-    <el-table-column prop="ismajorKey" label="索引填充" min-width="8%">
+    <el-table-column
+      align="center"
+      prop="ismajorKey"
+      label="索引填充"
+      min-width="8%"
+    >
     </el-table-column>
-    <el-table-column prop="canBeNull" label="索引分裂" min-width="8%">
+    <el-table-column
+      align="center"
+      prop="canBeNull"
+      label="索引分裂"
+      min-width="8%"
+    >
     </el-table-column>
-    <el-table-column prop="checkOutputLog" label="输出日志" min-width="8%">
+    <el-table-column
+      align="center"
+      prop="checkOutputLog"
+      label="输出日志"
+      min-width="8%"
+    >
       <template slot-scope="scope">
-        <el-select v-model="scope.row.canBeNull">
+        <el-select size="mini" v-model="scope.row.canBeNull">
           <el-option
             v-for="item in whetherList"
             :key="item.value"
@@ -55,7 +93,12 @@
         </el-select>
       </template>
     </el-table-column>
-    <el-table-column prop="filter" label="数据文件" min-width="14%">
+    <el-table-column
+      align="center"
+      prop="filter"
+      label="数据文件"
+      min-width="14%"
+    >
     </el-table-column>
   </el-table>
 </template>

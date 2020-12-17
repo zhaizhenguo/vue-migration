@@ -12,10 +12,12 @@
       @select="select"
       ref="table"
     >
-      <el-table-column type="selection" min-width="1%"> </el-table-column>
-      <el-table-column type="index" label="行号" min-width="1%">
+      <el-table-column align="center" type="selection" min-width="1%">
+      </el-table-column>
+      <el-table-column align="center" type="index" label="行号" min-width="1%">
       </el-table-column>
       <el-table-column
+        align="center"
         sortable
         prop="sourceTableName"
         label="源表名"
@@ -23,16 +25,18 @@
       >
       </el-table-column>
       <el-table-column
+        align="center"
         sortable
         prop="targetTableName"
         label="目标表名"
-        min-width="13%"
+        min-width="12%"
       >
         <template slot-scope="scope">
-          <el-input v-model="scope.row.targetTableName"></el-input>
+          <el-input size="mini" v-model="scope.row.targetTableName"></el-input>
         </template>
       </el-table-column>
       <el-table-column
+        align="center"
         sortable
         prop="checkOperatingMode"
         label="操作方式"
@@ -40,6 +44,7 @@
       >
         <template slot-scope="scope">
           <el-select
+            size="mini"
             v-model="scope.row.checkOperatingMode"
             placeholder="请选择"
           >
@@ -54,13 +59,18 @@
         </template>
       </el-table-column>
       <el-table-column
+        align="center"
         sortable
         prop="checkTableSpace"
         label="表空间"
-        min-width="11%"
+        min-width="10%"
       >
         <template slot-scope="scope">
-          <el-select v-model="scope.row.checkTableSpace" placeholder="请选择">
+          <el-select
+            size="mini"
+            v-model="scope.row.checkTableSpace"
+            placeholder="请选择"
+          >
             <el-option
               v-for="item in tableSpace"
               :key="item.value"
@@ -71,19 +81,52 @@
           </el-select>
         </template>
       </el-table-column>
-      <el-table-column prop="initSize" label="初始大小(K)" min-width="7%">
+      <el-table-column
+        align="center"
+        prop="initSize"
+        label="初始大小(K)"
+        min-width="7%"
+      >
       </el-table-column>
-      <el-table-column prop="incrementSize" label="增长量(K)" min-width="6%">
+      <el-table-column
+        align="center"
+        prop="incrementSize"
+        label="增长量(K)"
+        min-width="6%"
+      >
       </el-table-column>
-      <el-table-column prop="maxSize" label="最大值" min-width="5%">
+      <el-table-column
+        align="center"
+        prop="maxSize"
+        label="最大值"
+        min-width="5%"
+      >
       </el-table-column>
-      <el-table-column prop="freeRatio" label="空闲比" min-width="5%">
+      <el-table-column
+        align="center"
+        prop="freeRatio"
+        label="空闲比"
+        min-width="5%"
+      >
       </el-table-column>
-      <el-table-column prop="minUseRatio" label="最小使用比" min-width="7%">
+      <el-table-column
+        align="center"
+        prop="minUseRatio"
+        label="最小使用比"
+        min-width="7%"
+      >
       </el-table-column>
-      <el-table-column prop="checkOutputLog" label="输出日志" min-width="7%"
+      <el-table-column
+        align="center"
+        prop="checkOutputLog"
+        label="输出日志"
+        min-width="7%"
         ><template slot-scope="scope">
-          <el-select v-model="scope.row.checkOutputLog" placeholder="请选择">
+          <el-select
+            size="mini"
+            v-model="scope.row.checkOutputLog"
+            placeholder="请选择"
+          >
             <el-option
               v-for="item in outputLog"
               :key="item.value"
@@ -94,19 +137,27 @@
           </el-select>
         </template>
       </el-table-column>
-      <el-table-column sortable prop="filter" label="过滤" min-width="7%">
+      <el-table-column
+        align="center"
+        sortable
+        prop="filter"
+        label="过滤"
+        min-width="7%"
+      >
         <template slot-scope="scope">
-          <el-input v-model="scope.row.filter"></el-input>
+          <el-input size="mini" v-model="scope.row.filter"></el-input>
         </template>
       </el-table-column>
-      <el-table-column label="操作" min-width="5%">
+      <el-table-column align="center" label="操作" min-width="7%">
         <template slot-scope="scope">
           <el-button
+            size="mini"
             icon="el-icon-setting"
             type="primary"
             plain
             @click="celldbClick(scope.row)"
-          ></el-button>
+            >设置</el-button
+          >
         </template>
       </el-table-column>
     </el-table>

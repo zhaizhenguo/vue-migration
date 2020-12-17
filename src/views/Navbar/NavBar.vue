@@ -5,14 +5,6 @@
     class="el-menu-vertical-demo"
     @select="handleSelect"
   >
-    <!-- <el-menu-item
-      v-for="item in menuArray"
-      :key="item.index"
-      :index="item.index"
-    >
-      <i :class="item.icon" aria-hidden="true"></i>
-      <span slot="title">{{ item.lable }}</span>
-    </el-menu-item> -->
     <MenuTree
       v-for="item in menuArray"
       :key="item.index"
@@ -41,14 +33,14 @@ export default {
           name: "系统设置",
           children: [
             {
-              icon: "fa fa-user-circle-o",
-              index: "/userManagement",
-              name: "用户管理",
-            },
-            {
               icon: "el-icon-view",
               index: "/roleManagement ",
               name: "角色管理",
+            },
+            {
+              icon: "fa fa-user-circle-o",
+              index: "/userManagement",
+              name: "用户管理",
             },
           ],
         },
@@ -58,7 +50,7 @@ export default {
   created() {},
   methods: {
     handleSelect(index, indexPath) {
-      this.$router.push(index).catch((err) => {});
+      //   this.$router.push(index).catch((err) => {});
       console.log(index, indexPath);
     },
   },

@@ -11,10 +11,12 @@
       @select="select"
       ref="table"
     >
-      <el-table-column type="selection" min-width="1%"> </el-table-column>
-      <el-table-column type="index" label="行号" min-width="1%">
+      <el-table-column align="center" type="selection" min-width="1%">
+      </el-table-column>
+      <el-table-column align="center" type="index" label="行号" min-width="1%">
       </el-table-column>
       <el-table-column
+        align="center"
         sortable
         prop="sourceName"
         :label="headerData.sourceName"
@@ -22,23 +24,25 @@
       >
       </el-table-column>
       <el-table-column
+        align="center"
         sortable
         prop="targetName"
         :label="headerData.targetName"
         min-width="18%"
       >
         <template slot-scope="scope">
-          <el-input v-model="scope.row.targetName"></el-input>
+          <el-input size="mini" v-model="scope.row.targetName"></el-input>
         </template>
       </el-table-column>
       <el-table-column
+        align="center"
         sortable
         prop="definition"
         :label="headerData.definition"
         min-width="65%"
       >
         <template slot-scope="scope">
-          <el-input v-model="scope.row.definition"></el-input>
+          <el-input size="mini" v-model="scope.row.definition"></el-input>
         </template>
       </el-table-column>
     </el-table>

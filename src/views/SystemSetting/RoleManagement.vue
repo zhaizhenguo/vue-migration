@@ -5,7 +5,7 @@
         <el-input
           :size="size"
           v-model="filters.name"
-          placeholder="用户名"
+          placeholder="角色名"
         ></el-input>
       </el-form-item>
       <el-form-item>
@@ -31,25 +31,26 @@
     </el-form>
     <!--表格内容栏-->
     <st-table
+      :size="size"
       :height="'calc(80vh - 250px)'"
-      :operationColumnMinWidth="'15%'"
+      :operationColumnMinWidth="'17%'"
       :data="pageResult"
       :columns="filterColumns"
       :showBatchDelete="false"
       @findPage="findPage"
-      @dblClick="btnEditUser"
       @handleEdit="btnEditUser"
+      @dblClick="btnEditUser"
       @handleDelete="handleDelete"
     >
     </st-table>
-    <dialog-user
-      v-if="dialogUserVisible"
-      :dialogUserVisible="dialogUserVisible"
+    <dialog-role
+      v-if="dialogRoleVisible"
+      :dialogRoleVisible="dialogRoleVisible"
       :operation="operation"
       :dataForm="userDataForm"
       @findPage="findPage"
-      @closeDialogUserVisible="closeDialogUserVisible"
-    ></dialog-user>
+      @closeDialogRoleVisible="closeDialogRoleVisible"
+    ></dialog-role>
   </div>
 </template>
 <script>
@@ -57,13 +58,13 @@ import StButton from "@/views/Core/StButton";
 import StTable from "@/views/Core/StTable";
 import { format } from "@/utils/datetime";
 import api from "@/components/Asset/Api";
-import DialogUser from "@/views/Dialog/DialogUser";
+import DialogRole from "@/views/Dialog/DialogRole";
 
 export default {
   components: {
     StButton: StButton,
     StTable: StTable,
-    DialogUser: DialogUser,
+    DialogRole: DialogRole,
   },
   data() {
     return {
@@ -75,7 +76,7 @@ export default {
         name: "",
       },
       operation: true, // true:新增, false:编辑
-      dialogUserVisible: false,
+      dialogRoleVisible: false,
       userDataForm: {},
     };
   },
@@ -95,12 +96,12 @@ export default {
     btnAddUser() {
       this.userDataForm = {};
       this.operation = true;
-      this.dialogUserVisible = true;
+      this.dialogRoleVisible = true;
     },
     btnEditUser(data) {
-      this.userDataForm = data.row;
+      this.userDataForm = JSON.parse(JSON.stringify(data.row));
       this.operation = false;
-      this.dialogUserVisible = true;
+      this.dialogRoleVisible = true;
     },
     handleDelete() {
       console.log("handleDelete");
@@ -109,40 +110,25 @@ export default {
     dateFormat(row, column, cellValue, index) {
       return format(row[column.property]);
     },
-    closeDialogUserVisible() {
-      this.dialogUserVisible = false;
+    closeDialogRoleVisible() {
+      this.dialogRoleVisible = false;
     },
     // 处理表格列过滤显示
     initColumns() {
       this.columns = [
-        { prop: "id", label: "ID", minWidth: "5%" },
-        { prop: "name", label: "用户名", minWidth: "12%" },
-        { prop: "roleNames", label: "角色", minWidth: "10%" },
-        { prop: "email", label: "邮箱", minWidth: "12%" },
-        { prop: "mobile", label: "手机", minWidth: "12%" },
-        {
-          prop: "status",
-          label: "状态",
-          minWidth: "10%",
-          formatter: this.userStateFormat,
-        },
-        { prop: "createBy", label: "创建人", minWidth: "12%" },
+        { prop: "id", label: "ID", minWidth: "15%" },
+        { prop: "name", label: "角色名", minWidth: "15%" },
+        { prop: "remark", label: "备注", minWidth: "25%" },
+        { prop: "createBy", label: "创建人", minWidth: "15%" },
         {
           prop: "createTime",
           label: "创建时间",
-          minWidth: "12%",
+          minWidth: "15%",
           formatter: this.dateFormat,
         },
       ];
       this.filterColumns = this.columns;
       //    JSON.parse(JSON.stringify(this.columns));
-    },
-    userStateFormat(row, column, cellValue, index) {
-      if (row.status === 0) {
-        return "正常";
-      } else {
-        return "锁定";
-      }
     },
     findTableData(params) {
       let findPageData = {
@@ -169,22 +155,14 @@ export default {
     },
     getContent(pageNum, pageSize) {
       let content = [];
-      for (let i = 0; i < pageSize; i++) {
+      for (let i = 0; i < 3; i++) {
         let obj = {};
         let index = (pageNum - 1) * pageSize + i + 1;
         obj.id = index;
-        obj.name = "翟振国" + index;
-        obj.password = "9ec9750e709";
-        obj.roleNames = "管理员";
-        obj.email = "kitty" + index + "@qq.com";
-        obj.mobile = "18688982323";
-        obj.useNumber = 20;
-        obj.status = 0;
-        obj.userRoles = ["admin"];
+        obj.name = "管理员" + index;
         obj.createBy = "admin";
-        obj.createTime = "2018-08-14 11:11:11";
-        obj.createBy = "admin";
-        obj.createTime = "2018-09-14 12:12:12";
+        obj.remark = "此用户可展示所有菜单";
+        obj.createTime = "2020-12-14 11:11:11";
         content.push(obj);
       }
       return content;

@@ -14,6 +14,7 @@
     <el-table-column type="index" label="行号" min-width="2%">
     </el-table-column>
     <el-table-column
+      align="center"
       sortable
       prop="sourceObjectName"
       label="源对象名"
@@ -21,19 +22,26 @@
     >
     </el-table-column>
     <el-table-column
+      align="center"
       sortable
       prop="targetObjectName"
       label="目的对象名"
       min-width="15%"
     >
       <template slot-scope="scope">
-        <el-input v-model="scope.row.targetObjectName"></el-input>
+        <el-input size="mini" v-model="scope.row.targetObjectName"></el-input>
       </template>
     </el-table-column>
 
-    <el-table-column sortable prop="definition" label="定义" min-width="69%">
+    <el-table-column
+      align="center"
+      sortable
+      prop="definition"
+      label="定义"
+      min-width="69%"
+    >
       <template slot-scope="scope">
-        <el-input v-model="scope.row.definition"></el-input>
+        <el-input size="mini" v-model="scope.row.definition"></el-input>
       </template>
     </el-table-column>
   </el-table>
