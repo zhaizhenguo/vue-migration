@@ -272,6 +272,9 @@ export default {
         .catch(() => {});
     },
   },
+  activated() {
+    this.doLayout();
+  },
   mounted() {
     this.refreshPageRequest(1);
   },

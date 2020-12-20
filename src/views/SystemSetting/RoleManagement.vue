@@ -61,6 +61,7 @@ import api from "@/components/Asset/Api";
 import DialogRole from "@/views/Dialog/DialogRole";
 
 export default {
+  name: "RoleManagement",
   components: {
     StButton: StButton,
     StTable: StTable,
@@ -169,7 +170,6 @@ export default {
     },
   },
   mounted() {
-    // this.findDeptTree();
     this.initColumns();
   },
 };

@@ -24,7 +24,7 @@ const router = new Router({
         {
             path: "/home",
             name: "home",
-            redirect: "home",
+            // redirect: "home",
             component: home,
             children: [
                 {
@@ -37,15 +37,20 @@ const router = new Router({
                     name: "migrationHistory",
                     component: migrationHistory
                 },
-                {
-                    path: "/roleManagement",
-                    name: "roleManagement",
-                    component: roleManagement,
-                },
+                // {
+                //     path: "/roleManagement",
+                //     name: "roleManagement",
+                //     component: roleManagement,
+                // },
                 {
                     path: "/userManagement",
                     name: "userManagement",
                     component: userManagement,
+                },
+                {
+                    path: "/roleManagement",
+                    name: "roleManagement",
+                    component: roleManagement,
                 }
             ]
         }
@@ -54,8 +59,9 @@ const router = new Router({
 router.beforeEach((to, from, next) => {
     // 登录界面登录成功之后，会把用户信息保存在会话
     // 存在时间为会话生命周期，页面关闭即失效。
-    let token = Cookies.get('oscar-token')
-    console.log("token====",token);
+    let token = Cookies.get('oscar-token');
+    console.log("token====", token);
+    console.log("to====", to);
     if (to.path === '/login') {
         if (token) {
             next({ path: '/dataMigration' })
@@ -64,7 +70,7 @@ router.beforeEach((to, from, next) => {
         }
     } else {
         if (token) {
-            console.log("oscar-token!!!!",to.path);
+            console.log("oscar-token!!!!", to.path);
             next()
 
         } else {

@@ -1,10 +1,5 @@
 <template>
-  <el-menu
-    style="height: 100%"
-    :default-active="$route.path"
-    class="el-menu-vertical-demo"
-    @select="handleSelect"
-  >
+  <el-menu style="height: 100%" class="el-menu-vertical-demo">
     <MenuTree
       v-for="item in menuArray"
       :key="item.index"
@@ -33,27 +28,19 @@ export default {
           name: "系统设置",
           children: [
             {
-              icon: "el-icon-view",
-              index: "/roleManagement ",
-              name: "角色管理",
-            },
-            {
               icon: "fa fa-user-circle-o",
               index: "/userManagement",
               name: "用户管理",
+            },
+            {
+              icon: "el-icon-view",
+              index: "/roleManagement",
+              name: "角色管理",
             },
           ],
         },
       ],
     };
   },
-  created() {},
-  methods: {
-    handleSelect(index, indexPath) {
-      //   this.$router.push(index).catch((err) => {});
-      console.log(index, indexPath);
-    },
-  },
 };
 </script>
-<style></style>

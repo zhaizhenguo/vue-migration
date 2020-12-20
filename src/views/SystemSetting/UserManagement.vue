@@ -60,6 +60,7 @@ import api from "@/components/Asset/Api";
 import DialogUser from "@/views/Dialog/DialogUser";
 
 export default {
+  name: "userManagement",
   components: {
     StButton: StButton,
     StTable: StTable,
