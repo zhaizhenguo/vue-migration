@@ -7,6 +7,16 @@ import migrationHistory from "@/views/MigrationHistory/MigrationHistory";
 import userManagement from "@/views/SystemSetting/UserManagement";
 import roleManagement from "@/views/SystemSetting/RoleManagement";
 import Cookies from "js-cookie";
+import NProgress from 'nprogress'
+import 'nprogress/nprogress.css'
+
+NProgress.configure({
+    easing: 'ease',  // 动画方式    
+    speed: 500,  // 递增进度条的速度    
+    showSpinner: true, // 是否显示加载ico    
+    trickleSpeed: 200, // 自动递增间隔    
+    minimum: 0.3 // 初始化时的最小百分比
+});
 
 Vue.use(Router);
 
@@ -57,6 +67,8 @@ const router = new Router({
     ]
 });
 router.beforeEach((to, from, next) => {
+    console.log("NProgress===", NProgress);
+    NProgress.start();
     // 登录界面登录成功之后，会把用户信息保存在会话
     // 存在时间为会话生命周期，页面关闭即失效。
     let token = Cookies.get('oscar-token');
@@ -77,5 +89,9 @@ router.beforeEach((to, from, next) => {
             next({ path: '/login' })
         }
     }
+})
+router.afterEach(() => {
+    // 在即将进入新的页面组件前，关闭掉进度条
+    NProgress.done();
 })
 export default router
