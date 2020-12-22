@@ -115,7 +115,7 @@ export default {
       roleMenuDate: [
         {
           id: "dataMigration",
-          icon: "fa fa-exchange ",
+          icon: "fa fa-exchange",
           index: "/dataMigration",
           name: "数据迁移",
           parentId: "",
