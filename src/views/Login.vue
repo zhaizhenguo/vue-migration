@@ -45,7 +45,7 @@
       <el-col :span="11">
         <el-form-item>
           <img
-            style="width: 100%"
+            style="width: 100%; height: 36px"
             class="pointer"
             :src="loginForm.src"
             @click="refreshCaptcha"
@@ -53,7 +53,6 @@
         </el-form-item>
       </el-col>
     </el-form-item>
-    <!-- <el-checkbox v-model="checked" checked class="remember">记住密码</el-checkbox> -->
     <el-form-item style="width: 100%">
       <el-button type="primary" style="width: 48%" @click.native.prevent="reset"
         >重 置</el-button
@@ -70,24 +69,22 @@
 </template>
 <script>
 import Cookies from "js-cookie";
+import api from "@/components/Asset/Api";
 export default {
   name: "Login",
   data() {
     return {
       loading: false,
       loginForm: {
-        account: "admin",
-        password: "admin",
+        account: "",
+        password: "",
         captcha: "",
-        src: "",
+        src: this.common.baseUrl + "/api/captcha.jpg",
       },
       fieldRules: {
         account: [{ required: true, message: "请输入账号", trigger: "blur" }],
         password: [{ required: true, message: "请输入密码", trigger: "blur" }],
-        // ,
-        // captcha: [
-        //   { required: true, message: '请输入验证码', trigger: 'blur' }
-        // ]
+        captcha: [{ required: true, message: "请输入验证码", trigger: "blur" }],
       },
       checked: true,
     };
@@ -96,19 +93,25 @@ export default {
     login() {
       this.loading = true;
       let userInfo = {
-        account: this.loginForm.account,
+        userName: this.loginForm.userName,
         password: this.loginForm.password,
         captcha: this.loginForm.captcha,
       };
 
+      api.postLogin(userInfo, (response) => {
+        console.log("response===", response);
+      });
+
       Cookies.set("oscar-token", "假装是个token"); // 放置token到Cookie
       sessionStorage.setItem("user", userInfo.account); // 保存用户到本地会话
-      this.$router.push("/dataMigration").catch((err) => {}); // 登录成功，跳转到主页
+      //   this.$router.push("/dataMigration").catch((err) => {}); // 登录成功，跳转到主页
       this.loading = false;
     },
     refreshCaptcha: function () {
+      console.log("this.common.baseUrl===", this.common.baseUrl);
+      console.log("this.common===", this.common);
       this.loginForm.src =
-        this.global.baseUrl + "/captcha.jpg?t=" + new Date().getTime();
+        this.common.baseUrl + "/api/captcha.jpg?t=" + new Date().getTime();
     },
     reset() {
       this.$refs.loginForm.resetFields();
