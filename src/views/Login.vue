@@ -79,7 +79,7 @@ export default {
         account: "",
         password: "",
         captcha: "",
-        src: this.common.baseUrl + "/api/captcha.jpg",
+        src: process.env.API_ROOT + "/captcha.jpg",
       },
       fieldRules: {
         account: [{ required: true, message: "请输入账号", trigger: "blur" }],
@@ -108,10 +108,9 @@ export default {
       this.loading = false;
     },
     refreshCaptcha: function () {
-      console.log("this.common.baseUrl===", this.common.baseUrl);
-      console.log("this.common===", this.common);
       this.loginForm.src =
-        this.common.baseUrl + "/api/captcha.jpg?t=" + new Date().getTime();
+        // this._$common.baseUrl + "/captcha.jpg?t=" + new Date().getTime();
+        process.env.API_ROOT + "/captcha.jpg?t=" + new Date().getTime();
     },
     reset() {
       this.$refs.loginForm.resetFields();

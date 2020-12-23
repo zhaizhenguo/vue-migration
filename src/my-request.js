@@ -3,78 +3,79 @@ import qs from "qs";
 import common from '@/utils/common'
 
 let http = axios.create({
-  withCredentials: true,
-  timeout: 300000
+    withCredentials: true,
+    timeout: 300000
 });
 
-let baseUrl = common.baseUrl;
+// let baseUrl = window.vue._$common.baseUrl;
+let baseUrl = process.env.API_ROOT;
 
 function apiAxios(
-  method,
-  url,
-  params,
-  response,
-  headers,
-  hostName,
-  responseType
+    method,
+    url,
+    params,
+    response,
+    headers,
+    hostName,
+    responseType
 ) {
-  http({
-      method: method,
-      url: hostName === null || hostName === undefined ?
-        baseUrl + url : hostName + url,
-      data: method === "POST" || method === "PUT" ? params : null,
-      params: method === "GET" || method === "DELETE" ? params : null,
-      headers: headers !== undefined && headers != null ? headers : null,
-      responseType: responseType === undefined ? "" : responseType
+    http({
+        method: method,
+        url: hostName === null || hostName === undefined ?
+            baseUrl + url : hostName + url,
+        data: method === "POST" || method === "PUT" ? params : null,
+        params: method === "GET" || method === "DELETE" ? params : null,
+        headers: headers !== undefined && headers != null ? headers : null,
+        responseType: responseType === undefined ? "" : responseType
     })
-    .then(function (res) {
-      if (res === null || res === undefined) {
-        return;
-      }
-      response(res);
-    })
-    .catch(function (err) {
-      response(err.response);
-    });
+        .then(function (res) {
+            if (res === null || res === undefined) {
+                return;
+            }
+            response(res);
+        })
+        .catch(function (err) {
+            response(err.response);
+        });
 }
 export default {
-  get: function (url, params, response, hostName) {
-    let headers = {};
-    let t = "?t=" + new Date().getTime();
-    if (/\?/g.test(url)) {
-      t = "&t=" + new Date().getTime();
+    get: function (url, params, response, hostName) {
+        let headers = {};
+        let t = "?t=" + new Date().getTime();
+        if (/\?/g.test(url)) {
+            t = "&t=" + new Date().getTime();
+        }
+        url = url + t;
+        return apiAxios("GET", url, params, response, headers, hostName);
+    },
+    post: function (url, params, response, hostName) {
+        let headers = {};
+        return apiAxios("POST", url, params, response, headers, hostName);
+    },
+    postRequestBody: function (url, params, response, hostName) {
+        let headers = {
+            "Content-Type": "application/json;charset=UTF-8"
+        };
+        return apiAxios("POST", url, params, response, headers, hostName);
+    },
+    postForm: function (url, params, response, hostName) {
+        let headers = {
+            "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"
+        };
+        let qsparam = qs.stringify(params);
+        return apiAxios("POST", url, qsparam, response, headers, hostName);
+    },
+    getForm: function (url, params, response, hostName) {
+        let headers = {
+            "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"
+        };
+        return apiAxios("GET", url, params, response, headers, hostName);
+    },
+    postRequestForm: function (url, params, response, hostName) {
+        let headers = {
+            "Content-Type": "multipart/form-data;charset=UTF-8"
+        };
+        let qsparam = qs.stringify(params);
+        return apiAxios("POST", url, qsparam, response, headers, hostName);
     }
-    url = url + t;
-    return apiAxios("GET", url, params, response, headers, hostName);
-  },
-  post: function (url, params, response, hostName) {
-    let headers = {};
-    return apiAxios("POST", url, params, response, headers, hostName);
-  },
-  postRequestBody: function (url, params, response, hostName) {
-    let headers = {
-      "Content-Type": "application/json;charset=UTF-8"
-    };
-    return apiAxios("POST", url, params, response, headers, hostName);
-  },
-  postForm: function (url, params, response, hostName) {
-    let headers = {
-      "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"
-    };
-    let qsparam = qs.stringify(params);
-    return apiAxios("POST", url, qsparam, response, headers, hostName);
-  },
-  getForm: function (url, params, response, hostName) {
-    let headers = {
-      "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"
-    };
-    return apiAxios("GET", url, params, response, headers, hostName);
-  },
-  postRequestForm: function (url, params, response, hostName) {
-    let headers = {
-      "Content-Type": "multipart/form-data;charset=UTF-8"
-    };
-    let qsparam = qs.stringify(params);
-    return apiAxios("POST", url, qsparam, response, headers, hostName);
-  }
 };
