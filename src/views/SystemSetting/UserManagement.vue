@@ -32,7 +32,7 @@
     <!--表格内容栏-->
     <st-table
       :height="'calc(80vh - 250px)'"
-      :operationColumnMinWidth="'15%'"
+      :operationColumnMinWidth="'17%'"
       :data="pageResult"
       :columns="filterColumns"
       :showBatchDelete="false"
@@ -86,9 +86,16 @@ export default {
         this.pageRequest = data.pageRequest;
       }
       this.pageRequest.name = this.filters.name;
-      api.postUser(this.pageRequest, (response) => {
-        let resData = this.findTableData(this.pageRequest);
-        this.pageResult = resData.findPageData.data;
+      api.postUserFindPage(this.pageRequest, (response) => {
+        console.log("response===", response);
+        let res = response.data;
+        console.log("res===", res);
+        if (res.code !== 0) {
+          this.$message({ message: "查询失败, " + res.msg, type: "error" });
+        } else {
+          this.pageResult = res.data;
+          console.log("this.pageResult==", this.pageResult);
+        }
         !!data ? data.callback() : "";
       });
     },
@@ -99,7 +106,7 @@ export default {
       this.dialogUserVisible = true;
     },
     btnEditUser(data) {
-      this.userDataForm = data.row;
+      this.userDataForm = Object.assign({}, data.row);
       this.operation = false;
       this.dialogUserVisible = true;
     },
@@ -116,22 +123,21 @@ export default {
     // 处理表格列过滤显示
     initColumns() {
       this.columns = [
-        { prop: "id", label: "ID", minWidth: "5%" },
-        { prop: "name", label: "用户名", minWidth: "12%" },
-        { prop: "roleNames", label: "角色", minWidth: "10%" },
-        { prop: "email", label: "邮箱", minWidth: "12%" },
-        { prop: "mobile", label: "手机", minWidth: "12%" },
+        { prop: "id", label: "ID", minWidth: "6%" },
+        { prop: "name", label: "用户名", minWidth: "13%" },
+        { prop: "email", label: "邮箱", minWidth: "13%" },
+        { prop: "mobile", label: "手机", minWidth: "13%" },
         {
           prop: "status",
           label: "状态",
-          minWidth: "10%",
+          minWidth: "11%",
           formatter: this.userStateFormat,
         },
-        { prop: "createBy", label: "创建人", minWidth: "12%" },
+        { prop: "createBy", label: "创建人", minWidth: "13%" },
         {
           prop: "createTime",
           label: "创建时间",
-          minWidth: "12%",
+          minWidth: "14%",
           formatter: this.dateFormat,
         },
       ];

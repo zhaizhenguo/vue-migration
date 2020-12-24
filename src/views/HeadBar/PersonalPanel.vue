@@ -8,6 +8,9 @@
         <div class="name-role">
           <span>{{ user.role }}</span>
         </div>
+        <div class="name-role">
+          <span>{{ user.registeInfo }}</span>
+        </div>
       </div>
       <div class="personal-footer" @click="changePassword">
         <li class="fa fa-key">修改密码</li>
@@ -60,6 +63,8 @@ export default {
         .then(() => {
           sessionStorage.removeItem("user");
           this.deleteCookie("oscar-token");
+          this._$common = {};
+          console.log("this._$common====", this._$common);
           this.$router.push("/login");
         })
         .catch(() => {});

@@ -12,10 +12,10 @@
       <!-- <lang-selector class="lang-selector"></lang-selector>    -->
     </span>
     <h2 class="title" style="padding-left: 22px">系统登录</h2>
-    <el-form-item prop="account">
+    <el-form-item prop="userName">
       <el-input
         type="text"
-        v-model="loginForm.account"
+        v-model="loginForm.userName"
         auto-complete="off"
         placeholder="账号"
       ></el-input>
@@ -76,13 +76,13 @@ export default {
     return {
       loading: false,
       loginForm: {
-        account: "",
-        password: "",
+        userName: "jsz",
+        password: "123456",
         captcha: "",
         src: process.env.API_ROOT + "/captcha.jpg",
       },
       fieldRules: {
-        account: [{ required: true, message: "请输入账号", trigger: "blur" }],
+        userName: [{ required: true, message: "请输入账号", trigger: "blur" }],
         password: [{ required: true, message: "请输入密码", trigger: "blur" }],
         captcha: [{ required: true, message: "请输入验证码", trigger: "blur" }],
       },
@@ -97,19 +97,38 @@ export default {
         password: this.loginForm.password,
         captcha: this.loginForm.captcha,
       };
+      this.$refs["loginForm"].validate((valid) => {
+        if (valid) {
+          api.postLogin(userInfo, (response) => {
+            console.log("response===", response);
 
-      api.postLogin(userInfo, (response) => {
-        console.log("response===", response);
+            let res = response.data;
+            console.log("res===", res);
+            if (res.code !== 0) {
+              this.$message({ message: "登录失败, " + res.msg, type: "error" });
+              /**登录超时*/
+              if (res.code === -9) {
+                this.refreshCaptcha();
+                this.reset();
+              }
+            } else {
+              this._$common.userId = res.data.userId;
+              this._$common.userName = res.data.userName;
+              this._$common.userRole = res.data.userRole;
+              this._$common.createTime = res.data.createTime;
+              this._$common.token = res.data.token;
+              console.log("this._$common===", this._$common);
+              Cookies.set("oscar-token", res.data.token); // 放置token到Cookie
+              sessionStorage.setItem("user", userInfo.userName); // 保存用户到本地会话
+              this.$router.push("/dataMigration").catch((err) => {}); // 登录成功，跳转到主页
+            }
+          });
+        }
       });
-
-      Cookies.set("oscar-token", "假装是个token"); // 放置token到Cookie
-      sessionStorage.setItem("user", userInfo.account); // 保存用户到本地会话
-      //   this.$router.push("/dataMigration").catch((err) => {}); // 登录成功，跳转到主页
       this.loading = false;
     },
     refreshCaptcha: function () {
       this.loginForm.src =
-        // this._$common.baseUrl + "/captcha.jpg?t=" + new Date().getTime();
         process.env.API_ROOT + "/captcha.jpg?t=" + new Date().getTime();
     },
     reset() {

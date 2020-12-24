@@ -104,14 +104,7 @@ export default {
     dataForm: {
       type: Object,
       default: function () {
-        return {
-          name: "",
-          password: "",
-          email: null,
-          mobile: null,
-          status: 1,
-          userRoles: [],
-        };
+        return {};
       },
     },
   },
@@ -180,17 +173,33 @@ export default {
   methods: {
     // 加载用户角色信息
     findUserRoles: function () {
+      console.log("this.dataForm===-", this.dataForm);
+      let param = { id: this.dataForm.id };
+      console.log("param===-", param);
+      api.postUserFindRolesByUserId(14, (response) => {
+        console.log("response===", response);
+        let res = response.data;
+        if (res.code == 0) {
+          this.roles = res.data;
+        } else {
+          this.$message({
+            message: "用户角色查询失败," + res.msg,
+            type: "error",
+          });
+        }
+      });
+
       this.roles = [
         {
-          value: "admin",
+          value: 0,
           label: "管理员",
         },
         {
-          value: "operation",
+          value: 1,
           label: "运维人员",
         },
         {
-          value: "common",
+          value: 2,
           label: "普通用户",
         },
       ];
@@ -201,30 +210,45 @@ export default {
           this.$confirm("确认提交吗？", "提示", {}).then(() => {
             this.editLoading = true;
             let params = Object.assign({}, this.dataForm);
-            console.log("params====", params);
             let userRoles = [];
             for (let i = 0, len = params.userRoles.length; i < len; i++) {
-              let userRole = {
-                userId: params.id,
-                roleId: params.userRoles[i],
-              };
-              userRoles.push(userRole);
+              userRoles.push(params.userRoles[i]);
             }
             params.userRoles = userRoles;
-            api.postUser(params, (response) => {
-              this.editLoading = false;
-              if (response.code == 200) {
-                this.$message({ message: "操作成功", type: "success" });
-                this.$emit("findPage", null);
-                this.$refs["dataForm"].resetFields();
-                this.close();
-              } else {
-                this.$message({
-                  message: "操作失败, " + response.msg,
-                  type: "error",
-                });
-              }
-            });
+            console.log("params====", params);
+            if (this.operation) {
+              api.postUserSave(params, (response) => {
+                let res = response.data;
+                if (res.code == 0) {
+                  this.$message({ message: "操作成功", type: "success" });
+                  this.$emit("findPage", null);
+                  this.$refs["dataForm"].resetFields();
+                  this.close();
+                } else {
+                  this.$message({
+                    message: "操作失败, " + res.msg,
+                    type: "error",
+                  });
+                }
+              });
+            } else {
+              api.postUserUpdate(params, (response) => {
+                let res = response.data;
+                if (res.code == 0) {
+                  this.$message({ message: "操作成功", type: "success" });
+                  this.$emit("findPage", null);
+                  this.$refs["dataForm"].resetFields();
+                  this.close();
+                } else {
+                  this.$message({
+                    message: "操作失败, " + res.msg,
+                    type: "error",
+                  });
+                }
+              });
+            }
+
+            this.editLoading = false;
           });
         }
       });

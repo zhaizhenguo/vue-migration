@@ -9,6 +9,7 @@
 </template> 
 <script>
 import MenuTree from "@/components/MenuTree";
+import api from "@/components/Asset/Api";
 export default {
   components: {
     MenuTree: MenuTree,
@@ -41,6 +42,14 @@ export default {
         },
       ],
     };
+  },
+  methods: {
+    // findMenutree() {
+    //   api.findMenutree(userInfo, (response) => {});
+    // },
+  },
+  created: function () {
+    // this.findMenutree();
   },
 };
 </script>

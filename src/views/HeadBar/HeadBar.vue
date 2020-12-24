@@ -49,7 +49,6 @@ export default {
     return {
       user: {
         name: "测试用户",
-        avatar: "",
         role: "超级管理员",
         registeInfo: "注册时间：2018-12-20 ",
       },
@@ -59,10 +58,9 @@ export default {
   },
   methods: {},
   mounted() {
-    var user = sessionStorage.getItem("user");
-    if (user) {
-      this.user.name = user;
-    }
+    this.user.name = this._$common.userName;
+    this.user.role = this._$common.userRole;
+    this.user.registeInfo = "注册时间:" + this._$common.createTime;
   },
 };
 </script>
