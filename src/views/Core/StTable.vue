@@ -182,7 +182,7 @@ export default {
     return {
       // 分页信息
       pageRequest: {
-        pageNum: 1,
+        pageNum: 0,
         pageSize: 10,
       },
       loading: false, // 加载标识
@@ -226,7 +226,8 @@ export default {
     },
     // 换页刷新
     refreshPageRequest: function (pageNum) {
-      this.pageRequest.pageNum = pageNum;
+      console.log("pageNum====", pageNum);
+      this.pageRequest.pageNum = pageNum - 1;
       this.findPage();
     },
     //查看
@@ -239,27 +240,26 @@ export default {
     },
     // 删除
     handleDelete: function (index, row) {
-      this.delete(row.id);
+      this.delete(row);
     },
     // 批量删除
     handleBatchDelete: function () {
-      let ids = this.selections.map((item) => item.id).toString();
-      this.delete(ids);
+      this.delete(this.selections.map(item));
     },
     // 删除操作
-    delete: function (ids) {
+    delete: function (params) {
       this.$confirm("确认删除选中记录吗？", "提示", {
         type: "warning",
       })
         .then(() => {
-          let params = [];
-          let idArray = (ids + "").split(",");
-          for (var i = 0; i < idArray.length; i++) {
-            params.push({ id: idArray[i] });
-          }
+          //   let params = [];
+          //   let idArray = (ids + "").split(",");
+          //   for (var i = 0; i < idArray.length; i++) {
+          //     params.push({ id: idArray[i] });
+          //   }
           this.loading = true;
           let callback = (res) => {
-            if (res.code == 200) {
+            if (res.code == 0) {
               this.$message({ message: "删除成功", type: "success" });
               this.findPage();
             } else {

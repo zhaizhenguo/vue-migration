@@ -64,7 +64,6 @@ export default {
           sessionStorage.removeItem("user");
           this.deleteCookie("oscar-token");
           this._$common = {};
-          console.log("this._$common====", this._$common);
           this.$router.push("/login");
         })
         .catch(() => {});

@@ -85,7 +85,9 @@ export default {
       if (!!data) {
         this.pageRequest = data.pageRequest;
       }
-      this.pageRequest.name = this.filters.name;
+      this.pageRequest.columnFilters = {
+        name: { name: "name", value: this.filters.name },
+      };
       api.postUserFindPage(this.pageRequest, (response) => {
         console.log("response===", response);
         let res = response.data;
@@ -110,8 +112,11 @@ export default {
       this.operation = false;
       this.dialogUserVisible = true;
     },
-    handleDelete() {
-      console.log("handleDelete");
+    handleDelete(data) {
+      api.postUserDelete(data.params, (response) => {
+        let res = response.data;
+        data.callback(res);
+      });
     },
     // 时间格式化
     dateFormat(row, column, cellValue, index) {
@@ -128,7 +133,7 @@ export default {
         { prop: "email", label: "邮箱", minWidth: "13%" },
         { prop: "mobile", label: "手机", minWidth: "13%" },
         {
-          prop: "status",
+          prop: "toolUseNum",
           label: "状态",
           minWidth: "11%",
           formatter: this.userStateFormat,
@@ -142,63 +147,16 @@ export default {
         },
       ];
       this.filterColumns = this.columns;
-      //    JSON.parse(JSON.stringify(this.columns));
     },
     userStateFormat(row, column, cellValue, index) {
-      if (row.status === 0) {
+      if (row.toolUseNum !== 0) {
         return "正常";
       } else {
         return "锁定";
       }
     },
-    findTableData(params) {
-      let findPageData = {
-        code: 200,
-        msg: null,
-        data: {},
-      };
-      let pageNum = 1;
-      let pageSize = 8;
-      if (params !== null) {
-        // pageNum = params.pageNum
-      }
-      if (params !== null) {
-        // pageSize = params.pageSize
-      }
-      let content = this.getContent(pageNum, pageSize);
-      findPageData.data.pageNum = pageNum;
-      findPageData.data.pageSize = pageSize;
-      findPageData.data.totalSize = 50;
-      findPageData.data.content = content;
-      return {
-        findPageData,
-      };
-    },
-    getContent(pageNum, pageSize) {
-      let content = [];
-      for (let i = 0; i < pageSize; i++) {
-        let obj = {};
-        let index = (pageNum - 1) * pageSize + i + 1;
-        obj.id = index;
-        obj.name = "翟振国" + index;
-        obj.password = "9ec9750e709";
-        obj.roleNames = "管理员";
-        obj.email = "kitty" + index + "@qq.com";
-        obj.mobile = "18688982323";
-        obj.useNumber = 20;
-        obj.status = 0;
-        obj.userRoles = ["admin"];
-        obj.createBy = "admin";
-        obj.createTime = "2018-08-14 11:11:11";
-        obj.createBy = "admin";
-        obj.createTime = "2018-09-14 12:12:12";
-        content.push(obj);
-      }
-      return content;
-    },
   },
   mounted() {
-    // this.findDeptTree();
     this.initColumns();
   },
 };

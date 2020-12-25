@@ -58,9 +58,9 @@ export default {
   },
   methods: {},
   mounted() {
-    this.user.name = this._$common.userName;
-    this.user.role = this._$common.userRole;
-    this.user.registeInfo = "注册时间:" + this._$common.createTime;
+    this.user.name = sessionStorage.getItem("userName");
+    this.user.role = sessionStorage.getItem("userRole");
+    this.user.registeInfo = "注册时间:" + sessionStorage.getItem("createTime");
   },
 };
 </script>

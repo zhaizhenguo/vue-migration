@@ -80,17 +80,16 @@ export default {
     dataForm: {
       type: Object,
       default: function () {
-        return {
-          name: "",
-          remark: "",
-          userRoles: [],
-        };
+        return {};
       },
     },
   },
   data() {
     var validatePass = (rule, value, callback) => {
-      console.log("this.selectMenuIdList===", this.selectMenuIdList);
+      console.log(
+        "validatePass  this.selectMenuIdList===",
+        this.selectMenuIdList
+      );
       if (!this.selectMenuIdList || this.selectMenuIdList.length == 0) {
         callback(new Error("请选择菜单"));
       } else {
@@ -107,61 +106,49 @@ export default {
         selectMenuIdList: [{ validator: validatePass, trigger: "blur" }],
       },
 
-      selectMenuIdList: ["systemSetting", "roleManagement"],
+      selectMenuIdList: [],
       defaultProps: {
         children: "children",
         label: "name",
       },
-      roleMenuDate: [
-        {
-          id: "dataMigration",
-          icon: "fa fa-exchange",
-          index: "/dataMigration",
-          name: "数据迁移",
-          parentId: "",
-          type: 1,
-        },
-        {
-          id: "migrationHistory",
-          icon: "fa fa-history ",
-          index: "/migrationHistory",
-          name: "迁移历史",
-          parentId: "",
-          type: 1,
-        },
-        {
-          id: "systemSetting",
-          icon: "fa fa-cog",
-          index: "/systemSetting",
-          name: "系统设置",
-          type: 0,
-          parentId: "",
-          children: [
-            {
-              id: "userManagement",
-              icon: "fa fa-user-circle-o",
-              index: "userManagement",
-              name: "用户管理",
-              type: 1,
-              parentId: "systemSetting",
-              parentName: "系统设置",
-            },
-            {
-              id: "roleManagement",
-              icon: "el-icon-view",
-              index: "roleManagement ",
-              name: "角色管理",
-              type: 1,
-              parentId: "systemSetting",
-              parentName: "系统设置",
-            },
-          ],
-        },
-      ],
+      roleMenuDate: [],
     };
   },
   methods: {
-    findUserRoles() {},
+    findMenus() {
+      api.getMenuFindTree(null, (response) => {
+        let res = response.data;
+        console.log("getMenuFindTreeres", res);
+        if (res.code == 0) {
+          this.roleMenuDate = res.data;
+        } else {
+          this.$message({
+            message: "加载菜单失败," + response.msg,
+            type: "error",
+          });
+        }
+      });
+    },
+    findRoleMenus() {
+      let param = { roleId: this.dataForm.id };
+      let resData = [];
+      api.getMenuFindMenuByRoleId(param, (response) => {
+        let res = response.data;
+        if (res.code == 0) {
+          for (let index = 0; index < res.data.length; index++) {
+            resData.push(res.data[index].id);
+          }
+        } else {
+          this.$message({
+            message: "加载菜单失败," + response.msg,
+            type: "error",
+          });
+        }
+      });
+      setTimeout(() => {
+        this.selectMenuIdList = resData;
+      }, 100);
+    },
     handleMenuCheckChange(data, check, subCheck) {
       if (check) {
         // 节点选中时同步选中父节点
@@ -191,30 +178,42 @@ export default {
           this.$confirm("确认提交吗？", "提示", {}).then(() => {
             this.editLoading = true;
             let params = Object.assign({}, this.dataForm);
+            params.roleMenus = this.selectMenuIdList;
             console.log("params====", params);
-            let userRoles = [];
-            for (let i = 0, len = params.userRoles.length; i < len; i++) {
-              let userRole = {
-                userId: params.id,
-                roleId: params.userRoles[i],
-              };
-              userRoles.push(userRole);
+            /**增加*/
+            if (this.operation) {
+              api.postRoleSave(params, (response) => {
+                let res = response.data;
+                if (res.code == 0) {
+                  this.$message({ message: "操作成功", type: "success" });
+                  this.$emit("findPage", null);
+                  this.$refs["dataForm"].resetFields();
+                  this.close();
+                } else {
+                  this.$message({
+                    message: "操作失败, " + res.msg,
+                    type: "error",
+                  });
+                }
+              });
+            } else {
+              /**修改*/
+              api.postRoleUpdate(params, (response) => {
+                let res = response.data;
+                if (res.code == 0) {
+                  this.$message({ message: "操作成功", type: "success" });
+                  this.$emit("findPage", null);
+                  this.$refs["dataForm"].resetFields();
+                  this.close();
+                } else {
+                  this.$message({
+                    message: "操作失败, " + res.msg,
+                    type: "error",
+                  });
+                }
+              });
             }
-            params.userRoles = userRoles;
-            api.postUser(params, (response) => {
-              this.editLoading = false;
-              if (response.code == 200) {
-                this.$message({ message: "操作成功", type: "success" });
-                this.$emit("findPage", null);
-                this.$refs["dataForm"].resetFields();
-                this.close();
-              } else {
-                this.$message({
-                  message: "操作失败, " + response.msg,
-                  type: "error",
-                });
-              }
-            });
+            this.editLoading = false;
           });
         }
       });
@@ -246,7 +245,10 @@ export default {
     },
   },
   mounted() {
-    this.findUserRoles();
+    if (!this.operation) {
+      this.findRoleMenus();
+    }
+    this.findMenus();
   },
 };
 </script>

@@ -125,7 +125,7 @@ export default {
       sumbitLabel: "完成",
       sumbitLoading: false,
       stepDesc: stepDesc,
-      nowProcessStep: 4,
+      nowProcessStep: 0,
       value: "",
       options: [],
       dialogParamConfigVisible: false,
@@ -142,10 +142,6 @@ export default {
   },
   created() {
     window.addEventListener("resize", this.getContentHeight);
-    // api.getShopList({}, response => {
-    //   console.log("getShopList===", response);
-    //   this.options = response.data.content;
-    // });
   },
   beforeDestroy() {
     window.removeEventListener("resize", this.getContentHeight);

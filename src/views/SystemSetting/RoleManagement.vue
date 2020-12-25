@@ -25,7 +25,7 @@
           :size="size"
           :plain="true"
           label="新增"
-          @click="btnAddUser"
+          @click="btnAddRole"
         ></st-button>
       </el-form-item>
     </el-form>
@@ -38,8 +38,8 @@
       :columns="filterColumns"
       :showBatchDelete="false"
       @findPage="findPage"
-      @handleEdit="btnEditUser"
-      @dblClick="btnEditUser"
+      @handleEdit="btnEditRole"
+      @dblClick="btnEditRole"
       @handleDelete="handleDelete"
     >
     </st-table>
@@ -86,26 +86,34 @@ export default {
       if (!!data) {
         this.pageRequest = data.pageRequest;
       }
-      this.pageRequest.name = this.filters.name;
-      api.postUser(this.pageRequest, (response) => {
-        let resData = this.findTableData(this.pageRequest);
-        this.pageResult = resData.findPageData.data;
+      this.pageRequest.columnFilters = {
+        name: { name: "name", value: this.filters.name },
+      };
+      api.postRoleFindPage(this.pageRequest, (response) => {
+        let res = response.data;
+        if (res.code !== 0) {
+          this.$message({ message: "查询失败, " + res.msg, type: "error" });
+        } else {
+          this.pageResult = res.data;
+        }
         !!data ? data.callback() : "";
       });
     },
-
-    btnAddUser() {
+    btnAddRole() {
       this.userDataForm = {};
       this.operation = true;
       this.dialogRoleVisible = true;
     },
-    btnEditUser(data) {
+    btnEditRole(data) {
       this.userDataForm = JSON.parse(JSON.stringify(data.row));
       this.operation = false;
       this.dialogRoleVisible = true;
     },
-    handleDelete() {
-      console.log("handleDelete");
+    handleDelete(data) {
+      api.postRoleDelete(data.params, (response) => {
+        let res = response.data;
+        data.callback(res);
+      });
     },
     // 时间格式化
     dateFormat(row, column, cellValue, index) {
@@ -129,44 +137,6 @@ export default {
         },
       ];
       this.filterColumns = this.columns;
-      //    JSON.parse(JSON.stringify(this.columns));
-    },
-    findTableData(params) {
-      let findPageData = {
-        code: 200,
-        msg: null,
-        data: {},
-      };
-      let pageNum = 1;
-      let pageSize = 8;
-      if (params !== null) {
-        // pageNum = params.pageNum
-      }
-      if (params !== null) {
-        // pageSize = params.pageSize
-      }
-      let content = this.getContent(pageNum, pageSize);
-      findPageData.data.pageNum = pageNum;
-      findPageData.data.pageSize = pageSize;
-      findPageData.data.totalSize = 50;
-      findPageData.data.content = content;
-      return {
-        findPageData,
-      };
-    },
-    getContent(pageNum, pageSize) {
-      let content = [];
-      for (let i = 0; i < 3; i++) {
-        let obj = {};
-        let index = (pageNum - 1) * pageSize + i + 1;
-        obj.id = index;
-        obj.name = "管理员" + index;
-        obj.createBy = "admin";
-        obj.remark = "此用户可展示所有菜单";
-        obj.createTime = "2020-12-14 11:11:11";
-        content.push(obj);
-      }
-      return content;
     },
   },
   mounted() {

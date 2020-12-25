@@ -1,6 +1,7 @@
 import axios from "axios";
 import qs from "qs";
 import Cookies from "js-cookie"
+import router from './router/index.js'
 
 let http = axios.create({
   withCredentials: true,
@@ -12,8 +13,16 @@ let baseUrl = process.env.API_ROOT;
 //请求拦截
 http.interceptors.request.use(function (config) {
   let token = Cookies.get('oscar-token');
+  let userName = sessionStorage.getItem("userName");
+  let url = config.url.toLocaleLowerCase();
   if (!!token) {
     config.headers.Authorization = 'Bearer ' + token;
+  }
+  if (url.indexOf("save") > 0) {
+    config.data.createBy = userName;
+    config.data.laseUpdateBy = userName;
+  } else if (url.indexOf("delete") > 0 || url.indexOf("update") > 0) {
+    config.data.laseUpdateBy = userName;
   }
   return config
 }, function (error) {
@@ -24,13 +33,10 @@ http.interceptors.request.use(function (config) {
 http.interceptors.response.use(function (response) {
   return response
 }, function (error) {
-  console.error("@@@error=======", error);
-  if (error.response.status == 401) {
-    this.$router.push('/login');
-    this.$message({
-      message: "请重新登录",
-      type: "error"
-    });
+  if (error.response.status == 401 || error.response.status == 403) {
+    Cookies.remove("oscar-token");
+    alert("登录超时,请重新登录");
+    router.push('/login');
   }
   return Promise.reject(error)
 });

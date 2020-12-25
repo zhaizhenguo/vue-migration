@@ -46,16 +46,16 @@
         >
           <el-option
             v-for="item in roles"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
+            :key="item.id"
+            :label="item.name"
+            :value="item.id"
           >
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="工具使用次数" prop="useNumber">
+      <el-form-item label="工具使用次数" prop="toolUseNum">
         <el-select
-          v-model="dataForm.useNumber"
+          v-model="dataForm.toolUseNum"
           filterable
           allow-create
           default-first-option
@@ -155,7 +155,7 @@ export default {
         userRoles: [
           { required: true, message: "请选择用户权限", trigger: "blur" },
         ],
-        useNumber: [
+        toolUseNum: [
           {
             required: true,
             message: "请选择或输入工具使用次数",
@@ -173,14 +173,11 @@ export default {
   methods: {
     // 加载用户角色信息
     findUserRoles: function () {
-      console.log("this.dataForm===-", this.dataForm);
       let param = { id: this.dataForm.id };
-      console.log("param===-", param);
-      api.postUserFindRolesByUserId(14, (response) => {
-        console.log("response===", response);
+      api.getUserFindRolesByUserId(param, (response) => {
         let res = response.data;
         if (res.code == 0) {
-          this.roles = res.data;
+          this.dataForm.userRoles = res.data;
         } else {
           this.$message({
             message: "用户角色查询失败," + res.msg,
@@ -188,21 +185,19 @@ export default {
           });
         }
       });
-
-      this.roles = [
-        {
-          value: 0,
-          label: "管理员",
-        },
-        {
-          value: 1,
-          label: "运维人员",
-        },
-        {
-          value: 2,
-          label: "普通用户",
-        },
-      ];
+    },
+    findAllRoles() {
+      api.postRoleFindAll(null, (response) => {
+        let res = response.data;
+        if (res.code == 0) {
+          this.roles = res.data;
+        } else {
+          this.$message({
+            message: "角色查询失败," + res.msg,
+            type: "error",
+          });
+        }
+      });
     },
     submitForm: function () {
       this.$refs.dataForm.validate((valid) => {
@@ -210,11 +205,7 @@ export default {
           this.$confirm("确认提交吗？", "提示", {}).then(() => {
             this.editLoading = true;
             let params = Object.assign({}, this.dataForm);
-            let userRoles = [];
-            for (let i = 0, len = params.userRoles.length; i < len; i++) {
-              userRoles.push(params.userRoles[i]);
-            }
-            params.userRoles = userRoles;
+            params.userRoles = this.dataForm.userRoles;
             console.log("params====", params);
             if (this.operation) {
               api.postUserSave(params, (response) => {
@@ -257,8 +248,12 @@ export default {
       this.$emit("closeDialogUserVisible");
     },
   },
-  mounted() {
-    this.findUserRoles();
+  created() {
+    if (!this.operation) {
+      this.findUserRoles();
+    }
+    this.findAllRoles();
   },
+  mounted() {},
 };
 </script>

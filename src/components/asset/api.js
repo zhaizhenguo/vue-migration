@@ -5,7 +5,7 @@ export default {
   postFindMenuTree(params, response, hostName) {
     window.vue._$request.post("/menu/findTree", params, response, hostName);
   },
-  /**用户管理START*/
+  /*用户管理*/
   postUserSave(params, response, hostName) {
     window.vue._$request.post("/user/save", params, response, hostName);
   },
@@ -18,14 +18,43 @@ export default {
   postUserFindPage(params, response, hostName) {
     window.vue._$request.post("/user/findPage", params, response, hostName);
   },
-  postUserFindPageByName(params, response, hostName) {
-    window.vue._$request.post("/user/findPageByName", params, response, hostName);
+  getUserFindRolesByUserId(params, response, hostName) {
+    window.vue._$request.get("/user/findRolesByUserId", params, response, hostName);
   },
-  postUserFindRolesByUserId(params, response, hostName) {
-    window.vue._$request.post("/user/findRolesByUserId", params, response, hostName);
-  },
-  /**用户管理END*/
+  /*用户管理*/
 
+  /*角色管理-start*/
+  postRoleSave(params, response, hostName) {
+    window.vue._$request.post("/role/save", params, response, hostName);
+  },
+  postRoleDelete(params, response, hostName) {
+    window.vue._$request.post("/role/delete", params, response, hostName);
+  },
+  postRoleUpdate(params, response, hostName) {
+    window.vue._$request.post("/role/update", params, response, hostName);
+  },
+  postRoleFindPage(params, response, hostName) {
+    window.vue._$request.post("/role/findPage", params, response, hostName);
+  },
+  postRoleFindMenusByRoleId(params, response, hostName) {
+    window.vue._$request.postForm("/role/findMenusByRoleId", params, response, hostName);
+  },
+  postRoleFindAll(params, response, hostName) {
+    window.vue._$request.post("/role/findAll", params, response, hostName);
+  },
+  /*角色管理-end*/
+
+  /*菜单管理-start*/
+  getMenuFindTree(params, response, hostName) {
+    window.vue._$request.get("/menu/findTree", params, response, hostName);
+  },
+  getMenuFindMenuByUserId(params, response, hostName) {
+    window.vue._$request.get("/menu/findMenuByUserId", params, response, hostName);
+  },
+  getMenuFindMenuByRoleId(params, response, hostName) {
+    window.vue._$request.get("/menu/findMenuByRoleId", params, response, hostName);
+  },
+  /*菜单管理-end*/
   getShopList(params, response, hostName) {
     window.vue._$request.get("api/getShopList", params, response, hostName);
   },

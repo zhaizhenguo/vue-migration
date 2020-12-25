@@ -100,10 +100,7 @@ export default {
       this.$refs["loginForm"].validate((valid) => {
         if (valid) {
           api.postLogin(userInfo, (response) => {
-            console.log("response===", response);
-
             let res = response.data;
-            console.log("res===", res);
             if (res.code !== 0) {
               this.$message({ message: "登录失败, " + res.msg, type: "error" });
               /**登录超时*/
@@ -112,20 +109,27 @@ export default {
                 this.reset();
               }
             } else {
-              this._$common.userId = res.data.userId;
-              this._$common.userName = res.data.userName;
-              this._$common.userRole = res.data.userRole;
-              this._$common.createTime = res.data.createTime;
-              this._$common.token = res.data.token;
-              console.log("this._$common===", this._$common);
-              Cookies.set("oscar-token", res.data.token); // 放置token到Cookie
-              sessionStorage.setItem("user", userInfo.userName); // 保存用户到本地会话
-              this.$router.push("/dataMigration").catch((err) => {}); // 登录成功，跳转到主页
+              /**放置token到Cookie*/
+              Cookies.set("oscar-token", res.data.token);
+              /**保存用户到本地会话*/
+              console.log("res.data====", res.data);
+              sessionStorage.setItem("userRole", res.data.userRole);
+              sessionStorage.setItem("userName", res.data.userName);
+              sessionStorage.setItem("createTime", res.data.createTime);
+              console.log("sessionStorage====", sessionStorage);
+              /**登录成功跳转到主页 */
+              this.$router.push("/dataMigration").catch((err) => {});
             }
           });
         }
       });
       this.loading = false;
+    },
+    keyDown(e) {
+      //如果是回车则执行登录方法
+      if (e.keyCode == 13) {
+        this.login();
+      }
     },
     refreshCaptcha: function () {
       this.loginForm.src =
@@ -134,6 +138,12 @@ export default {
     reset() {
       this.$refs.loginForm.resetFields();
     },
+  },
+  mounted() {
+    window.addEventListener("keydown", this.keyDown);
+  },
+  destroyed() {
+    window.removeEventListener("keydown", this.keyDown, false);
   },
 };
 </script>
