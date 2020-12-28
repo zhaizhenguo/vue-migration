@@ -196,7 +196,6 @@ export default {
       console.log("分页");
       let callback = (res) => {
         console.log("分页callback");
-        this.doLayout();
         this.loading = false;
       };
 

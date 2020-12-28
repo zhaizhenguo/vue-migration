@@ -88,7 +88,7 @@ export default {
       this.pageRequest.columnFilters = {
         name: { name: "name", value: this.filters.name },
       };
-      api.postUserFindPage(this.pageRequest, (response) => {
+      api.usr.findPage(this.pageRequest, (response) => {
         console.log("response===", response);
         let res = response.data;
         console.log("res===", res);
@@ -113,7 +113,7 @@ export default {
       this.dialogUserVisible = true;
     },
     handleDelete(data) {
-      api.postUserDelete(data.params, (response) => {
+      api.user.delete(data.params, (response) => {
         let res = response.data;
         data.callback(res);
       });

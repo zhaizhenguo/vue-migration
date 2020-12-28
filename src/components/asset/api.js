@@ -1,27 +1,30 @@
 export default {
+
+
   postLogin(params, response, hostName) {
     window.vue._$request.post("/login", params, response, hostName);
   },
-  postFindMenuTree(params, response, hostName) {
-    window.vue._$request.post("/menu/findTree", params, response, hostName);
-  },
   /*用户管理*/
-  postUserSave(params, response, hostName) {
-    window.vue._$request.post("/user/save", params, response, hostName);
+  user: {
+    save(params, response, hostName) {
+      window.vue._$request.post("/user/save", params, response, hostName);
+    },
+    delete(params, response, hostName) {
+      window.vue._$request.post("/user/delete", params, response, hostName);
+    },
+    update(params, response, hostName) {
+      window.vue._$request.post("/user/update", params, response, hostName);
+    },
+    findPage(params, response, hostName) {
+      window.vue._$request.post("/user/findPage", params, response, hostName);
+    },
+    findRolesByUserId(params, response, hostName) {
+      window.vue._$request.get("/user/findRolesByUserId", params, response, hostName);
+    },
+    updatePassword(params, response, hostName) {
+      window.vue._$request.post("/user/updatePassword", params, response, hostName);
+    },
   },
-  postUserDelete(params, response, hostName) {
-    window.vue._$request.post("/user/delete", params, response, hostName);
-  },
-  postUserUpdate(params, response, hostName) {
-    window.vue._$request.post("/user/update", params, response, hostName);
-  },
-  postUserFindPage(params, response, hostName) {
-    window.vue._$request.post("/user/findPage", params, response, hostName);
-  },
-  getUserFindRolesByUserId(params, response, hostName) {
-    window.vue._$request.get("/user/findRolesByUserId", params, response, hostName);
-  },
-  /*用户管理*/
 
   /*角色管理-start*/
   postRoleSave(params, response, hostName) {
@@ -45,8 +48,10 @@ export default {
   /*角色管理-end*/
 
   /*菜单管理-start*/
-  getMenuFindTree(params, response, hostName) {
-    window.vue._$request.get("/menu/findTree", params, response, hostName);
+  menu: {
+    findTree(params, response, hostName) {
+      window.vue._$request.get("/menu/findTree", params, response, hostName);
+    },
   },
   getMenuFindMenuByUserId(params, response, hostName) {
     window.vue._$request.get("/menu/findMenuByUserId", params, response, hostName);

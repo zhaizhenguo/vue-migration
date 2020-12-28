@@ -174,7 +174,7 @@ export default {
     // 加载用户角色信息
     findUserRoles: function () {
       let param = { id: this.dataForm.id };
-      api.getUserFindRolesByUserId(param, (response) => {
+      api.user.findRolesByUserId(param, (response) => {
         let res = response.data;
         if (res.code == 0) {
           this.dataForm.userRoles = res.data;
@@ -208,7 +208,7 @@ export default {
             params.userRoles = this.dataForm.userRoles;
             console.log("params====", params);
             if (this.operation) {
-              api.postUserSave(params, (response) => {
+              api.user.save(params, (response) => {
                 let res = response.data;
                 if (res.code == 0) {
                   this.$message({ message: "操作成功", type: "success" });
@@ -223,7 +223,7 @@ export default {
                 }
               });
             } else {
-              api.postUserUpdate(params, (response) => {
+              api.user.update(params, (response) => {
                 let res = response.data;
                 if (res.code == 0) {
                   this.$message({ message: "操作成功", type: "success" });

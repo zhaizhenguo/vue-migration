@@ -116,9 +116,8 @@ export default {
   },
   methods: {
     findMenus() {
-      api.getMenuFindTree(null, (response) => {
+      api.menu.findTree(null, (response) => {
         let res = response.data;
-        console.log("getMenuFindTreeres", res);
         if (res.code == 0) {
           this.roleMenuDate = res.data;
         } else {

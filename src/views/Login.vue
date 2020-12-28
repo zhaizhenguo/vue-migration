@@ -76,7 +76,7 @@ export default {
     return {
       loading: false,
       loginForm: {
-        userName: "jsz",
+        userName: "admin",
         password: "123456",
         captcha: "",
         src: process.env.API_ROOT + "/captcha.jpg",
@@ -114,6 +114,7 @@ export default {
               /**保存用户到本地会话*/
               console.log("res.data====", res.data);
               sessionStorage.setItem("userRole", res.data.userRole);
+              sessionStorage.setItem("userId", res.data.userId);
               sessionStorage.setItem("userName", res.data.userName);
               sessionStorage.setItem("createTime", res.data.createTime);
               console.log("sessionStorage====", sessionStorage);

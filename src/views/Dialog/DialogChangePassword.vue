@@ -43,6 +43,7 @@
   </el-dialog>
 </template>
 <script>
+import api from "@/components/Asset/Api";
 export default {
   props: {
     dialogChangePasswordVisible: {
@@ -101,9 +102,21 @@ export default {
     submitForm() {
       this.$refs["psdData"].validate((valid) => {
         if (valid) {
-          alert("submit!");
+          let params = {};
+          params.id = sessionStorage.getItem("userId");
+          params.oldPassword = this.psdData.oldPassword;
+          params.newPassword = this.psdData.newPassword;
+          api.user.updatePassword(params, (response) => {
+            let res = response.data;
+            if (res.code == 0) {
+              this.$message({ message: "操作成功", type: "success" });
+              //清空用户信息
+              this.$emit("clearUserInfo");
+            } else {
+              this.$message({ message: "操作失败, " + res.msg, type: "error" });
+            }
+          });
         } else {
-          console.log("error submit!!");
           return false;
         }
       });

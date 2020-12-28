@@ -1,10 +1,6 @@
 <template>
   <el-menu style="height: 100%" class="el-menu-vertical-demo">
-    <MenuTree
-      v-for="item in menuArray"
-      :key="item.index"
-      :menu="item"
-    ></MenuTree>
+    <MenuTree v-for="item in navTree" :key="item.url" :menu="item"></MenuTree>
   </el-menu>
 </template> 
 <script>
@@ -14,42 +10,45 @@ export default {
   components: {
     MenuTree: MenuTree,
   },
+  //   computed: {
+  //     navTree() {
+  //       console.log(
+  //         "!!window.vue._$common.navTree===",
+  //         window.vue._$common.navTree
+  //       );
+  //       return window.vue._$common.navTree;
+  //     },
+  //   },
+  //   watch: {
+  //     navTree: {
+  //       handler(newVal) {
+  //         console.log("newVal=======", newVal);
+  //       },
+  //       deep: true,
+  //     },
+  //   },
   data() {
     return {
-      menuArray: [
-        { icon: "fa fa-exchange ", index: "/dataMigration", name: "数据迁移" },
-        {
-          icon: "fa fa-history ",
-          index: "/migrationHistory",
-          name: "迁移历史",
-        },
-        {
-          icon: "fa fa-cog",
-          index: "/systemSetting",
-          name: "系统设置",
-          children: [
-            {
-              icon: "fa fa-user-circle-o",
-              index: "/userManagement",
-              name: "用户管理",
-            },
-            {
-              icon: "el-icon-view",
-              index: "/roleManagement",
-              name: "角色管理",
-            },
-          ],
-        },
-      ],
+      navTree: null,
     };
   },
   methods: {
-    // findMenutree() {
-    //   api.findMenutree(userInfo, (response) => {});
-    // },
+    findMenutree() {
+      api.menu.findTree(
+        {
+          userId: sessionStorage.getItem("userId"),
+        },
+        (Response) => {
+          let res = Response.data;
+          if (res.code == 0) {
+            this.navTree = res.data;
+          }
+        }
+      );
+    },
   },
   created: function () {
-    // this.findMenutree();
+    this.findMenutree();
   },
 };
 </script>

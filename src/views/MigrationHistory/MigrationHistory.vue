@@ -161,7 +161,6 @@ export default {
         console.log("pageResult", this.pageResult);
         !!data ? data.callback() : "";
       });
-      this.$refs.table.doLayout();
     },
 
     initColumns() {

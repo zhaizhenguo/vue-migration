@@ -23,6 +23,7 @@
     <DialogChangePassword
       v-if="dialogChangePasswordVisible"
       :dialogChangePasswordVisible="dialogChangePasswordVisible"
+      @clearUserInfo="clearUserInfo"
       @closeDialogChangePassword="closeDialogChangePassword"
     ></DialogChangePassword>
   </div>
@@ -57,20 +58,22 @@ export default {
     },
     // 退出登录
     logout: function () {
+      console.log("this===", this);
+      console.log("this._$common===", this._$common);
       this.$confirm("确认退出吗?", "提示", {
         type: "warning",
       })
         .then(() => {
-          sessionStorage.removeItem("user");
-          this.deleteCookie("oscar-token");
-          this._$common = {};
-          this.$router.push("/login");
+          this.clearUserInfo();
         })
         .catch(() => {});
     },
-    // 删除cookie
-    deleteCookie: function (name) {
-      Cookies.remove(name);
+    // 清空用户信息
+    clearUserInfo: function (name) {
+      Cookies.remove("oscar-token");
+      sessionStorage.removeItem("user");
+      window.vue._$common = {};
+      this.$router.push("/login");
     },
     closeDialogChangePassword() {
       this.dialogChangePasswordVisible = false;

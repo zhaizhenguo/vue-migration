@@ -7,7 +7,7 @@ import router from "@/router";
 import common from '@/utils/common'
 import request from "@/my-request";
 
-console.log(process.env.API_ROOT);
+
 Vue.use(ElementUI, {
   size: "small",
   zIndex: 3000

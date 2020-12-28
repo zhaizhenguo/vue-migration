@@ -1,7 +1,7 @@
 <template>
   <el-submenu
     v-if="menu.children && menu.children.length >= 1"
-    :index="'' + menu.index"
+    :index="'' + menu.url"
   >
     <template slot="title">
       <i :class="menu.icon" class="menuIcon"></i>
@@ -9,11 +9,11 @@
     </template>
     <MenuTree
       v-for="item in menu.children"
-      :key="item.index"
+      :key="item.url"
       :menu="item"
     ></MenuTree>
   </el-submenu>
-  <el-menu-item v-else :index="'' + menu.index" @click="handleRoute(menu)">
+  <el-menu-item v-else :index="'' + menu.url" @click="handleRoute(menu)">
     <i :class="menu.icon" class="menuIcon"></i>
     <span slot="title">{{ menu.name }}</span>
   </el-menu-item>
@@ -31,7 +31,7 @@ export default {
   methods: {
     handleRoute(menu) {
       // 通过菜单URL跳转至指定路由
-      this.$router.push(menu.index).catch((err) => {});
+      this.$router.push(menu.url).catch((err) => {});
     },
   },
 };
