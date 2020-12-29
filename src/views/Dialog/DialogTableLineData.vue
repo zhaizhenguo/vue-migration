@@ -134,7 +134,6 @@ export default {
     },
     initData() {
       if (this.singleTableResourceData.isSelectAllLineRow) {
-        console.log("调用全选方法");
         this.$nextTick(() => {
           this.$refs[this.activeName][0].selectAllRow();
         });
@@ -142,9 +141,7 @@ export default {
         this.$emit("setTableResourceData", this);
       }
     },
-    handleEdit(index, row) {
-      console.log(index, row);
-    },
+    handleEdit(index, row) {},
     getTableResourceData(key, value) {
       this.singleTableResourceData.isSelectAllLineRow = false;
       this.$emit("getTableResourceData", key, value, this.tableName);
@@ -153,8 +150,6 @@ export default {
       this.$emit("setTableResourceData", this);
     },
     selectRow(rows) {
-      console.log("this.$refs====", this.$refs);
-      console.log("this.activeName====", this.activeName);
       if (!rows) {
         return;
       }
@@ -164,7 +159,6 @@ export default {
     },
   },
   created() {
-    console.log("初始化！！！");
     this.initData();
   },
 };

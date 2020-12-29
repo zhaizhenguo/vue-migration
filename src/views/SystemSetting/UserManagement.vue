@@ -88,15 +88,12 @@ export default {
       this.pageRequest.columnFilters = {
         name: { name: "name", value: this.filters.name },
       };
-      api.usr.findPage(this.pageRequest, (response) => {
-        console.log("response===", response);
+      api.user.findPage(this.pageRequest, (response) => {
         let res = response.data;
-        console.log("res===", res);
         if (res.code !== 0) {
           this.$message({ message: "查询失败, " + res.msg, type: "error" });
         } else {
           this.pageResult = res.data;
-          console.log("this.pageResult==", this.pageResult);
         }
         !!data ? data.callback() : "";
       });

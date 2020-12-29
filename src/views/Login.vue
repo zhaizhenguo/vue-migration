@@ -7,10 +7,6 @@
     label-width="0px"
     class="demo-ruleForm login-container"
   >
-    <span class="tool-bar">
-      <!-- 语言切换 -->
-      <!-- <lang-selector class="lang-selector"></lang-selector>    -->
-    </span>
     <h2 class="title" style="padding-left: 22px">系统登录</h2>
     <el-form-item prop="userName">
       <el-input
@@ -70,11 +66,13 @@
 <script>
 import Cookies from "js-cookie";
 import api from "@/components/Asset/Api";
+import { getEncrypt } from "@/utils/rsaUtil";
 export default {
   name: "Login",
   data() {
     return {
       loading: false,
+      publicKey: null,
       loginForm: {
         userName: "admin",
         password: "123456",
@@ -90,6 +88,20 @@ export default {
     };
   },
   methods: {
+    getPublicKey() {
+      api.getPublicKey(null, (response) => {
+        let res = response.data;
+        if (res.code == 0) {
+          this.publicKey = res.data;
+        }
+      });
+    },
+    // 加密
+    // getEncrypt(data) {
+    //   let encrypt = new JSEncrypt();
+    //   encrypt.setPublicKey(this.publicKey);
+    //   return encrypt.encrypt(data);
+    // },
     login() {
       this.loading = true;
       let userInfo = {
@@ -97,9 +109,14 @@ export default {
         password: this.loginForm.password,
         captcha: this.loginForm.captcha,
       };
+
       this.$refs["loginForm"].validate((valid) => {
         if (valid) {
-          api.postLogin(userInfo, (response) => {
+          userInfo.password = getEncrypt(
+            this.loginForm.password,
+            this.publicKey
+          );
+          api.login(userInfo, (response) => {
             let res = response.data;
             if (res.code !== 0) {
               this.$message({ message: "登录失败, " + res.msg, type: "error" });
@@ -112,12 +129,10 @@ export default {
               /**放置token到Cookie*/
               Cookies.set("oscar-token", res.data.token);
               /**保存用户到本地会话*/
-              console.log("res.data====", res.data);
               sessionStorage.setItem("userRole", res.data.userRole);
               sessionStorage.setItem("userId", res.data.userId);
               sessionStorage.setItem("userName", res.data.userName);
               sessionStorage.setItem("createTime", res.data.createTime);
-              console.log("sessionStorage====", sessionStorage);
               /**登录成功跳转到主页 */
               this.$router.push("/dataMigration").catch((err) => {});
             }
@@ -142,6 +157,7 @@ export default {
   },
   mounted() {
     window.addEventListener("keydown", this.keyDown);
+    this.getPublicKey();
   },
   destroyed() {
     window.removeEventListener("keydown", this.keyDown, false);

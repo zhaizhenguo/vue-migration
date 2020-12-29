@@ -44,9 +44,7 @@ export default {
   },
   methods: {
     initData(sourceData) {},
-    handleClick(tab, event) {
-      console.log(this.getParam());
-    },
+    handleClick(tab, event) {},
     getData() {
       return this.getParam();
     },
@@ -54,7 +52,6 @@ export default {
       let migrationParams = this.$refs.migrationParams.getData();
       let performanceParams = this.$refs.performanceParams.getData();
       let monitoringParams = this.$refs.monitoringParams.getData();
-      console.log("migrationParams===", migrationParams);
       if (migrationParams && performanceParams && monitoringParams) {
         return { migrationParams, performanceParams, monitoringParams };
       }

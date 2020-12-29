@@ -76,20 +76,12 @@ export default {
       get() {
         return this.dialogPointDriverVisible;
       },
-      set(v) {
-        // this.countData = v;
-      },
+      set(v) {},
     },
   },
-  created() {
-    // console.log("dialogPointDriverVisible===", this.dialogPointDriverVisible);
-  },
+  created() {},
   methods: {
     closePointDriver(isSure) {
-      //   if (typeof isSure === "function") {
-      //     isSure();
-      //     return;
-      //   }
       if (!isSure) {
         this.$emit("closePointDriver");
       }
@@ -106,7 +98,6 @@ export default {
     },
     getParam() {
       return {
-        // driverUrl: this.form.driverUrl,
         driverClass: this.form.driverClass,
         url: this.form.url,
       };

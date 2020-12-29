@@ -70,7 +70,6 @@ router.beforeEach((to, from, next) => {
   let userId = sessionStorage.getItem('userId');
   if (to.path === '/login') {
     if (token) {
-      console.log("/login===to.path======", to.path);
       next({
         path: '/dataMigration'
       })
@@ -79,7 +78,6 @@ router.beforeEach((to, from, next) => {
     }
   } else {
     if (token) {
-      console.log("to.path======", to.path);
       // 加载动态菜单和路由
       addDynamicMenuAndRoutes(userId, to, from)
       next()
@@ -106,7 +104,6 @@ function addDynamicMenuAndRoutes(userId, to, from) {
     if (res.code == 0) {
       // 添加动态路由
       let dynamicRoutes = addDynamicRoutes(res.data)
-      console.log("dynamicRoutes==", dynamicRoutes)
       //   // 处理静态组件绑定路由
       //   handleStaticComponent(router, dynamicRoutes)
       //   router.addRoutes(router.options.routes)

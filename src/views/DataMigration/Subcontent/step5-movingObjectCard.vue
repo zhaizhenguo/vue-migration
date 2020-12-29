@@ -65,9 +65,7 @@ export default {
     return {};
   },
   methods: {
-    initData() {
-      console.log("this.tableData====", this.tableData);
-    },
+    initData() {},
   },
   computed: {
     operationType() {

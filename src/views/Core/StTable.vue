@@ -193,9 +193,7 @@ export default {
     // 分页查询
     findPage: function () {
       this.loading = true;
-      console.log("分页");
       let callback = (res) => {
-        console.log("分页callback");
         this.loading = false;
       };
 
@@ -225,7 +223,6 @@ export default {
     },
     // 换页刷新
     refreshPageRequest: function (pageNum) {
-      console.log("pageNum====", pageNum);
       this.pageRequest.pageNum = pageNum - 1;
       this.findPage();
     },

@@ -86,10 +86,6 @@ export default {
   },
   data() {
     var validatePass = (rule, value, callback) => {
-      console.log(
-        "validatePass  this.selectMenuIdList===",
-        this.selectMenuIdList
-      );
       if (!this.selectMenuIdList || this.selectMenuIdList.length == 0) {
         callback(new Error("请选择菜单"));
       } else {
@@ -159,7 +155,6 @@ export default {
         this.$refs.menuTree.setChecked(parentId, true, false);
       } else {
         let index11 = this.selectMenuIdList.indexOf(data.id);
-        console.log("index11====", index11);
         if (index11 >= 0) {
           this.selectMenuIdList.splice(index11, 1);
         }
@@ -178,7 +173,6 @@ export default {
             this.editLoading = true;
             let params = Object.assign({}, this.dataForm);
             params.roleMenus = this.selectMenuIdList;
-            console.log("params====", params);
             /**增加*/
             if (this.operation) {
               api.postRoleSave(params, (response) => {

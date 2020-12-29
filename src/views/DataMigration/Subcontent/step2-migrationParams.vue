@@ -61,9 +61,7 @@ export default {
         lengthUnit: this.migrationParams.lengthUnit,
       };
     },
-    handleCheckedCitiesChange(value) {
-      console.log("migrationParams======", this.getParam());
-    },
+    handleCheckedCitiesChange(value) {},
     btnclickReset() {
       this.migrationParams = this.$options.data().migrationParams;
     },

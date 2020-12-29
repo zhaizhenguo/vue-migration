@@ -10,23 +10,6 @@ export default {
   components: {
     MenuTree: MenuTree,
   },
-  //   computed: {
-  //     navTree() {
-  //       console.log(
-  //         "!!window.vue._$common.navTree===",
-  //         window.vue._$common.navTree
-  //       );
-  //       return window.vue._$common.navTree;
-  //     },
-  //   },
-  //   watch: {
-  //     navTree: {
-  //       handler(newVal) {
-  //         console.log("newVal=======", newVal);
-  //       },
-  //       deep: true,
-  //     },
-  //   },
   data() {
     return {
       navTree: null,

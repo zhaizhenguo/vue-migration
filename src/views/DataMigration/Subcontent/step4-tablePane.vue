@@ -235,7 +235,6 @@ export default {
       rows.forEach((row) => {
         tableRef.toggleRowSelection(row, true);
       });
-      console.log("this.$refs.table.selection====", this.$refs.table.selection);
     },
     selectAll(selection) {
       this.$emit("getSelectPaneData", "table", selection);
@@ -257,17 +256,13 @@ export default {
       this.singleTableResourceData = this.tableResourceData[
         this.checkSourcePattern
       ][this.tableName];
-      console.log(
-        "this.singleTableResourceData==",
-        this.singleTableResourceData
-      );
       this.dialogTableLineDataVisible = true;
     },
     closeTableLineDialog() {
       this.dialogTableLineDataVisible = false;
     },
     getSqlData(data) {
-      console.log("parent==========", data);
+      "parent==========", data;
     },
     getData() {
       return {

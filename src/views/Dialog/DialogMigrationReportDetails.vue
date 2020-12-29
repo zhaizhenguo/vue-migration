@@ -43,11 +43,9 @@ export default {
   created() {},
   methods: {
     queryMigrationReportData() {
-      console.log("migrationQueryData", this.migrationQueryData);
       api.postPay({}, (response) => {
         this.migrationData = this.migrationDataJson;
         this.tableData = this.migrationDataJson.content;
-        console.log("response===", response);
 
         this.$message({
           message: "查询成功",
@@ -55,9 +53,7 @@ export default {
         });
       });
     },
-    clickDataInfo(row) {
-      console.log("row === ", row);
-    },
+    clickDataInfo(row) {},
     close() {
       this.$emit("closeDialogMigrationReport");
     },

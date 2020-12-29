@@ -185,9 +185,6 @@ export default {
       setTimeout(() => {
         this.tableData[0].schedule.percentage = 100;
         this.tableData[0].schedule.status = "success";
-        let aa = { aa: "ss" };
-        let params = Object.assign({}, aa);
-        console.log(aa === params);
       }, 1000);
       setTimeout(() => {
         this.tableData[1].schedule.percentage = 90;

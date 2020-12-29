@@ -107,13 +107,6 @@ export default {
         this.selectPatternNameList.push(this.checkSourcePattern);
       }
       this.selectPatternData[this.checkSourcePattern][key] = value;
-
-      console.log("key====", key);
-      console.log("value====", value);
-
-      console.log("this.selectPatternNameList====", this.selectPatternNameList);
-      console.log("this.selectTableNameList====", this.selectTableNameList);
-      console.log("this.selectPatternData====", this.selectPatternData);
       if (key === "table") {
         this.selectTableNameList[this.checkSourcePattern] = [];
         value.forEach((element) => {
@@ -126,9 +119,7 @@ export default {
     setSelectPaneData() {
       this.selectRow =
         this.selectPatternData[this.checkSourcePattern][this.activeName] || [];
-      console.log("setSelectPaneData  selectRow===", this.selectRow);
       let paneIndex = this.commonPaneNameList.indexOf(this.activeName);
-      console.log("setSelectPaneData  paneIndex===", paneIndex);
       if (paneIndex === -1) {
         this.$refs[this.activeName].selectRow(this.selectRow);
       } else {
@@ -142,10 +133,6 @@ export default {
       this.selectPatternData[this.checkSourcePattern]["table"][index][
         key
       ] = value;
-      console.log(
-        "getTableResourceData  this.selectPatternData====",
-        this.selectPatternData
-      );
     },
     setTableResourceData(dialogTableLineObj) {
       let index = this.selectTableNameList[this.checkSourcePattern].indexOf(

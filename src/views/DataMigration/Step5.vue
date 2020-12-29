@@ -51,7 +51,6 @@ export default {
       ) {
         this.targetPatternName = this.stepData.patternParam.checkConstraintMigrate;
       }
-      console.log("this.targetPatternName===", this.targetPatternName);
       this.allTableData = [];
       this.stepData.patternNameList.forEach((element) => {
         let tableData = this.stepData.patternData[element]["table"];
@@ -59,7 +58,6 @@ export default {
           this.allTableData = this.allTableData.concat(tableData);
         }
       });
-      console.log("allTableData=====", this.allTableData);
 
       this.$refs.databaseCard.initData(this.stepData.databaseData);
     },

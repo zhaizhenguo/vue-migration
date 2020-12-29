@@ -206,7 +206,6 @@ export default {
             this.editLoading = true;
             let params = Object.assign({}, this.dataForm);
             params.userRoles = this.dataForm.userRoles;
-            console.log("params====", params);
             if (this.operation) {
               api.user.save(params, (response) => {
                 let res = response.data;

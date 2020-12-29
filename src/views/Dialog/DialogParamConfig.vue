@@ -43,7 +43,6 @@ export default {
         this.$message.error("请输入查询语句");
         return;
       }
-      console.log("tableData===", this.getParam());
       this.$emit("getSqlData", this.getParam());
     },
     getParam() {

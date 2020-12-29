@@ -175,11 +175,6 @@ export default {
             break;
         }
 
-        console.log(
-          "step" + this.nowProcess + ":this.stepData===",
-          this.stepData
-        );
-
         let initData = this.$refs["step" + (this.nowProcess + 1)].initData;
         if (typeof initData === "function") {
           initData(this.stepData);
@@ -190,22 +185,10 @@ export default {
       }
     },
     btnclickSumbit() {
-      console.log("!!btnclickSumbit");
-
       this.dialogMigrationPlanVisible = true;
       this.$nextTick(() => {
         this.$refs.dialogMigrationPlan.test();
       });
-
-      //   this.sumbitLoading = true;
-      //   api.postPay({}, response => {
-      //     this.sumbitLoading = false;
-      //     console.log("postPay===", response);
-      //     this.$message({
-      //       message: response.data.content,
-      //       type: "success"
-      //     });
-      //   });
     },
     btnclickReset() {
       this.$refs.step2.btnclickReset();

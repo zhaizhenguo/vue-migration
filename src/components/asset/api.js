@@ -1,8 +1,10 @@
 export default {
-
-
-  postLogin(params, response, hostName) {
+  /*登录*/
+  login(params, response, hostName) {
     window.vue._$request.post("/login", params, response, hostName);
+  },
+  getPublicKey(params, response, hostName) {
+    window.vue._$request.get("/getPublicKey", params, response, hostName);
   },
   /*用户管理*/
   user: {

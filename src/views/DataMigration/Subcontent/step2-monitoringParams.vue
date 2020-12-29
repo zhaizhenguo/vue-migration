@@ -59,11 +59,6 @@ export default {
     },
     handleCheckedCitiesChange(value) {
       this.$options.data().isOpenMonitoring;
-      console.log(
-        "migrationParams======",
-        this.getParam(),
-        this.$options.data().isOpenMonitoring
-      );
     },
     btnclickReset() {
       this.isOpenMonitoring = this.$options.data().isOpenMonitoring;

@@ -15,7 +15,6 @@
 
 <script>
 const handleArrayObj = (data) => {
-  console.log("data====", data);
   return data
     .filter((item) => item.tag === "Description")
     .map((item) => ({

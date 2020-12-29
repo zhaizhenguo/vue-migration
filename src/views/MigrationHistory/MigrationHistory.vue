@@ -142,23 +142,19 @@ export default {
   methods: {
     handleCheck(data) {
       this.rowData = JSON.parse(JSON.stringify(data.row));
-      console.log("rowData======", this.rowData);
       this.dialogMigrationReportVisible = true;
     },
     closeDialogMigrationReport() {
       this.dialogMigrationReportVisible = false;
     },
     findPage(data) {
-      console.log("findPage");
       if (!!data) {
         this.pageRequest = data.pageRequest;
       }
       Object.assign(this.pageRequest, this.migrationQueryData);
-      console.log("pageRequest", this.pageRequest);
 
       api.postUser(this.pageRequest, (response) => {
         this.pageResult = this.migrationDataJson;
-        console.log("pageResult", this.pageResult);
         !!data ? data.callback() : "";
       });
     },

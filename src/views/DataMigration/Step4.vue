@@ -164,12 +164,9 @@ export default {
     };
   },
   methods: {
-    tabHandleClick(tab, event) {
-      console.log(this.getParam());
-    },
+    tabHandleClick(tab, event) {},
     handleSelectionChange(val) {
       if (!this.patternData[this.checkSourcePattern]) {
-        console.log("重新加载PatternData");
         this.patternData[this.checkSourcePattern] = this.getPatternData(
           this.checkSourcePattern
         );
@@ -187,7 +184,6 @@ export default {
         this.sourcePattern.forEach((patternData) => {
           this.selectPatternData[patternData.value] = {};
         });
-        console.log("this.selectPatternData===", this.selectPatternData);
         let patternName = this.sourcePattern[0].value;
 
         this.checkSourcePattern = patternName;
@@ -196,7 +192,6 @@ export default {
           this.patternData[patternName] = this.getPatternData(patternName);
         }
         this.isInitData = true;
-        console.log("this.patternData===", this.patternData);
       }
     },
     getPatternData(patternName) {
@@ -232,9 +227,7 @@ export default {
     closePointSQL() {
       this.dialogSQLDataVisible = false;
     },
-    getSqlData(data) {
-      console.log("parent==========", data);
-    },
+    getSqlData(data) {},
     getData() {
       let step4TabsData = this.$refs["step4Tabs"].getData();
       step4TabsData["patternParam"] = this.getParam();
@@ -248,7 +241,6 @@ export default {
       };
     },
     calcHeightx() {
-      console.log("step4====created");
       let wapper = window.document.getElementsByClassName(
         "el-table__body-wrapper"
       );

@@ -210,9 +210,7 @@ export default {
     getData() {
       return { migrationParams: this.form };
     },
-    handleCheckedCitiesChange(value) {
-      console.log("migrationParams======", { migrationParams: this.form });
-    },
+    handleCheckedCitiesChange(value) {},
     btnclickReset() {
       this.form = this.$options.data().form;
     },
