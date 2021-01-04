@@ -1,11 +1,7 @@
 import Vue from "vue";
 import Router from "vue-router";
-import dataMigration from "@/views/DataMigration/DataMigration";
 import login from "@/views/Login";
 import home from "@/views/Home";
-import migrationHistory from "@/views/MigrationHistory/MigrationHistory";
-import userManagement from "@/views/SystemSetting/UserManagement";
-import roleManagement from "@/views/SystemSetting/RoleManagement";
 import Cookies from "js-cookie";
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
@@ -23,42 +19,21 @@ Vue.use(Router);
 
 const router = new Router({
   routes: [{
-      path: "/",
+      path: '/',
       redirect: {
-        name: "login"
+        name: 'login'
       }
     },
     {
-      path: "/login",
-      name: "login",
+      path: '/login',
+      name: 'login',
       component: login
     },
     {
-      path: "/home",
-      name: "home",
-      // redirect: "home",
+      path: '/home',
+      name: 'home',
       component: home,
-      children: [{
-          path: "/dataMigration",
-          name: "dataMigration",
-          component: dataMigration
-        },
-        {
-          path: "/migrationHistory",
-          name: "migrationHistory",
-          component: migrationHistory
-        },
-        {
-          path: "/userManagement",
-          name: "userManagement",
-          component: userManagement,
-        },
-        {
-          path: "/roleManagement",
-          name: "roleManagement",
-          component: roleManagement,
-        }
-      ]
+      children: []
     }
   ]
 });
@@ -71,7 +46,7 @@ router.beforeEach((to, from, next) => {
   if (to.path === '/login') {
     if (token) {
       next({
-        path: '/dataMigration'
+        path: '/DataMigration'
       })
     } else {
       next()
@@ -103,10 +78,11 @@ function addDynamicMenuAndRoutes(userId, to, from) {
     let res = Response.data;
     if (res.code == 0) {
       // 添加动态路由
-      let dynamicRoutes = addDynamicRoutes(res.data)
-      //   // 处理静态组件绑定路由
-      //   handleStaticComponent(router, dynamicRoutes)
-      //   router.addRoutes(router.options.routes)
+      let routes = [];
+      addDynamicRoutes(res.data, routes)
+      // 清空原路由
+      router.matcher = new Router().matcher;
+      router.addRoutes(router.options.routes)
       // 保存加载状态
       window.vue._$common.menuRouteLoaded = true;
       // 保存菜单树
@@ -127,26 +103,23 @@ function addDynamicRoutes(menuList = [], routes = []) {
       temp = temp.concat(menuList[i].children)
     } else if (menuList[i].url && /\S/.test(menuList[i].url)) {
       menuList[i].url = menuList[i].url.replace(/^\//, '')
-      // 创建路由配置
+      let path = menuList[i].url.substring(menuList[i].url.lastIndexOf('/') + 1)
+      let name = path.substring(0, 1).toLowerCase() + path.substring(1);
       var route = {
-        path: menuList[i].url,
+        path: "/" + name,
         component: null,
-        name: menuList[i].name,
-        meta: {
-          icon: menuList[i].icon,
-          index: menuList[i].id
-        }
+        name: name,
       }
       try {
         // 根据菜单URL动态加载vue组件，这里要求vue组件须按照url路径存储
         // 如url="sys/user"，则组件路径应是"@/views/sys/user.vue",否则组件加载不到
         let array = menuList[i].url.split('/')
-        let url = ''
+        let url = ""
         for (let i = 0; i < array.length; i++) {
           url += array[i].substring(0, 1).toUpperCase() + array[i].substring(1) + '/'
         }
         url = url.substring(0, url.length - 1)
-        // route['component'] = resolve => require([`@/views/${url}`], resolve)
+        route['component'] = resolve => require([`@/views/${url}.vue`], resolve)
       } catch (e) {}
       routes.push(route)
     }
@@ -154,11 +127,10 @@ function addDynamicRoutes(menuList = [], routes = []) {
   if (temp.length >= 1) {
     addDynamicRoutes(temp, routes)
   } else {
-    console.log('动态路由加载...')
-    console.log(routes)
-    console.log('动态路由加载完成.')
+    // console.log('动态路由加载完成===',routes)
   }
-  return routes
+  // 处理静态组件绑定路由
+  router.options.routes[2].children = routes;
 }
 
 router.afterEach(() => {

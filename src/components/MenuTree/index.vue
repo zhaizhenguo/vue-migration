@@ -30,8 +30,9 @@ export default {
   },
   methods: {
     handleRoute(menu) {
+      let url = menu.url.substring(menu.url.lastIndexOf("/"));
       // 通过菜单URL跳转至指定路由
-      this.$router.push(menu.url).catch((err) => {});
+      this.$router.push(url).catch((err) => {});
     },
   },
 };

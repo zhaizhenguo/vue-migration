@@ -96,12 +96,6 @@ export default {
         }
       });
     },
-    // 加密
-    // getEncrypt(data) {
-    //   let encrypt = new JSEncrypt();
-    //   encrypt.setPublicKey(this.publicKey);
-    //   return encrypt.encrypt(data);
-    // },
     login() {
       this.loading = true;
       let userInfo = {
@@ -112,6 +106,10 @@ export default {
 
       this.$refs["loginForm"].validate((valid) => {
         if (valid) {
+          /**加密*/
+          if (!this.publicKey) {
+            this.getPublicKey();
+          }
           userInfo.password = getEncrypt(
             this.loginForm.password,
             this.publicKey
@@ -134,7 +132,7 @@ export default {
               sessionStorage.setItem("userName", res.data.userName);
               sessionStorage.setItem("createTime", res.data.createTime);
               /**登录成功跳转到主页 */
-              this.$router.push("/dataMigration").catch((err) => {});
+              this.$router.push("/DataMigration").catch((err) => {});
             }
           });
         }
