@@ -66,13 +66,12 @@
 <script>
 import Cookies from "js-cookie";
 import api from "@/components/Asset/Api";
-import { getEncrypt } from "@/utils/rsaUtil";
+import { getEncrypt, getDecrypt } from "@/utils/rsaUtil";
 export default {
   name: "Login",
   data() {
     return {
       loading: false,
-      publicKey: null,
       loginForm: {
         userName: "admin",
         password: "123456",
@@ -92,7 +91,19 @@ export default {
       api.getPublicKey(null, (response) => {
         let res = response.data;
         if (res.code == 0) {
-          this.publicKey = res.data;
+          try {
+            if (!!res.data) {
+              this._$common.publicKey = getDecrypt(
+                res.data,
+                this._$common.privateKey
+              );
+            }
+          } catch (error) {
+            console.error(error);
+            this.$message({ message: "登录异常,请联系管理员", type: "error" });
+          }
+        } else {
+          this.$message({ message: "登录异常,请联系管理员", type: "error" });
         }
       });
     },
@@ -107,12 +118,12 @@ export default {
       this.$refs["loginForm"].validate((valid) => {
         if (valid) {
           /**加密*/
-          if (!this.publicKey) {
+          if (!this._$common.publicKey) {
             this.getPublicKey();
           }
           userInfo.password = getEncrypt(
             this.loginForm.password,
-            this.publicKey
+            this._$common.publicKey
           );
           api.login(userInfo, (response) => {
             let res = response.data;
@@ -155,7 +166,9 @@ export default {
   },
   mounted() {
     window.addEventListener("keydown", this.keyDown);
-    this.getPublicKey();
+    if (!this._$common.publicKey) {
+      this.getPublicKey();
+    }
   },
   destroyed() {
     window.removeEventListener("keydown", this.keyDown, false);

@@ -127,7 +127,7 @@ export default {
     findRoleMenus() {
       let param = { roleId: this.dataForm.id };
       let resData = [];
-      api.getMenuFindMenuByRoleId(param, (response) => {
+      api.menu.findMenuByRoleId(param, (response) => {
         let res = response.data;
         if (res.code == 0) {
           for (let index = 0; index < res.data.length; index++) {

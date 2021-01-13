@@ -14,6 +14,8 @@ Vue.use(ElementUI, {
 });
 Vue.config.productionTip = false;
 Vue.prototype._$common = common;
+let commonClone = Object.assign({}, common);
+Vue.prototype._$commonClone = commonClone;
 Vue.prototype._$request = request;
 
 window.vue = Vue.prototype;

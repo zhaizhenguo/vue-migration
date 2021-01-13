@@ -67,7 +67,7 @@
               <el-switch v-model="form.bChannel"></el-switch>
             </el-form-item>
             <el-form-item label="" style="float: right">
-              <el-button type="primary" @click="testConnect"
+              <el-button type="primary" @click="testConnection"
                 >测试连接</el-button
               >
             </el-form-item>
@@ -94,7 +94,7 @@ import dialogPointDriver from "../../Dialog/DialogPointDriver";
 import dialogDriverData from "../../Dialog/DialogDriverData";
 import databaseType from "@/components/Constant/databaseType";
 import driverType from "@/components/Constant/driverType";
-
+import api from "@/components/Asset/Api";
 export default {
   components: {
     dialogPointDriver: dialogPointDriver,
@@ -147,7 +147,20 @@ export default {
     };
   },
   methods: {
-    testConnect() {},
+    testConnection() {
+      api.dataMigration.testConnection(
+        { connectionInfo: this.form },
+        (response) => {
+          let res = response.data;
+          console.log("res===", res);
+          if (res.code == 0) {
+            this.$message({ message: "连接成功" });
+          } else {
+            this.$message({ message: "连接失败, " + res.msg, type: "error" });
+          }
+        }
+      );
+    },
     btnPointDriver() {
       this.dialogPointDriverVisible = true;
     },

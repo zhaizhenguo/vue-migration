@@ -31,6 +31,7 @@
 
 <script>
 import Cookies from "js-cookie";
+import api from "@/components/Asset/Api";
 import DialogChangePassword from "../Dialog/DialogChangePassword";
 export default {
   name: "PersonalPanel",
@@ -58,21 +59,26 @@ export default {
     },
     // 退出登录
     logout: function () {
-      console.log("this===", this);
-      console.log("this._$common===", this._$common);
       this.$confirm("确认退出吗?", "提示", {
         type: "warning",
       })
         .then(() => {
-          this.clearUserInfo();
+          api.layout(null, (response) => {
+            let res = response.data;
+            console.log("res===", res);
+            if (res.code == 0) {
+              this.clearUserInfo();
+            }
+          });
         })
         .catch(() => {});
     },
     // 清空用户信息
     clearUserInfo: function (name) {
       Cookies.remove("oscar-token");
+      Cookies.remove("JSESSIONID");
       sessionStorage.removeItem("user");
-      window.vue._$common = {};
+      window.vue._$common = this._$commonClone;
       this.$router.push("/login");
     },
     closeDialogChangePassword() {

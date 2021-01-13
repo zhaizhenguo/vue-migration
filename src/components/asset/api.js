@@ -3,9 +3,23 @@ export default {
   login(params, response, hostName) {
     window.vue._$request.post("/login", params, response, hostName);
   },
+  /*登出*/
+  layout(params, response, hostName) {
+    window.vue._$request.post("/layout", params, response, hostName);
+  },
+  /*获取公钥*/
   getPublicKey(params, response, hostName) {
     window.vue._$request.get("/getPublicKey", params, response, hostName);
   },
+
+  /*数据迁移-start*/
+  dataMigration: {
+    testConnection(params, response, hostName) {
+      window.vue._$request.post("/dataMigration/testConnection", params, response, hostName);
+    },
+  },
+  /*数据迁移-end*/
+
   /*用户管理*/
   user: {
     save(params, response, hostName) {
@@ -54,17 +68,15 @@ export default {
     findTree(params, response, hostName) {
       window.vue._$request.get("/menu/findTree", params, response, hostName);
     },
-  },
-  getMenuFindMenuByUserId(params, response, hostName) {
-    window.vue._$request.get("/menu/findMenuByUserId", params, response, hostName);
-  },
-  getMenuFindMenuByRoleId(params, response, hostName) {
-    window.vue._$request.get("/menu/findMenuByRoleId", params, response, hostName);
+    findMenuByUserId(params, response, hostName) {
+      window.vue._$request.get("/menu/findMenuByUserId", params, response, hostName);
+    },
+    findMenuByRoleId(params, response, hostName) {
+      window.vue._$request.get("/menu/findMenuByRoleId", params, response, hostName);
+    },
   },
   /*菜单管理-end*/
-  getShopList(params, response, hostName) {
-    window.vue._$request.get("api/getShopList", params, response, hostName);
-  },
+
   postPay(params, response, hostName) {
     window.vue._$request.post("api/postPay", params, response, hostName);
   },
