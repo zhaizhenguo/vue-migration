@@ -96,6 +96,22 @@ import databaseType from "@/components/Constant/databaseType";
 import driverType from "@/components/Constant/driverType";
 import api from "@/components/Asset/Api";
 export default {
+  props: {
+    /**表单名称 源端/目标端*/
+    paneName: {
+      type: String,
+      default: function () {
+        return "";
+      },
+    },
+    /**连接类型 0：源端  1：目标端*/
+    connectionType: {
+      type: Number,
+      default: function () {
+        return 0;
+      },
+    },
+  },
   components: {
     dialogPointDriver: dialogPointDriver,
     dialogDriverData: dialogDriverData,
@@ -107,13 +123,14 @@ export default {
       dialogPointDriverVisible: false,
       dialogDriverDataVisible: false,
       form: {
+        connectionType: this.connectionType,
         dataSource: "ShenTong",
         driver: "ShenTong JDBC Driver",
         server: "localhost",
-        port: "3306",
-        userName: "zhaizhenguo",
-        dataBase: "TEST",
-        password: "112336554",
+        port: "2003",
+        userName: "sysdba",
+        dataBase: "OSRDB",
+        password: "szoscar55",
         bChannel: false,
       },
       rules: {
@@ -147,19 +164,26 @@ export default {
     };
   },
   methods: {
-    testConnection() {
-      api.dataMigration.testConnection(
-        { connectionInfo: this.form },
-        (response) => {
-          let res = response.data;
-          console.log("res===", res);
-          if (res.code == 0) {
-            this.$message({ message: "连接成功" });
-          } else {
-            this.$message({ message: "连接失败, " + res.msg, type: "error" });
-          }
+    async testConnection() {
+      let isConnectionSuccess = false;
+      let connectionInfo = this.form;
+      await api.dataMigration.testConnection(connectionInfo, (response) => {
+        let res = response.data;
+        if (res.code == 0) {
+          isConnectionSuccess = true;
+          this.$message({
+            message: this.paneName + "连接成功",
+            type: "success",
+            duration: 1000,
+          });
+        } else {
+          this.$message({
+            message: this.paneName + "连接失败, " + res.msg,
+            type: "error",
+          });
         }
-      );
+      });
+      return isConnectionSuccess;
     },
     btnPointDriver() {
       this.dialogPointDriverVisible = true;
@@ -180,7 +204,11 @@ export default {
       let param;
       this.$refs.form.validate((valid) => {
         if (valid) {
-          param = this.getParam();
+          if (this.testConnection()) {
+            param = this.getParam();
+          } else {
+            param = false;
+          }
         } else {
           param = false;
         }

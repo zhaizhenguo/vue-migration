@@ -1,9 +1,19 @@
 <template>
   <div>
     <div class="contentFlex">
-      <step1Form ref="formSource" class="leftContent"></step1Form>
+      <step1Form
+        ref="formSource"
+        :paneName="'源端'"
+        :connectionType="0"
+        class="leftContent"
+      ></step1Form>
       <i class="el-icon-d-arrow-right centerContent"></i>
-      <step1Form ref="formTarget" class="rightContent"></step1Form>
+      <step1Form
+        ref="formTarget"
+        :paneName="'目标端'"
+        :connectionType="1"
+        class="rightContent"
+      ></step1Form>
     </div>
   </div>
 </template>

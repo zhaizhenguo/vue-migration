@@ -1,88 +1,88 @@
 {
     "allTheParams": [
         {
-            "key": "001",
+            "key": "isPartition",
             "lable": "按照水平分区迁移",
             "disabled": true
         },
         {
-            "key": "002",
+            "key": "isCheck",
             "lable": "不检查check约束",
             "disabled": false
         },
         {
-            "key": "003",
+            "key": "migComment",
             "lable": "迁移注释",
             "disabled": false
         },
         {
-            "key": "004",
+            "key": "isSequence",
             "lable": "迁移序列",
             "disabled": false
         },
         {
-            "key": "005",
+            "key": "isAutoAssignPartitionName",
             "lable": "自动分配水平分区名",
             "disabled": false
         },
         {
-            "key": "006",
+            "key": "fromDB",
             "lable": "从数据库中读取序列",
             "disabled": true
         },
         {
-            "key": "007",
+            "key": "isSortView",
             "lable": "是否对视图排序",
             "disabled": false
         },
         {
-            "key": "008",
+            "key": "isMigStorage",
             "lable": "是否迁移存储选项",
             "disabled": true
         },
         {
-            "key": "009",
+            "key": "isReloadMetadata",
             "lable": "强制重新获取元数据对象信息",
             "disabled": true
         },
         {
-            "key": "010",
+            "key": "isUpper",
             "lable": "迁移时强制使用大写标识",
             "disabled": false
         },
         {
-            "key": "011",
+            "key": "savePWD",
             "lable": "保存数据库登录密码",
             "disabled": false
         },
         {
-            "key": "012",
+            "key": "analyze",
             "lable": "迁移完成后执行Analyze",
             "disabled": false
         },
         {
-            "key": "013",
+            "key": "isBreakpoint",
             "lable": "断点续传",
             "disabled": false
         },
         {
-            "key": "014",
+            "key": "isMigrateOraclePl",
             "lable": "迁移oracle pl对象",
             "disabled": true
         },
         {
-            "key": "015",
+            "key": "isTranscoding",
             "lable": "Mysql数据编码转换(可用Navicat查看数据显示是否正常)",
             "disabled": false
         }
     ],
     "checkedParams": [
-        "001",
-        "002",
-        "004",
-        "008",
-        "010",
-        "011",
-        "013"
+        "isPartition",
+        "isCheck",
+        "isSequence",
+        "isMigStorage",
+        "isUpper",
+        "savePWD",
+        "isBreakpoint"
     ]
 }

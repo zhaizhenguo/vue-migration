@@ -74,12 +74,15 @@ export default {
         .catch(() => {});
     },
     // 清空用户信息
-    clearUserInfo: function (name) {
+    clearUserInfo: function () {
       Cookies.remove("oscar-token");
-      Cookies.remove("JSESSIONID");
-      sessionStorage.removeItem("user");
+      sessionStorage.clear();
       window.vue._$common = this._$commonClone;
       this.$router.push("/login");
+
+      console.log("this._$commonClone===", this._$commonClone);
+      console.log("window.vue._$common===", window.vue._$common);
+      console.log("this._$common===", this._$common);
     },
     closeDialogChangePassword() {
       this.dialogChangePasswordVisible = false;

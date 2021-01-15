@@ -31,6 +31,7 @@
 import migrationParams from "./Subcontent/step2-migrationParams";
 import performanceParams from "./Subcontent/step2-performanceParams";
 import monitoringParams from "./Subcontent/step2-monitoringParams";
+import api from "@/components/Asset/Api";
 export default {
   components: {
     migrationParams: migrationParams,
@@ -46,15 +47,53 @@ export default {
     initData(sourceData) {},
     handleClick(tab, event) {},
     getData() {
-      return this.getParam();
+      let param = this.getParam();
+      if (!!param) {
+        let isSuccess = this.saveConfig(param);
+        //TODO
+        if (!!isSuccess) {
+          return param;
+        }
+      }
+      return null;
     },
     getParam() {
+      let param = null;
       let migrationParams = this.$refs.migrationParams.getData();
       let performanceParams = this.$refs.performanceParams.getData();
       let monitoringParams = this.$refs.monitoringParams.getData();
+
       if (migrationParams && performanceParams && monitoringParams) {
-        return { migrationParams, performanceParams, monitoringParams };
+        param = Object.assign(
+          migrationParams,
+          performanceParams,
+          monitoringParams
+        );
       }
+      return param;
+    },
+    async saveConfig(param) {
+      let isSuccess = false;
+      let configInfo = param;
+      await api.dataMigration.saveConfig(configInfo, (response) => {
+        let res = response.data;
+        if (res.code == 0) {
+          isSuccess = true;
+          console.log("111isSuccess==", isSuccess);
+          this.$message({
+            message: "保存成功",
+            type: "success",
+            duration: 1000,
+          });
+        } else {
+          this.$message({
+            message: "保存失败, " + res.msg,
+            type: "error",
+          });
+        }
+      });
+      await console.log("222isSuccess==", isSuccess);
+      return isSuccess;
     },
     btnclickReset() {
       if (this.activeName === "migrationParams") {

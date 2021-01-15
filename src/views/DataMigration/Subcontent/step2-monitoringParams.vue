@@ -8,7 +8,7 @@
           <el-switch
             @change="handleCheckedCitiesChange"
             style="margin-left: 10px"
-            v-model="isOpenMonitoring"
+            v-model="monitorTaskProgress"
           >
           </el-switch>
         </div>
@@ -20,7 +20,7 @@
           单表进度预估策略
           <el-radio
             @change="handleCheckedCitiesChange"
-            :disabled="!isOpenMonitoring"
+            :disabled="!monitorTaskProgress"
             style="margin: 10px"
             v-model="estimateStrategy"
             label="0"
@@ -28,7 +28,7 @@
           >
           <el-radio
             @change="handleCheckedCitiesChange"
-            :disabled="!isOpenMonitoring"
+            :disabled="!monitorTaskProgress"
             style="margin: 10px"
             v-model="estimateStrategy"
             label="1"
@@ -43,7 +43,7 @@
 export default {
   data() {
     return {
-      isOpenMonitoring: false,
+      monitorTaskProgress: false,
       estimateStrategy: "1",
     };
   },
@@ -53,15 +53,15 @@ export default {
     },
     getParam() {
       return {
-        isOpenMonitoring: this.isOpenMonitoring,
-        estimateStrategy: this.estimateStrategy,
+        monitorTaskProgress: this.monitorTaskProgress,
+        monitorStrategy: parseInt(this.estimateStrategy),
       };
     },
     handleCheckedCitiesChange(value) {
-      this.$options.data().isOpenMonitoring;
+      this.$options.data().monitorTaskProgress;
     },
     btnclickReset() {
-      this.isOpenMonitoring = this.$options.data().isOpenMonitoring;
+      this.monitorTaskProgress = this.$options.data().monitorTaskProgress;
       this.estimateStrategy = this.$options.data().estimateStrategy;
     },
   },

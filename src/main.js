@@ -6,7 +6,7 @@ import App from "@/App";
 import router from "@/router";
 import common from '@/utils/common'
 import request from "@/my-request";
-
+import VueSocketIO from 'vue-socket.io'
 
 Vue.use(ElementUI, {
   size: "small",
@@ -44,6 +44,11 @@ requireComponent.keys().forEach(fileName => {
     componentConfig.default || componentConfig
   );
 });
+
+// Vue.use(new VueSocketIO({
+//   debug: true,
+//   connection: 'ws://localhost:8081/ws/asset',
+// }))
 /* eslint-disable no-new */
 const vm = new Vue({
   el: "#app",

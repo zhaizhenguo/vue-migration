@@ -15,74 +15,65 @@
         <el-table-column type="selection" min-width="2%"> </el-table-column>
         <el-table-column
           v-if="firstColumnIsText"
-          prop="sourceFieldType"
+          prop="sname"
           label="源数据类型"
           min-width="19%"
         >
         </el-table-column>
-        <el-table-column
-          v-else
-          prop="sourceFieldType"
-          label="源数据类型"
-          min-width="19%"
-        >
+        <el-table-column v-else prop="sname" label="源数据类型" min-width="19%">
           <template slot-scope="{ row, $index }">
             <el-form-item
               style="margin-bottom: 0"
               :inline-message="true"
               label=""
-              :prop="`tableData.${$index}.sourceFieldType`"
-              :rules="rules.sourceFieldType"
+              :prop="`tableData.${$index}.sname`"
+              :rules="rules.sname"
             >
-              <el-input v-model="row.sourceFieldType"></el-input>
+              <el-input v-model="row.sname"></el-input>
             </el-form-item>
           </template>
         </el-table-column>
-        <el-table-column prop="sourcePrecision" label="精度" min-width="10%">
+        <el-table-column prop="pExpression" label="精度" min-width="10%">
         </el-table-column>
-        <el-table-column prop="sourceDecimal" label="小数点" min-width="10%">
+        <el-table-column prop="sExpression" label="小数点" min-width="10%">
+        </el-table-column>
+        <el-table-column prop="lExpression" label="数据长度" min-width="10%">
+        </el-table-column>
+        <el-table-column prop="accTypes" label="目标数据类型" min-width="19%">
+          <template slot-scope="{ row, $index }">
+            <el-form-item
+              style="margin-bottom: 0"
+              :inline-message="true"
+              label=""
+              :prop="`tableData.${$index}.accTypes`"
+              :rules="rules.accTypes"
+            >
+              <el-select
+                v-if="typeof row.accTypes === 'object'"
+                v-model="row.targetFieldType"
+              >
+                <el-option
+                  v-for="item in row.accTypes"
+                  :key="item.id"
+                  :label="item.ttypeName"
+                  :value="item.id"
+                >
+                </el-option>
+              </el-select>
+              <el-input v-model="row.accTypes" v-else></el-input>
+            </el-form-item>
+          </template>
+        </el-table-column>
+        <el-table-column prop="targetPExpression" label="精度" min-width="10%">
         </el-table-column>
         <el-table-column
-          prop="sourceFieldLength"
-          label="数据长度"
+          prop="targetSExpression"
+          label="小数点"
           min-width="10%"
         >
         </el-table-column>
         <el-table-column
-          prop="targetFieldType"
-          label="目标数据类型"
-          min-width="19%"
-        >
-          <template slot-scope="{ row, $index }">
-            <el-form-item
-              style="margin-bottom: 0"
-              :inline-message="true"
-              label=""
-              :prop="`tableData.${$index}.targetFieldType`"
-              :rules="rules.targetFieldType"
-            >
-              <el-select
-                v-if="typeof row.targetFieldType === 'object'"
-                v-model="row.checkTargetFieldType"
-              >
-                <el-option
-                  v-for="item in row.targetFieldType"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                >
-                </el-option>
-              </el-select>
-              <el-input v-model="row.targetFieldType" v-else></el-input>
-            </el-form-item>
-          </template>
-        </el-table-column>
-        <el-table-column prop="targetPrecision" label="精度" min-width="10%">
-        </el-table-column>
-        <el-table-column prop="targetDecimal" label="小数点" min-width="10%">
-        </el-table-column>
-        <el-table-column
-          prop="targetFieldLength"
+          prop="targetLExpression"
           label="数据长度倍数"
           min-width="10%"
         >
@@ -129,14 +120,14 @@ export default {
     return {
       selectTableData: [],
       rules: {
-        sourceFieldType: [
+        sname: [
           {
             required: true,
             message: "请输入源数据类型",
             trigger: "change",
           },
         ],
-        targetFieldType: [
+        accTypes: [
           {
             required: true,
             message: "请输入目标数据类型",

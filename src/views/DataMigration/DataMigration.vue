@@ -150,31 +150,36 @@ export default {
     getContentHeight() {
       //   this.contentHeight = window.innerHeight - 230;
     },
-    btnclick(isDown) {
+    async btnclick(isDown) {
       if (isDown) {
         //保存数据逻辑
-        let getData = this.$refs["step" + this.nowProcess].getData();
-        if (!getData) {
+        let param = await this.$refs["step" + this.nowProcess].getData();
+        console.log("保存数据逻辑", param);
+        if (!param) {
           return;
         }
         let resName = "step" + this.nowProcess;
         switch (resName) {
           case "step1":
-            this.stepData["databaseData"] = getData;
+            this.stepData["databaseData"] = param;
+            break;
+          case "step2":
+            this.stepData["projectConfigInfo"] = param;
             break;
           case "step3":
-            this.stepData["colMapRelation"] = getData;
+            this.stepData["colMapRelation"] = param;
             break;
           case "step4":
-            this.stepData["patternData"] = getData.selectPatternData;
-            this.stepData["patternNameList"] = getData.selectPatternNameList;
-            this.stepData["patternParam"] = getData.patternParam;
+            this.stepData["patternData"] = param.selectPatternData;
+            this.stepData["patternNameList"] = param.selectPatternNameList;
+            this.stepData["patternParam"] = param.patternParam;
             break;
           default:
-            this.stepData[resName] = getData;
+            this.stepData[resName] = param;
             break;
         }
 
+        console.log("this.stepData=====", this.stepData);
         let initData = this.$refs["step" + (this.nowProcess + 1)].initData;
         if (typeof initData === "function") {
           initData(this.stepData);

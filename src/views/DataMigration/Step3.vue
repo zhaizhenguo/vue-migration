@@ -40,15 +40,16 @@
   </el-container>
 </template>
 <script>
-import colMapRelation from "@/components/Constant/step3colMapRelation";
+// import colMapRelation from "@/components/Constant/step3colMapRelation";
 import tableForm from "./Subcontent/step3-tableForm";
+import api from "@/components/Asset/Api";
 export default {
   components: {
     tableForm: tableForm,
   },
   data() {
     return {
-      colMapRelation: colMapRelation,
+      colMapRelation: null,
       backColMapRelation: null,
       colMapRelationTemp: [],
       tableHeight: 400,
@@ -58,6 +59,7 @@ export default {
   },
   methods: {
     initData(sourceData) {
+      this.getTypeMapping();
       this.$refs.bottomTableForm.calcHeightx();
       this.$refs.topTableForm.calcHeightx();
     },
@@ -65,12 +67,11 @@ export default {
       if (!this.$refs.bottomTableForm.getValidate()) {
         return;
       }
-
       this.calResultData();
-      return {
-        colMapRelation,
-      };
+      console.log("colMapRelation====", this.colMapRelation);
+      return { colMapRelation: this.colMapRelation };
     },
+    //封装自定义的列映射
     calResultData() {
       this.colMapRelationTemp.forEach((item) => {
         this.colMapRelation.push(item);
@@ -79,14 +80,14 @@ export default {
     addOrDelete(isAdd) {
       if (isAdd) {
         this.colMapRelationTemp.push({
-          sourceFieldType: "",
-          sourcePrecision: "",
-          sourceDecimal: "",
-          sourceFieldLength: "",
-          checkTargetFieldType: "",
-          targetPrecision: "",
-          targetDecimal: "",
-          targetFieldLength: "",
+          sname: "",
+          sExpression: "",
+          pExpression: "",
+          lExpression: "",
+          targetFieldType: "",
+          targetPExpression: "",
+          targetSExpression: "",
+          targetLExpression: "",
         });
       } else {
         let selectTableData = this.$refs.bottomTableForm.selectTableData;
@@ -113,12 +114,31 @@ export default {
             JSON.stringify(this.backColMapRelation)
           );
           this.colMapRelationTemp = [];
-          this.colMapRelationTemp = [];
           this.$message("内容已重置");
         })
         .catch(() => {});
     },
-
+    getTypeMapping() {
+      api.dataMigration.getTypeMapping(null, (response) => {
+        let res = response.data;
+        if (res.code == 0) {
+          this.colMapRelation = res.data;
+          //备份原始数据
+          this.backColMapRelation = JSON.parse(
+            JSON.stringify(this.colMapRelation)
+          );
+          this.$message({
+            message: "查询成功",
+            type: "success",
+          });
+        } else {
+          this.$message({
+            message: "查询失败, " + res.msg,
+            type: "error",
+          });
+        }
+      });
+    },
     calcHeightx() {
       let wapper = window.document.getElementsByClassName(
         "el-table__body-wrapper"
@@ -131,7 +151,6 @@ export default {
     },
   },
   created: function () {
-    this.backColMapRelation = JSON.parse(JSON.stringify(this.colMapRelation));
     this.calcHeightx();
   },
 };

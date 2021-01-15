@@ -34,12 +34,18 @@ http.interceptors.response.use(function (response) {
   return response
 }, function (error) {
   if (error.response.status == 401 || error.response.status == 403) {
-    Cookies.remove("oscar-token");
     alert("登录超时,请重新登录");
-    router.push('/login');
+    clearUserInfo();
   }
   return Promise.reject(error)
 });
+// 清空用户信息
+function clearUserInfo() {
+  Cookies.remove("oscar-token");
+  window.sessionStorage.clear();
+  window.vue._$common = window.vue._$commonClone;
+  router.push('/login');
+}
 
 function apiAxios(
   method,
@@ -50,7 +56,6 @@ function apiAxios(
   hostName,
   responseType
 ) {
-
   http({
       method: method,
       url: hostName === null || hostName === undefined ?

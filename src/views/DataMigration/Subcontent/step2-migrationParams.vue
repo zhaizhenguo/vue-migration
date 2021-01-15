@@ -1,5 +1,10 @@
 <template>
-  <el-form :rules="rules" label-width="100px" :model="migrationParams">
+  <el-form
+    ref="form"
+    :rules="rules"
+    label-width="100px"
+    :model="migrationParams"
+  >
     <el-form-item label="" style="margin-left: -100px">
       <el-checkbox-group
         @change="handleCheckedCitiesChange"
@@ -19,16 +24,19 @@
     <el-form-item label="迁移错误策略">
       <el-radio
         style="margin-left: 15px"
-        v-model="migrationParams.errorStrategy"
-        label="0"
+        v-model="migrationParams.migErrorHandleStrategy"
+        label="stop"
         >遇错停止</el-radio
       >
-      <el-radio v-model="migrationParams.errorStrategy" label="1"
+      <el-radio v-model="migrationParams.migErrorHandleStrategy" label="neglect"
         >遇错忽略</el-radio
       >
     </el-form-item>
-    <el-form-item label="列长度倍数" style="float: left" prop="lengthUnit">
-      <el-input v-model="migrationParams.lengthUnit" type="number"></el-input>
+    <el-form-item label="列长度倍数" style="float: left" prop="colMultFactor">
+      <el-input
+        v-model="migrationParams.colMultFactor"
+        type="number"
+      ></el-input>
     </el-form-item>
   </el-form>
 </template>
@@ -40,11 +48,11 @@ export default {
       migrationParams: {
         checkedmigrationParams: migrationParamOptions.checkedParams,
         allTheParams: migrationParamOptions.allTheParams,
-        errorStrategy: "1",
-        lengthUnit: 1,
+        migErrorHandleStrategy: "neglect",
+        colMultFactor: 1,
       },
       rules: {
-        lengthUnit: [
+        colMultFactor: [
           { required: true, message: "请输入列长度倍数", trigger: "change" },
         ],
       },
@@ -52,14 +60,34 @@ export default {
   },
   methods: {
     getData() {
-      return this.getParam();
+      let param;
+      this.$refs.form.validate((valid) => {
+        if (valid) {
+          param = this.getParam();
+        } else {
+          param = false;
+        }
+      });
+      return param;
     },
     getParam() {
-      return {
-        checkedmigrationParams: this.migrationParams.checkedmigrationParams,
-        errorStrategy: this.migrationParams.errorStrategy,
-        lengthUnit: this.migrationParams.lengthUnit,
-      };
+      let param = {};
+      this.migrationParams.allTheParams.forEach((element) => {
+        //选中的列
+        if (
+          this.migrationParams.checkedmigrationParams.indexOf(element.key) != -1
+        ) {
+          param[element.key] = true;
+        } else {
+          param[element.key] = false;
+        }
+      });
+      param[
+        "migErrorHandleStrategy"
+      ] = this.migrationParams.migErrorHandleStrategy;
+      param["colMultFactor"] = this.migrationParams.colMultFactor;
+      console.log("param===", param);
+      return param;
     },
     handleCheckedCitiesChange(value) {},
     btnclickReset() {

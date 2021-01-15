@@ -17,6 +17,12 @@ export default {
     testConnection(params, response, hostName) {
       window.vue._$request.post("/dataMigration/testConnection", params, response, hostName);
     },
+    saveConfig(params, response, hostName) {
+      window.vue._$request.post("/dataMigration/saveConfig", params, response, hostName);
+    },
+    getTypeMapping(params, response, hostName) {
+      window.vue._$request.get("/dataMigration/getTypeMapping", params, response, hostName);
+    },
   },
   /*数据迁移-end*/
 

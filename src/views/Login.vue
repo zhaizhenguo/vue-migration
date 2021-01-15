@@ -97,6 +97,11 @@ export default {
                 res.data,
                 this._$common.privateKey
               );
+              console.log(
+                "this._$common.publicKey已重置===",
+                this._$common.publicKey
+              );
+              console.log("this._$commonClone已重置===", this._$commonClone);
             }
           } catch (error) {
             console.error(error);
@@ -166,9 +171,11 @@ export default {
   },
   mounted() {
     window.addEventListener("keydown", this.keyDown);
+    console.log("this._$common.publicKey==", this._$common.publicKey);
     if (!this._$common.publicKey) {
       this.getPublicKey();
     }
+    this.refreshCaptcha();
   },
   destroyed() {
     window.removeEventListener("keydown", this.keyDown, false);
