@@ -8,6 +8,9 @@ import common from '@/utils/common'
 import request from "@/my-request";
 import VueSocketIO from 'vue-socket.io'
 
+// var socket;
+// socket = new WebSocket("ws://localhost:8081/ws/asset");
+
 Vue.use(ElementUI, {
   size: "small",
   zIndex: 3000

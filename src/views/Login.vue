@@ -164,6 +164,7 @@ export default {
     refreshCaptcha: function () {
       this.loginForm.src =
         process.env.API_ROOT + "/captcha.jpg?t=" + new Date().getTime();
+      console.log("this.loginForm.src===", this.loginForm.src);
     },
     reset() {
       this.$refs.loginForm.resetFields();
@@ -171,11 +172,13 @@ export default {
   },
   mounted() {
     window.addEventListener("keydown", this.keyDown);
+    this.refreshCaptcha();
     console.log("this._$common.publicKey==", this._$common.publicKey);
     if (!this._$common.publicKey) {
-      this.getPublicKey();
+      setTimeout(() => {
+        this.getPublicKey();
+      }, 500);
     }
-    this.refreshCaptcha();
   },
   destroyed() {
     window.removeEventListener("keydown", this.keyDown, false);

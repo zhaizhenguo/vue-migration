@@ -24,13 +24,31 @@ export default {
     step1Form: step1Form,
   },
   data() {
-    return {};
+    return {
+      backSoureDataSource: null,
+      backTargetDataSource: null,
+    };
   },
   methods: {
     getData() {
       let sourceData = this.$refs.formSource.getData();
       let targetData = this.$refs.formTarget.getData();
       if (sourceData && targetData) {
+        //判断迁移数据源端、目的端是否有变化
+        this._$common.dataSourceIsChange = false;
+        if (
+          this.backSoureDataSource !== sourceData.dataSource ||
+          this.backTargetDataSource !== targetData.dataSource
+        ) {
+          this.backSoureDataSource = sourceData.dataSource;
+          this.backTargetDataSource = targetData.dataSource;
+          this._$common.dataSourceIsChange = true;
+          this.$message({
+            message: "迁移数据类型有变化",
+            type: "success",
+            duration: 1000,
+          });
+        }
         return { sourceData, targetData };
       }
     },

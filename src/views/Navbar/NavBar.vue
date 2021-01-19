@@ -1,5 +1,9 @@
 <template>
-  <el-menu style="height: 100%" class="el-menu-vertical-demo">
+  <el-menu
+    :default-active="activeIndex"
+    style="height: 100%"
+    class="el-menu-vertical-demo"
+  >
     <MenuTree v-for="item in navTree" :key="item.url" :menu="item"></MenuTree>
   </el-menu>
 </template> 
@@ -13,7 +17,16 @@ export default {
   data() {
     return {
       navTree: null,
+      activeIndex: "/DataMigration/DataMigration",
     };
+  },
+  watch: {
+    $route: {
+      handler(route) {
+        console.log(route);
+      },
+      immediate: true, // 此项须设置为true
+    },
   },
   methods: {
     findMenutree() {

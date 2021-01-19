@@ -14,7 +14,7 @@
         :tableHeight="bottomTableHeight"
         :isShowHeader="false"
         :firstColumnIsText="false"
-        :emptyText="bottomTableEmptyText"
+        :emptyText="'请添加自定义映射列'"
       ></tableForm>
       <el-button
         type="primary"
@@ -40,7 +40,6 @@
   </el-container>
 </template>
 <script>
-// import colMapRelation from "@/components/Constant/step3colMapRelation";
 import tableForm from "./Subcontent/step3-tableForm";
 import api from "@/components/Asset/Api";
 export default {
@@ -54,12 +53,14 @@ export default {
       colMapRelationTemp: [],
       tableHeight: 400,
       bottomTableHeight: 150,
-      bottomTableEmptyText: "请添加自定义映射列",
+      isInit: false,
     };
   },
   methods: {
     initData(sourceData) {
-      this.getTypeMapping();
+      if (this._$common.dataSourceIsChange && !this.isInit) {
+        this.getTypeMapping();
+      }
       this.$refs.bottomTableForm.calcHeightx();
       this.$refs.topTableForm.calcHeightx();
     },
@@ -68,18 +69,43 @@ export default {
         return;
       }
       this.calResultData();
-      console.log("colMapRelation====", this.colMapRelation);
-      return { colMapRelation: this.colMapRelation };
+      api.dataMigration.saveTypeMapping(this.colMapRelation, (response) => {
+        let res = response.data;
+        if (res.code == 0) {
+          this.$message({
+            message: "保存成功",
+            type: "success",
+            duration: 1000,
+          });
+        } else {
+          this.$message({
+            message: "保存失败, " + res.msg,
+            type: "error",
+          });
+        }
+      });
+      return this.colMapRelation;
     },
     //封装自定义的列映射
     calResultData() {
       this.colMapRelationTemp.forEach((item) => {
+        let sourceName = item.sname.toUpperCase();
+        let targetName = item.targetFieldType.toUpperCase();
+        item.id = sourceName;
+        item.sname = sourceName;
+        item.targetFieldType = targetName;
+        let accTypes = [{}];
+        accTypes[0]["id"] = "T" + sourceName + "2" + targetName + "PS";
+        accTypes[0]["ttypeName"] = targetName;
+        accTypes[0]["selected"] = true;
+        item.accTypes = accTypes;
         this.colMapRelation.push(item);
       });
     },
     addOrDelete(isAdd) {
       if (isAdd) {
         this.colMapRelationTemp.push({
+          id: "",
           sname: "",
           sExpression: "",
           pExpression: "",
@@ -128,12 +154,13 @@ export default {
             JSON.stringify(this.colMapRelation)
           );
           this.$message({
-            message: "查询成功",
+            message: "查询映射列信息成功",
             type: "success",
           });
+          this.isInit = true;
         } else {
           this.$message({
-            message: "查询失败, " + res.msg,
+            message: "查询映射列信息失败, " + res.msg,
             type: "error",
           });
         }

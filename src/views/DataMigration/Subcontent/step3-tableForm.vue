@@ -45,13 +45,10 @@
               style="margin-bottom: 0"
               :inline-message="true"
               label=""
-              :prop="`tableData.${$index}.accTypes`"
+              :prop="`tableData.${$index}.targetFieldType`"
               :rules="rules.accTypes"
             >
-              <el-select
-                v-if="typeof row.accTypes === 'object'"
-                v-model="row.targetFieldType"
-              >
+              <el-select v-if="isShowHeader" v-model="row.targetFieldType">
                 <el-option
                   v-for="item in row.accTypes"
                   :key="item.id"
@@ -60,7 +57,7 @@
                 >
                 </el-option>
               </el-select>
-              <el-input v-model="row.accTypes" v-else></el-input>
+              <el-input v-model="row.targetFieldType" v-else></el-input>
             </el-form-item>
           </template>
         </el-table-column>
@@ -127,7 +124,7 @@ export default {
             trigger: "change",
           },
         ],
-        accTypes: [
+        targetFieldType: [
           {
             required: true,
             message: "请输入目标数据类型",

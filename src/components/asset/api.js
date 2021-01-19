@@ -23,6 +23,15 @@ export default {
     getTypeMapping(params, response, hostName) {
       window.vue._$request.get("/dataMigration/getTypeMapping", params, response, hostName);
     },
+    saveTypeMapping(params, response, hostName) {
+      window.vue._$request.post("/dataMigration/saveTypeMapping", params, response, hostName);
+    },
+    getAllPattern(params, response, hostName) {
+      window.vue._$request.post("/dataMigration/getAllPattern", params, response, hostName);
+    },
+    getPatternDataByName(params, response, hostName) {
+      window.vue._$request.postForm("/dataMigration/getPatternDataByName", params, response, hostName);
+    },
   },
   /*数据迁移-end*/
 

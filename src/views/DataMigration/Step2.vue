@@ -44,14 +44,17 @@ export default {
     };
   },
   methods: {
-    initData(sourceData) {},
+    initData() {
+      if (this._$common.dataSourceIsChange) {
+        this.btnclickResetAll();
+      }
+    },
     handleClick(tab, event) {},
     getData() {
       let param = this.getParam();
       if (!!param) {
-        let isSuccess = this.saveConfig(param);
         //TODO
-        if (!!isSuccess) {
+        if (!!this.saveConfig(param)) {
           return param;
         }
       }
@@ -103,6 +106,11 @@ export default {
       } else if (this.activeName === "monitoringParams") {
         this.$refs.monitoringParams.btnclickReset();
       }
+    },
+    btnclickResetAll() {
+      this.$refs.migrationParams.btnclickReset();
+      this.$refs.performanceParams.btnclickReset();
+      this.$refs.monitoringParams.btnclickReset();
     },
   },
 };

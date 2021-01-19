@@ -79,7 +79,6 @@ export default {
       sessionStorage.clear();
       window.vue._$common = this._$commonClone;
       this.$router.push("/login");
-
       console.log("this._$commonClone===", this._$commonClone);
       console.log("window.vue._$common===", window.vue._$common);
       console.log("this._$common===", this._$common);

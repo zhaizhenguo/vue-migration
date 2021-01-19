@@ -186,6 +186,10 @@ export default {
         }
         this.nowProcessStep++;
       } else {
+        let initData = this.$refs["step" + (this.nowProcess - 1)].initData;
+        if (typeof initData === "function") {
+          initData(this.stepData);
+        }
         this.nowProcessStep--;
       }
     },

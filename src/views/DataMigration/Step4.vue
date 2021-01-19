@@ -13,9 +13,9 @@
             >
               <el-option
                 v-for="item in sourcePattern"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
+                :key="item.oid"
+                :label="item.name"
+                :value="item.oid"
               >
               </el-option>
             </el-select> </el-col
@@ -82,10 +82,10 @@
                 placeholder="请选择"
               >
                 <el-option
-                  v-for="item in constraintMigrate"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
+                  v-for="item in targetPattern"
+                  :key="item.oid"
+                  :label="item.name"
+                  :value="item.oid"
                 >
                 </el-option>
               </el-select>
@@ -117,6 +117,7 @@ import objDataView from "@/components/Constant/step5Tab";
 import objDataView02 from "@/components/Constant/step5Tab02";
 import dialogSQLData from "../Dialog/DialogSQLData";
 import step4Tabs from "./Subcontent/step4-tabs";
+import api from "@/components/Asset/Api";
 export default {
   components: {
     dialogSQLData: dialogSQLData,
@@ -128,11 +129,14 @@ export default {
       objData02: objData02,
       objDataView: objDataView,
       objDataView02: objDataView02,
+      //查询条件
       queryInput: "",
       tableHeight: 570,
       isOpenConstraintMigrate: false,
       dialogSQLDataVisible: false,
+      //加载过得的所有信息
       patternData: {},
+      //选中的信息
       selectPatternData: {},
       patternParam: {},
       operatingMode: [
@@ -158,7 +162,11 @@ export default {
         { value: 0, label: "是" },
         { value: 1, label: "否" },
       ],
+      //源模式集合
       sourcePattern: [],
+      //目标模式集合
+      targetPattern: [],
+      //选中的模式名称
       checkSourcePattern: "",
       isInitData: false,
     };
@@ -167,7 +175,7 @@ export default {
     tabHandleClick(tab, event) {},
     handleSelectionChange(val) {
       if (!this.patternData[this.checkSourcePattern]) {
-        this.patternData[this.checkSourcePattern] = this.getPatternData(
+        this.patternData[this.checkSourcePattern] = this.getPatternDataByName(
           this.checkSourcePattern
         );
       }
@@ -175,51 +183,96 @@ export default {
         this.$refs["step4Tabs"].setSelectPaneData();
       });
     },
-    initData(sourceData) {
-      if (!this.isInitData) {
-        this.sourcePattern = [
-          { value: "SYSDBA", label: "SYSDBA" },
-          { value: "ZG", label: "ZG" },
-        ];
-        this.sourcePattern.forEach((patternData) => {
-          this.selectPatternData[patternData.value] = {};
-        });
-        let patternName = this.sourcePattern[0].value;
-
-        this.checkSourcePattern = patternName;
-
-        if (!!this.sourcePattern && this.sourcePattern.length > 0) {
-          this.patternData[patternName] = this.getPatternData(patternName);
-        }
-        this.isInitData = true;
+    async initData(sourceData) {
+      //   if (!this.isInitData) {
+      await this.getAllPattern();
+      console.log("this.sourcePattern===", this.sourcePattern);
+      // setTimeout(() => {
+      console.log("等待中。。。。");
+      this.sourcePattern.forEach((patternData) => {
+        this.selectPatternData[patternData.name] = {};
+      });
+      console.log("this.sourcePattern====", this.sourcePattern);
+      let patternName = this.sourcePattern[0].name;
+      this.checkSourcePattern = patternName;
+      if (!!this.sourcePattern && this.sourcePattern.length > 0) {
+        this.patternData[patternName] = this.getPatternDataByName(patternName);
       }
+      // }, 2000);
+
+      this.isInitData = true;
+      //   }
     },
-    getPatternData(patternName) {
-      return patternName === "SYSDBA"
-        ? {
-            table: this.objData,
-            view: this.objDataView,
-            sequence: this.objDataView,
-            tableSpace: this.objDataView,
-            synonyms: this.objDataView,
-            materializedView: this.objDataView,
-            procedure: this.objDataView,
-            packageData: this.objDataView,
-            functionData: this.objDataView,
-            userFunction: this.objDataView,
+    getAllPattern() {
+      return new Promise((resolve) => {
+        api.dataMigration.getAllPattern(null, (response) => {
+          let res = response.data;
+          if (res.code == 0) {
+            console.log("res.data===", res.data);
+            this.sourcePattern = res.data.sourcePattern;
+            this.targetPattern = res.data.targetPattern;
+            this.$message({
+              message: "加载模式信息成功",
+              type: "success",
+            });
+            this.isInit = true;
+          } else {
+            this.$message({
+              message: "加载模式信息失败, " + res.msg,
+              type: "error",
+            });
           }
-        : {
-            table: this.objData02,
-            view: this.objDataView02,
-            sequence: this.objDataView02,
-            tableSpace: this.objDataView02,
-            synonyms: this.objDataView02,
-            materializedView: this.objDataView02,
-            procedure: this.objDataView02,
-            packageData: this.objDataView02,
-            functionData: this.objDataView02,
-            userFunction: this.objDataView02,
-          };
+          resolve("resolved2");
+        });
+      });
+    },
+    getPatternDataByName(patternName) {
+      api.dataMigration.getPatternDataByName(
+        { patternName: patternName },
+        (response) => {
+          let res = response.data;
+          if (res.code == 0) {
+            console.log("res.data===", res.data);
+            this.$message({
+              message: "加载模式下的信息成功",
+              type: "success",
+            });
+            this.isInit = true;
+          } else {
+            this.$message({
+              message: "加载模式下的信息失败, " + res.msg,
+              type: "error",
+            });
+          }
+        }
+      );
+      setTimeout(() => {}, 1000);
+
+      //   return patternName === "SYSDBA"
+      //     ? {
+      //         table: this.objData,
+      //         view: this.objDataView,
+      //         sequence: this.objDataView,
+      //         tableSpace: this.objDataView,
+      //         synonyms: this.objDataView,
+      //         materializedView: this.objDataView,
+      //         procedure: this.objDataView,
+      //         packageData: this.objDataView,
+      //         functionData: this.objDataView,
+      //         userFunction: this.objDataView,
+      //       }
+      //     : {
+      //         table: this.objData02,
+      //         view: this.objDataView02,
+      //         sequence: this.objDataView02,
+      //         tableSpace: this.objDataView02,
+      //         synonyms: this.objDataView02,
+      //         materializedView: this.objDataView02,
+      //         procedure: this.objDataView02,
+      //         packageData: this.objDataView02,
+      //         functionData: this.objDataView02,
+      //         userFunction: this.objDataView02,
+      //       };
     },
     btnPointSQL() {
       this.dialogSQLDataVisible = true;
