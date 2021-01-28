@@ -1,6 +1,6 @@
 [
     {
-        "paneName": "view",
+        "paneName": "viewInfos",
         "paneLabel": "视图",
         "headerData": {
             "sourceName": "源视图名",
@@ -9,7 +9,7 @@
         }
     },
     {
-        "paneName": "sequence",
+        "paneName": "sequences",
         "paneLabel": "序列",
         "headerData": {
             "sourceName": "源序列名",
@@ -27,7 +27,7 @@
         }
     },
     {
-        "paneName": "materializedView",
+        "paneName": "materializedViews",
         "paneLabel": "物化视图",
         "headerData": {
             "sourceName": "源视图名",
@@ -36,7 +36,7 @@
         }
     },
     {
-        "paneName": "procedure",
+        "paneName": "procedures",
         "paneLabel": "存储过程",
         "headerData": {
             "sourceName": "源存储过程名",
@@ -45,7 +45,7 @@
         }
     },
     {
-        "paneName": "packageData",
+        "paneName": "packages",
         "paneLabel": "包",
         "headerData": {
             "sourceName": "源包名",
@@ -54,7 +54,7 @@
         }
     },
     {
-        "paneName": "functionData",
+        "paneName": "functionInfos",
         "paneLabel": "函数",
         "headerData": {
             "sourceName": "源函数名",
@@ -63,7 +63,7 @@
         }
     },
     {
-        "paneName": "userFunction",
+        "paneName": "typeInfos",
         "paneLabel": "自定义类型",
         "headerData": {
             "sourceName": "源自定义名",

@@ -3,8 +3,6 @@
  */
 
 export default {
-  //迁移数据源端目的端是否有变化
-  dataSourceIsChange: false,
   //菜单是否已加载
   menuRouteLoaded: false,
   //固定私钥

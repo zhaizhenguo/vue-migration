@@ -29,8 +29,23 @@ export default {
     getAllPattern(params, response, hostName) {
       window.vue._$request.post("/dataMigration/getAllPattern", params, response, hostName);
     },
-    getPatternDataByName(params, response, hostName) {
-      window.vue._$request.postForm("/dataMigration/getPatternDataByName", params, response, hostName);
+    getTableSpace(params, response, hostName) {
+      window.vue._$request.post("/dataMigration/getTableSpace", params, response, hostName);
+    },
+    getPatternDataById(params, response, hostName) {
+      window.vue._$request.postForm("/dataMigration/getPatternDataById", params, response, hostName);
+    },
+    getAllTableData(params, response, hostName) {
+      window.vue._$request.postForm("/dataMigration/getAllTableData", params, response, hostName);
+    },
+    saveMigrationInfo(params, response, hostName) {
+      window.vue._$request.post("/dataMigration/saveMigrationInfo", params, response, hostName);
+    },
+    saveSchemaInfo(params, response, hostName) {
+      window.vue._$request.post("/dataMigration/saveSchemaInfo", params, response, hostName);
+    },
+    startMigration(params, response, hostName) {
+      window.vue._$request.post("/dataMigration/startMigration", params, response, hostName);
     },
   },
   /*数据迁移-end*/

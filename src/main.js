@@ -17,6 +17,7 @@ Vue.use(ElementUI, {
 });
 Vue.config.productionTip = false;
 Vue.prototype._$common = common;
+console.log("common======", common);
 let commonClone = Object.assign({}, common);
 Vue.prototype._$commonClone = commonClone;
 Vue.prototype._$request = request;
@@ -50,7 +51,7 @@ requireComponent.keys().forEach(fileName => {
 
 // Vue.use(new VueSocketIO({
 //   debug: true,
-//   connection: 'ws://localhost:8081/ws/asset',
+//   connection: 'ws://127.0.0.1:8081/ws/asset',
 // }))
 /* eslint-disable no-new */
 const vm = new Vue({

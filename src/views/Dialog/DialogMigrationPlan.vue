@@ -12,6 +12,7 @@
         :stroke-width="16"
         :percentage="percentageCount"
         :format="format"
+        :color="customColor"
       ></el-progress>
     </el-card>
     <el-card style="margin-top: 10px">
@@ -132,6 +133,7 @@ export default {
     return {
       filterColumns: [],
       percentageCount: 70,
+      customColor: "rgb(106 204 168)",
       tableData: [
         {
           patternName: "PUBLIC",
@@ -197,7 +199,7 @@ export default {
         let inner = window.document.getElementsByClassName(
           "el-progress-bar__inner"
         );
-        inner[0].style.backgroundColor = "#67c23a";
+        // inner[0].style.backgroundColor = "#67c23a";
       }, 2000);
     },
     close() {

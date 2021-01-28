@@ -8,7 +8,7 @@
             <el-select
               class="selectDiv"
               @change="handleSelectionChange"
-              v-model="checkSourcePattern"
+              v-model="checkSourcePatternId"
               placeholder="请选择"
             >
               <el-option
@@ -93,11 +93,13 @@
           </el-col>
         </el-row>
       </el-header>
-      <el-main style="padding: 0px 20px">
+      <el-main v-loading="loading" style="padding: 0px 20px">
         <step4Tabs
           :patternData="patternData"
           :selectPatternData="selectPatternData"
-          :checkSourcePattern="checkSourcePattern"
+          :checkSourcePattern="checkSourcePatternName"
+          :tableSpaceData="tableSpaceData"
+          :tableNameList="checkSourceTableNameList"
           ref="step4Tabs"
         ></step4Tabs>
       </el-main>
@@ -111,10 +113,6 @@
   </div>
 </template>
 <script>
-import objData from "@/components/Constant/step4Tab";
-import objData02 from "@/components/Constant/step4Tab02";
-import objDataView from "@/components/Constant/step5Tab";
-import objDataView02 from "@/components/Constant/step5Tab02";
 import dialogSQLData from "../Dialog/DialogSQLData";
 import step4Tabs from "./Subcontent/step4-tabs";
 import api from "@/components/Asset/Api";
@@ -125,13 +123,10 @@ export default {
   },
   data() {
     return {
-      objData: objData,
-      objData02: objData02,
-      objDataView: objDataView,
-      objDataView02: objDataView02,
+      loading: false,
       //查询条件
       queryInput: "",
-      tableHeight: 570,
+      tableHeight: 395,
       isOpenConstraintMigrate: false,
       dialogSQLDataVisible: false,
       //加载过得的所有信息
@@ -144,135 +139,193 @@ export default {
         { value: "heavyLoadData", label: "重载数据" },
         { value: "addToData", label: "追加数据" },
       ],
-      checkConstraintMigrate: "SYSDBA111",
-      constraintMigrate: [
-        { value: "SYSDBA111", label: "SYSDBA111" },
-        { value: "ZG111", label: "ZG111" },
-      ],
       migrationCircle: [
-        { value: "objectsAndData", label: "迁移对象和数据" },
-        { value: "object", label: "迁移对象" },
-        { value: "onlyTabStructure", label: "仅迁移表结构" },
-        { value: "onlyView", label: "仅迁移识图" },
-        { value: "onlyTabAndData", label: "仅迁移表和数据" },
-        { value: "onlyData", label: "仅迁移数据" },
+        { value: 0, label: "迁移对象和数据" },
+        { value: 1, label: "迁移对象" },
+        { value: 2, label: "仅迁移表结构" },
+        { value: 3, label: "仅迁移视图" },
+        { value: 4, label: "仅迁移表和数据" },
+        { value: 5, label: "仅迁移数据" },
       ],
-      checkMigrationCircle: "objectsAndData",
+      checkMigrationCircle: 0,
       outputLog: [
         { value: 0, label: "是" },
         { value: 1, label: "否" },
       ],
+      //表空间数据
+      tableSpaceData: {},
+      //选中的模式Id
+      checkSourcePatternId: "",
       //源模式集合
       sourcePattern: [],
+      // 选中的目标端模式id
+      checkConstraintMigrate: "",
       //目标模式集合
       targetPattern: [],
-      //选中的模式名称
-      checkSourcePattern: "",
-      isInitData: false,
+      //源端模式名集合
+      sourcePatternNameArray: [],
+      //源端模式id name 映射关系
+      sourceSchemaIdNameMap: {},
+      //目标端模式id name 映射关系
+      targetSchemaIdNameMap: {},
+      //源端表名对象
+      sourceTableName: {},
+      isLoading: false,
+      schemaDataNameList: [
+        "tableInfos",
+        "viewInfos",
+        "sequences",
+        "synonyms",
+        "materializedViews",
+        "procedures",
+        "packages",
+        "functionInfos",
+        "typeInfos",
+      ],
     };
   },
   methods: {
-    tabHandleClick(tab, event) {},
-    handleSelectionChange(val) {
-      if (!this.patternData[this.checkSourcePattern]) {
-        this.patternData[this.checkSourcePattern] = this.getPatternDataByName(
-          this.checkSourcePattern
-        );
-      }
-      this.$nextTick(() => {
-        this.$refs["step4Tabs"].setSelectPaneData();
-      });
-    },
     async initData(sourceData) {
-      //   if (!this.isInitData) {
-      await this.getAllPattern();
-      console.log("this.sourcePattern===", this.sourcePattern);
-      // setTimeout(() => {
-      console.log("等待中。。。。");
-      this.sourcePattern.forEach((patternData) => {
-        this.selectPatternData[patternData.name] = {};
-      });
-      console.log("this.sourcePattern====", this.sourcePattern);
-      let patternName = this.sourcePattern[0].name;
-      this.checkSourcePattern = patternName;
-      if (!!this.sourcePattern && this.sourcePattern.length > 0) {
-        this.patternData[patternName] = this.getPatternDataByName(patternName);
+      if (!this.isLoading) {
+        //加载所有模式
+        await this.getAllPattern();
+        await this.getTableSpace();
+        if (!!this.sourcePattern && this.sourcePattern.length > 0) {
+          //初始化
+          this.sourcePattern.forEach((patternData) => {
+            this.sourceTableName[patternData.oid] = [];
+            this.selectPatternData[patternData.name] = {};
+          });
+          let id = this.sourcePattern[5].oid;
+          let name = this.sourcePattern[5].name;
+          await this.getPatternDataById(id, name);
+          this.checkSourcePatternId = id;
+        } else {
+          this.$message({
+            message: "源端连接下没有数据",
+            type: "error",
+          });
+        }
+        this.isLoading = true;
       }
-      // }, 2000);
-
-      this.isInitData = true;
-      //   }
+      this.$emit("updateLoadingState");
     },
+    getData() {
+      let step4TabsData = this.$refs["step4Tabs"].getData();
+      this.conversionParam(step4TabsData);
+      step4TabsData["migrationConfigInfo"] = this.getParam();
+      step4TabsData["schemaData"] = this.sourcePattern;
+      return step4TabsData;
+    },
+    conversionParam(step4TabsData) {
+      //遍历选中的模式名
+      step4TabsData.selectSchemaNameList.forEach((schemaName) => {
+        let schemaIndex = this.sourcePatternNameArray.indexOf(schemaName);
+        let checkData = step4TabsData.selectSchemaData[schemaName];
+        //将选中的数据封装到模式集合
+        this.schemaDataNameList.forEach((name) => {
+          this.sourcePattern[schemaIndex][name] = checkData[name];
+        });
+      });
+    },
+    getParam() {
+      return {
+        checkMigrationCircle: this.checkMigrationCircle,
+        isOpenConstraintMigrate: this.isOpenConstraintMigrate,
+        checkTargetSchemaName: this.checkTargetSchemaName,
+      };
+    },
+    tabHandleClick(tab, event) {},
+    async handleSelectionChange(val) {
+      this.loading = true;
+      if (!this.patternData[this.checkSourcePatternName]) {
+        await this.getPatternDataById(val);
+      }
+      this.$refs["step4Tabs"].setSelectPaneData();
+      setTimeout(() => {
+        this.calcHeightx();
+      }, 100);
+      this.loading = false;
+    },
+
     getAllPattern() {
       return new Promise((resolve) => {
         api.dataMigration.getAllPattern(null, (response) => {
           let res = response.data;
           if (res.code == 0) {
-            console.log("res.data===", res.data);
             this.sourcePattern = res.data.sourcePattern;
             this.targetPattern = res.data.targetPattern;
+            this.sourcePatternNameArray = res.data.sourcePatternName;
+            this.sourceSchemaIdNameMap = res.data.sourceSchemaIdNameMap;
+            this.targetSchemaIdNameMap = res.data.targetSchemaIdNameMap;
+            if (!!this.targetPattern && this.targetPattern.length > 0) {
+              this.checkConstraintMigrate = this.targetPattern[0].oid;
+            }
             this.$message({
               message: "加载模式信息成功",
               type: "success",
             });
-            this.isInit = true;
           } else {
             this.$message({
               message: "加载模式信息失败, " + res.msg,
               type: "error",
             });
           }
-          resolve("resolved2");
+          resolve();
         });
       });
     },
-    getPatternDataByName(patternName) {
-      api.dataMigration.getPatternDataByName(
-        { patternName: patternName },
-        (response) => {
+    getTableSpace() {
+      return new Promise((resolve) => {
+        api.dataMigration.getTableSpace(null, (response) => {
           let res = response.data;
           if (res.code == 0) {
-            console.log("res.data===", res.data);
+            this.tableSpaceData = res.data;
+            this.$message({
+              message: "加载表空间信息成功",
+              type: "success",
+            });
+          } else {
+            this.$message({
+              message: "加载表空间信息失败, " + res.msg,
+              type: "error",
+            });
+          }
+          resolve();
+        });
+      });
+    },
+    //通过模式ID 获取模式下信息
+    getPatternDataById(id, name) {
+      return new Promise((resolve) => {
+        api.dataMigration.getPatternDataById({ id: id }, (response) => {
+          let res = response.data;
+          if (res.code == 0) {
+            if (!!res.data) {
+              this.$set(
+                this.patternData,
+                !this.checkSourcePatternName
+                  ? name
+                  : this.checkSourcePatternName,
+                res.data.schemaInfo
+              );
+              this.sourceTableName[id] = res.data.tableNameList;
+              this.checkSourceTableNameList;
+              //   this.tableSpaceData[id] = res.data.tablespace;
+            }
             this.$message({
               message: "加载模式下的信息成功",
               type: "success",
             });
-            this.isInit = true;
           } else {
             this.$message({
               message: "加载模式下的信息失败, " + res.msg,
               type: "error",
             });
           }
-        }
-      );
-      setTimeout(() => {}, 1000);
-
-      //   return patternName === "SYSDBA"
-      //     ? {
-      //         table: this.objData,
-      //         view: this.objDataView,
-      //         sequence: this.objDataView,
-      //         tableSpace: this.objDataView,
-      //         synonyms: this.objDataView,
-      //         materializedView: this.objDataView,
-      //         procedure: this.objDataView,
-      //         packageData: this.objDataView,
-      //         functionData: this.objDataView,
-      //         userFunction: this.objDataView,
-      //       }
-      //     : {
-      //         table: this.objData02,
-      //         view: this.objDataView02,
-      //         sequence: this.objDataView02,
-      //         tableSpace: this.objDataView02,
-      //         synonyms: this.objDataView02,
-      //         materializedView: this.objDataView02,
-      //         procedure: this.objDataView02,
-      //         packageData: this.objDataView02,
-      //         functionData: this.objDataView02,
-      //         userFunction: this.objDataView02,
-      //       };
+          resolve();
+        });
+      });
     },
     btnPointSQL() {
       this.dialogSQLDataVisible = true;
@@ -281,18 +334,7 @@ export default {
       this.dialogSQLDataVisible = false;
     },
     getSqlData(data) {},
-    getData() {
-      let step4TabsData = this.$refs["step4Tabs"].getData();
-      step4TabsData["patternParam"] = this.getParam();
-      return step4TabsData;
-    },
-    getParam() {
-      return {
-        checkMigrationCircle: this.checkMigrationCircle,
-        isOpenConstraintMigrate: this.isOpenConstraintMigrate,
-        checkConstraintMigrate: this.checkConstraintMigrate,
-      };
-    },
+
     calcHeightx() {
       let wapper = window.document.getElementsByClassName(
         "el-table__body-wrapper"
@@ -307,7 +349,23 @@ export default {
   created: function () {
     this.calcHeightx();
   },
-  computed: {},
+  computed: {
+    //选中的源端模式名称
+    checkSourcePatternName() {
+      let name = this.sourceSchemaIdNameMap[this.checkSourcePatternId];
+      return name;
+    },
+    //选中的目标端模式名称
+    checkTargetSchemaName() {
+      let name = this.targetSchemaIdNameMap[this.checkConstraintMigrate];
+      return name;
+    },
+    //选中模式下的表名集合
+    checkSourceTableNameList() {
+      let nameList = this.sourceTableName[this.checkSourcePatternId];
+      return nameList;
+    },
+  },
 };
 </script>
 <style scoped>

@@ -18,68 +18,68 @@
         :key="index"
       >
         <step4LinePane
-          v-if="item.value === 'line'"
+          v-if="item.value === 'columns'"
           v-show="activeName === item.value"
           @getTableResourceData="getTableResourceData"
           :tableData="singleTableResourceData[item.value]"
           :tableHeight="tableHeight"
-          ref="line"
+          ref="columns"
         >
         </step4LinePane>
         <step4CommonPane
-          v-else-if="item.value === 'majorKey'"
+          v-else-if="item.value === 'foreignKeys'"
           v-show="activeName === item.value"
           @getTableResourceData="getTableResourceData"
           :tableData="singleTableResourceData[item.value]"
           :tableHeight="tableHeight"
           :paneName="item.value"
-          ref="majorKey"
+          ref="foreignKeys"
         ></step4CommonPane>
         <step4CommonPane
-          v-else-if="item.value === 'constraint'"
+          v-else-if="item.value === 'checkInfos'"
           v-show="activeName === item.value"
           @getTableResourceData="getTableResourceData"
           :tableData="singleTableResourceData[item.value]"
           :tableHeight="tableHeight"
           :paneName="item.value"
-          ref="constraint"
+          ref="checkInfos"
         ></step4CommonPane>
         <step4CommonPane
-          v-else-if="item.value === 'onlyConstraint'"
+          v-else-if="item.value === 'uniqueInfos'"
           v-show="activeName === item.value"
           @getTableResourceData="getTableResourceData"
           :tableData="singleTableResourceData[item.value]"
           :tableHeight="tableHeight"
           :paneName="item.value"
-          ref="onlyConstraint"
+          ref="uniqueInfos"
         ></step4CommonPane>
 
         <step4CommonPane
-          v-else-if="item.value === 'index'"
+          v-else-if="item.value === 'indexInfos'"
           v-show="activeName === item.value"
           @getTableResourceData="getTableResourceData"
           :tableData="singleTableResourceData[item.value]"
           :tableHeight="tableHeight"
           :paneName="item.value"
-          ref="index"
+          ref="indexInfos"
         ></step4CommonPane>
         <step4CommonPane
-          v-else-if="item.value === 'trigger'"
+          v-else-if="item.value === 'triggers'"
           v-show="activeName === item.value"
           @getTableResourceData="getTableResourceData"
           :tableData="singleTableResourceData[item.value]"
           :tableHeight="tableHeight"
           :paneName="item.value"
-          ref="trigger"
+          ref="triggers"
         ></step4CommonPane>
         <step4CommonPane
-          v-else-if="item.value === 'fullIndex'"
+          v-else-if="item.value === 'fullIndexInfos'"
           v-show="activeName === item.value"
           @getTableResourceData="getTableResourceData"
           :tableData="singleTableResourceData[item.value]"
           :tableHeight="tableHeight"
           :paneName="item.value"
-          ref="fullIndex"
+          ref="fullIndexInfos"
         ></step4CommonPane>
       </el-tab-pane>
     </el-tabs>
@@ -115,16 +115,16 @@ export default {
   },
   data() {
     return {
-      activeName: "line",
+      activeName: "columns",
       tableHeight: 430,
       tabResources: [
-        { value: "line", label: "列" },
-        { value: "majorKey", label: "主键" },
-        { value: "constraint", label: "约束" },
-        { value: "onlyConstraint", label: "唯一约束" },
-        { value: "index", label: "索引" },
-        { value: "trigger", label: "触发器" },
-        { value: "fullIndex", label: "全文索引" },
+        { value: "columns", label: "列" },
+        { value: "foreignKeys", label: "外键" },
+        { value: "checkInfos", label: "约束" },
+        { value: "uniqueInfos", label: "唯一约束" },
+        { value: "indexInfos", label: "索引" },
+        { value: "triggers", label: "触发器" },
+        { value: "fullIndexInfos", label: "全文索引" },
       ],
     };
   },
@@ -133,9 +133,25 @@ export default {
       this.$emit("closeTableLineDialog");
     },
     initData() {
-      if (this.singleTableResourceData.isSelectAllLineRow) {
+      if (!!this.singleTableResourceData.isSelectAllLineRow) {
+        //解决接送数据重复值问题 例如:$.data.columns[1].stype
+        this.singleTableResourceData["columns"].forEach((element) => {
+          if (!!element.stype["$ref"]) {
+            //获得索引
+            let index = element.stype["$ref"].substring(15, 16);
+            element["stype"] = this.singleTableResourceData["columns"][
+              index
+            ].stype;
+          }
+        });
         this.$nextTick(() => {
-          this.$refs[this.activeName][0].selectAllRow();
+          //有数据的全部选中
+          this.tabResources.forEach((element) => {
+            let dataArray = this.singleTableResourceData[element.value];
+            if (!!dataArray && dataArray.length > 0) {
+              this.$refs[element.value][0].selectAllRow();
+            }
+          });
         });
       } else {
         this.$emit("setTableResourceData", this);
@@ -143,7 +159,6 @@ export default {
     },
     handleEdit(index, row) {},
     getTableResourceData(key, value) {
-      this.singleTableResourceData.isSelectAllLineRow = false;
       this.$emit("getTableResourceData", key, value, this.tableName);
     },
     tabHandleClick() {

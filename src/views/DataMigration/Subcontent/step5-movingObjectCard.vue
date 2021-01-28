@@ -7,17 +7,17 @@
     <el-row style="line-height: 32px; text-align: center">
       <el-col :span="1">&nbsp;</el-col>
       <el-col :span="9"
-        >{{ tableData.patternName }}.{{ tableData.sourceTableName }}</el-col
+        >{{ tableData.targetSchema }}.{{ tableData.sourceName }}</el-col
       >
       <el-col :span="4" style="color: #409eff; font-size: 25px">
         <i class="el-icon-d-arrow-right"></i>
       </el-col>
       <el-col :span="10"
         >{{
-          !this.targetPatternName
-            ? tableData.patternName
-            : this.targetPatternName
-        }}.{{ tableData.targetTableName }}</el-col
+          !this.targetSchemaName
+            ? tableData.targetSchema
+            : this.targetSchemaName
+        }}.{{ tableData.targetName }}</el-col
       >
     </el-row>
     <el-row class="databaseTitle"
@@ -26,16 +26,16 @@
 
     <el-row
       class="lineColor"
-      v-for="(lineData, index) in tableData.line"
+      v-for="(lineData, index) in tableData.columnstemp"
       :key="index"
       style="line-height: 32px; text-align: center"
     >
       <el-col :span="1">&nbsp;</el-col>
-      <el-col :span="9">{{ lineData.sourceLineName }}</el-col>
+      <el-col :span="9">{{ lineData.sourceName }}</el-col>
       <el-col :span="4" style="color: #409eff; font-size: 25px">
         <i class="el-icon-d-arrow-right"></i>
       </el-col>
-      <el-col :span="10">{{ lineData.targetLineName }}</el-col>
+      <el-col :span="10">{{ lineData.targetName }}</el-col>
     </el-row>
   </el-card>
 </template>
@@ -48,13 +48,7 @@ export default {
         return {};
       },
     },
-    patternParam: {
-      type: Object,
-      default: function () {
-        return {};
-      },
-    },
-    targetPatternName: {
+    targetSchemaName: {
       type: String,
       default: function () {
         return "";
@@ -69,12 +63,12 @@ export default {
   },
   computed: {
     operationType() {
-      let checkOperatingMode = this.tableData.checkOperatingMode;
-      if (checkOperatingMode == "newTable") {
+      let mode = this.tableData.mode;
+      if (mode == 1) {
         return "新建表";
-      } else if (checkOperatingMode == "heavyLoadData") {
+      } else if (mode == 2) {
         return "重载数据";
-      } else if (checkOperatingMode == "addToData") {
+      } else if (mode == 4) {
         return "追加数据";
       }
     },

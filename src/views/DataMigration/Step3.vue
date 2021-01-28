@@ -53,37 +53,29 @@ export default {
       colMapRelationTemp: [],
       tableHeight: 400,
       bottomTableHeight: 150,
-      isInit: false,
+      isLoading: false,
     };
   },
   methods: {
-    initData(sourceData) {
-      if (this._$common.dataSourceIsChange && !this.isInit) {
-        this.getTypeMapping();
+    async initData(sourceData) {
+      //数据源 有变化
+      if (!this.isLoading) {
+        await this.getTypeMapping();
+        this.isLoading = true;
       }
       this.$refs.bottomTableForm.calcHeightx();
       this.$refs.topTableForm.calcHeightx();
+      this.$emit("updateLoadingState");
     },
-    getData() {
+    async getData() {
       if (!this.$refs.bottomTableForm.getValidate()) {
-        return;
+        return false;
       }
       this.calResultData();
-      api.dataMigration.saveTypeMapping(this.colMapRelation, (response) => {
-        let res = response.data;
-        if (res.code == 0) {
-          this.$message({
-            message: "保存成功",
-            type: "success",
-            duration: 1000,
-          });
-        } else {
-          this.$message({
-            message: "保存失败, " + res.msg,
-            type: "error",
-          });
-        }
-      });
+      let isSuccess = await this.saveTypeMapping();
+      if (!isSuccess) {
+        return false;
+      }
       return this.colMapRelation;
     },
     //封装自定义的列映射
@@ -100,6 +92,27 @@ export default {
         accTypes[0]["selected"] = true;
         item.accTypes = accTypes;
         this.colMapRelation.push(item);
+      });
+    },
+    saveTypeMapping() {
+      return new Promise((resolve) => {
+        api.dataMigration.saveTypeMapping(this.colMapRelation, (response) => {
+          let res = response.data;
+          if (res.code == 0) {
+            this.$message({
+              message: "保存成功",
+              type: "success",
+              duration: 1000,
+            });
+            resolve(true);
+          } else {
+            this.$message({
+              message: "保存失败, " + res.msg,
+              type: "error",
+            });
+            resolve(false);
+          }
+        });
       });
     },
     addOrDelete(isAdd) {
@@ -145,25 +158,28 @@ export default {
         .catch(() => {});
     },
     getTypeMapping() {
-      api.dataMigration.getTypeMapping(null, (response) => {
-        let res = response.data;
-        if (res.code == 0) {
-          this.colMapRelation = res.data;
-          //备份原始数据
-          this.backColMapRelation = JSON.parse(
-            JSON.stringify(this.colMapRelation)
-          );
-          this.$message({
-            message: "查询映射列信息成功",
-            type: "success",
-          });
-          this.isInit = true;
-        } else {
-          this.$message({
-            message: "查询映射列信息失败, " + res.msg,
-            type: "error",
-          });
-        }
+      return new Promise((resolve) => {
+        api.dataMigration.getTypeMapping(null, (response) => {
+          let res = response.data;
+          if (res.code == 0) {
+            this.colMapRelation = res.data;
+            //备份原始数据
+            this.backColMapRelation = JSON.parse(
+              JSON.stringify(this.colMapRelation)
+            );
+            this.$message({
+              message: "查询映射列信息成功",
+              type: "success",
+            });
+          } else {
+            this.$message({
+              message: "查询映射列信息失败, " + res.msg,
+              type: "error",
+            });
+          }
+
+          resolve();
+        });
       });
     },
     calcHeightx() {

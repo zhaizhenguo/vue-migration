@@ -17,72 +17,79 @@
     <el-table-column
       align="center"
       sortable
-      prop="sourceLineName"
-      label="表空间"
+      prop="sourceName"
+      label="源端名称"
       min-width="12%"
     >
     </el-table-column>
     <el-table-column
       align="center"
       sortable
-      prop="targetLineName"
+      prop="targetName"
       label="目的端名称"
       min-width="14%"
     >
       <template slot-scope="scope">
-        <el-input size="mini" v-model="scope.row.targetLineName"></el-input>
+        <el-input size="mini" v-model="scope.row.targetName"></el-input>
       </template>
     </el-table-column>
     <el-table-column
       align="center"
-      prop="checkType"
+      prop="tsInitSize"
       label="初始化大小(K)"
       min-width="10%"
     >
     </el-table-column>
     <el-table-column
       align="center"
-      prop="length"
+      prop="tsNextSize"
       label="增长量(K)"
-      min-width="8%"
+      min-width="7%"
     >
     </el-table-column>
     <el-table-column
       align="center"
-      prop="precision"
+      prop="tsMaxSize"
+      label="最大值(K)"
+      min-width="7%"
+    >
+    </el-table-column>
+    <el-table-column
+      align="center"
+      prop="tsPctFree"
       label="空闲比"
-      min-width="8%"
+      min-width="7%"
     >
     </el-table-column>
     <el-table-column
       align="center"
-      prop="decimals"
+      prop="tsPctUsed"
       label="最小使用比"
-      min-width="8%"
+      min-width="7%"
     >
     </el-table-column>
     <el-table-column
       align="center"
-      prop="ismajorKey"
+      prop="tsFill"
       label="索引填充"
-      min-width="8%"
+      min-width="7%"
     >
     </el-table-column>
     <el-table-column
       align="center"
-      prop="canBeNull"
+      prop="tsSplit"
       label="索引分裂"
-      min-width="8%"
+      min-width="7%"
     >
     </el-table-column>
     <el-table-column
       align="center"
-      prop="checkOutputLog"
+      prop="tsLogging"
       label="输出日志"
-      min-width="8%"
+      min-width="7%"
     >
       <template slot-scope="scope">
-        <el-select size="mini" v-model="scope.row.canBeNull">
+        <el-select size="mini" v-model="scope.row.tsLogging">
           <el-option
             v-for="item in whetherList"
             :key="item.value"
@@ -95,9 +102,10 @@
     </el-table-column>
     <el-table-column
       align="center"
-      prop="filter"
+      prop="tsDataFiles"
       label="数据文件"
       min-width="14%"
+      :formatter="dateFormat"
     >
     </el-table-column>
   </el-table>
@@ -114,7 +122,7 @@ export default {
     tableData: {
       type: Array,
       default: function () {
-        return {};
+        return [];
       },
     },
   },
@@ -122,8 +130,8 @@ export default {
   data() {
     return {
       whetherList: [
-        { value: 0, label: "是" },
-        { value: 1, label: "否" },
+        { value: "true", label: "是" },
+        { value: "false", label: "否" },
       ],
     };
   },
@@ -139,6 +147,17 @@ export default {
     },
     select(selection) {
       this.$emit("getSelectPaneData", "tableSpace", selection);
+    },
+    dateFormat(row, column) {
+      if (!!row.tsDataFiles) {
+        let resStr = "";
+        row.tsDataFiles.forEach((item) => {
+          resStr = resStr + item.dataFile + ",";
+        });
+        resStr = resStr.substring(0, resStr.length - 1);
+        return resStr;
+      }
+      return null;
     },
   },
 };

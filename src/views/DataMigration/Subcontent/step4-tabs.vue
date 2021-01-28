@@ -1,28 +1,22 @@
 <template>
   <el-tabs type="border-card" v-model="activeName" @tab-click="tabHandleClick">
-    <el-tab-pane label="表" name="table">
+    <el-tab-pane label="表" name="tableInfos">
       <step4TablePane
         @getTableResourceData="getTableResourceData"
         @setTableResourceData="setTableResourceData"
         @getSelectPaneData="getSelectPaneData"
         :tableHeight="tableHeight"
-        :tableData="
-          !patternData[this.checkSourcePattern]
-            ? null
-            : patternData[this.checkSourcePattern].table
-        "
+        :tableNameList="tableNameList"
+        :tableData="tableData"
         :checkSourcePattern="checkSourcePattern"
-        ref="table"
+        :tableSpaceData="tableSpaceData"
+        ref="tableInfos"
       ></step4TablePane>
     </el-tab-pane>
     <el-tab-pane label="表空间" name="tableSpace"
       ><step4TableSpacePane
         :tableHeight="tableHeight"
-        :tableData="
-          !patternData[this.checkSourcePattern]
-            ? null
-            : patternData[this.checkSourcePattern].tableSpace
-        "
+        :tableData="tableSpaceData.sourceTablespace"
         @getSelectPaneData="getSelectPaneData"
         ref="tableSpace"
       ></step4TableSpacePane
@@ -61,97 +55,135 @@ export default {
     step4TableSpacePane: step4TableSpacePane,
   },
   props: {
+    //当前所属的模式名
     checkSourcePattern: {
       type: String,
       default: function () {
         return "";
       },
     },
+    //当前模式数据
     patternData: {
       type: Object,
       default: function () {
         return {};
       },
     },
+    //选中的数据
     selectPatternData: {
       type: Object,
       default: function () {
         return {};
       },
     },
+    //表空间数据
+    tableSpaceData: {
+      type: Object,
+      default: function () {
+        return {};
+      },
+    },
+    //当前模式下的全量表名集合
+    tableNameList: {
+      type: Array,
+      default: function () {
+        return [];
+      },
+    },
   },
   data() {
     return {
       selectRow: [],
+      //选中的模式名集合
       selectPatternNameList: [],
+      //选中的表名集合
       selectTableNameList: {},
       tableHeight: 447,
       sourceData: "",
-      activeName: "table",
+      activeName: "tableInfos",
       commonPaneData: commonPaneData,
       commonPaneNameList: [
-        "view",
-        "sequence",
+        "viewInfos",
+        "sequences",
         "synonyms",
-        "materializedView",
-        "procedure",
-        "packageData",
-        "functionData",
-        "userFunction",
+        "materializedViews",
+        "procedures",
+        "packages",
+        "functionInfos",
+        "typeInfos",
       ],
     };
   },
   methods: {
+    //获取数据
+    getData() {
+      return {
+        selectSchemaNameList: this.selectPatternNameList,
+        selectSchemaData: this.selectPatternData,
+      };
+    },
+    //切换tab页事件
+    tabHandleClick(tab, event) {
+      this.setSelectPaneData();
+    },
+    //封装选中的主面板数据（表、表空间、视图...）
     getSelectPaneData(key, value) {
       if (this.selectPatternNameList.indexOf(this.checkSourcePattern) === -1) {
         this.selectPatternNameList.push(this.checkSourcePattern);
       }
       this.selectPatternData[this.checkSourcePattern][key] = value;
-      if (key === "table") {
+      if (key === "tableInfos") {
         this.selectTableNameList[this.checkSourcePattern] = [];
         value.forEach((element) => {
           this.selectTableNameList[this.checkSourcePattern].push(
-            element.sourceTableName
+            element.sourceName
           );
         });
       }
     },
+    //当切换主面板tab页时给选中的数据勾选
     setSelectPaneData() {
+      //获取当前页面勾选的数据
       this.selectRow =
         this.selectPatternData[this.checkSourcePattern][this.activeName] || [];
       let paneIndex = this.commonPaneNameList.indexOf(this.activeName);
+      //表 或 表空间
       if (paneIndex === -1) {
         this.$refs[this.activeName].selectRow(this.selectRow);
       } else {
         this.$refs["commonPane"][paneIndex].selectRow(this.selectRow);
       }
     },
+    //封装dialog下选中的数据（列、索引、约束信息...）
     getTableResourceData(key, value, tableName) {
       let index = this.selectTableNameList[this.checkSourcePattern].indexOf(
         tableName
       );
-      this.selectPatternData[this.checkSourcePattern]["table"][index][
-        key
+      this.selectPatternData[this.checkSourcePattern]["tableInfos"][index][
+        key + "temp"
       ] = value;
+      //初始化的全量数据
+      let realData = this.patternData[this.checkSourcePattern]["tableInfos"][
+        this.tableNameList.indexOf(tableName)
+      ][key];
+      //修改数据选中状态
+      realData.forEach((element) => {
+        if (value.indexOf(element) != -1) {
+          element.checked = true;
+        } else {
+          element.checked = false;
+        }
+      });
     },
+    //当dialog中切换tab页时给选中的数据勾选
     setTableResourceData(dialogTableLineObj) {
       let index = this.selectTableNameList[this.checkSourcePattern].indexOf(
         dialogTableLineObj.tableName
       );
-      let rows = this.selectPatternData[this.checkSourcePattern]["table"][
+      let rows = this.selectPatternData[this.checkSourcePattern]["tableInfos"][
         index
-      ][dialogTableLineObj.activeName];
+      ][dialogTableLineObj.activeName + "temp"];
       dialogTableLineObj.selectRow(rows);
-    },
-    tabHandleClick(tab, event) {
-      this.setSelectPaneData();
-    },
-
-    getData() {
-      return {
-        selectPatternNameList: this.selectPatternNameList,
-        selectPatternData: this.selectPatternData,
-      };
     },
     calcHeightx() {
       let wapper = window.document.getElementsByClassName(
@@ -159,7 +191,6 @@ export default {
       );
       //必须加延时，要不然赋不上去值
       setTimeout(() => {
-        //通过上边计算得到的table高度的value值，减去table表格的header高度，剩下的通过dom节点直接强行赋给table表格的body
         wapper[0].style.height = this.tableHeight + "px";
       }, 100);
     },
@@ -167,7 +198,29 @@ export default {
   created: function () {
     this.calcHeightx();
   },
-  computed: {},
+  //   watch: {
+  //     patternData: {
+  //       handler(newVal, val) {
+  //         console.log("=====yl====step4-tabs===val=", val);
+  //         console.log("=====yl====step4-tabs==newVal==", newVal);
+  //       },
+  //       deep: true,
+  //     },
+  //     checkSourcePattern: {
+  //       handler(newVal, val) {
+  //         console.log("=====yl====checkSourcePattern===val=", val);
+  //         console.log("=====yl====checkSourcePattern==newVal==", newVal);
+  //       },
+  //       deep: true,
+  //     },
+  //   },
+  computed: {
+    tableData() {
+      return !this.patternData[this.checkSourcePattern]
+        ? null
+        : this.patternData[this.checkSourcePattern].tableInfos;
+    },
+  },
 };
 </script>
 <style scoped></style>

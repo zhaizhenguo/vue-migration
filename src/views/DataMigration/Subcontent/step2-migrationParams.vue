@@ -86,7 +86,6 @@ export default {
         "migErrorHandleStrategy"
       ] = this.migrationParams.migErrorHandleStrategy;
       param["colMultFactor"] = this.migrationParams.colMultFactor;
-      console.log("param===", param);
       return param;
     },
     handleCheckedCitiesChange(value) {},

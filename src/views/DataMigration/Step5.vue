@@ -12,8 +12,7 @@
     >
       <movingObjectCard
         :tableData="tableData"
-        :patternParam="patternParam"
-        :targetPatternName="targetPatternName"
+        :targetSchemaName="targetSchemaName"
       ></movingObjectCard>
     </el-timeline-item>
 
@@ -39,38 +38,38 @@ export default {
   data() {
     return {
       allTableData: [],
-      targetPatternName: "",
+      targetSchemaName: "",
     };
   },
   methods: {
     initData(sourceData) {
-      this.targetPatternName = "";
+      this.targetSchemaName = "";
+      //是否开启了强制迁移
       if (
-        !!this.stepData.patternParam &&
-        this.stepData.patternParam.isOpenConstraintMigrate
+        !!this.stepData.migrationConfigInfo &&
+        this.stepData.migrationConfigInfo.isOpenConstraintMigrate
       ) {
-        this.targetPatternName = this.stepData.patternParam.checkConstraintMigrate;
+        this.targetSchemaName = this.stepData.migrationConfigInfo.checkTargetSchemaName;
       }
       this.allTableData = [];
-      this.stepData.patternNameList.forEach((element) => {
-        let tableData = this.stepData.patternData[element]["table"];
+      // 获取所有表对象
+      this.stepData.selectSchemaNameList.forEach((schemaName) => {
+        let tableData = this.stepData.selectSchemaData[schemaName][
+          "tableInfos"
+        ];
         if (!!tableData) {
           this.allTableData = this.allTableData.concat(tableData);
         }
       });
-
       this.$refs.databaseCard.initData(this.stepData.databaseData);
+      this.$emit("updateLoadingState");
     },
     getData() {
       return {};
     },
   },
   created: function () {},
-  computed: {
-    patternParam() {
-      return this.stepData.patternParam;
-    },
-  },
+  computed: {},
 };
 </script>
 <style scoped>

@@ -16,7 +16,7 @@
     <el-table-column
       align="center"
       sortable
-      prop="sourceObjectName"
+      prop="sourceName"
       label="源对象名"
       min-width="12%"
     >
@@ -24,12 +24,12 @@
     <el-table-column
       align="center"
       sortable
-      prop="targetObjectName"
+      prop="targetName"
       label="目的对象名"
       min-width="15%"
     >
       <template slot-scope="scope">
-        <el-input size="mini" v-model="scope.row.targetObjectName"></el-input>
+        <el-input size="mini" v-model="scope.row.targetName"></el-input>
       </template>
     </el-table-column>
 

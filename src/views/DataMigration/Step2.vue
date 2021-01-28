@@ -41,24 +41,27 @@ export default {
   data() {
     return {
       activeName: "migrationParams",
+      isLoading: false,
     };
   },
   methods: {
     initData() {
-      if (this._$common.dataSourceIsChange) {
+      if (!this.isLoading) {
         this.btnclickResetAll();
+        this.isLoading = true;
       }
+      this.$emit("updateLoadingState");
     },
     handleClick(tab, event) {},
-    getData() {
-      let param = this.getParam();
+    async getData() {
+      let param = await this.getParam();
       if (!!param) {
-        //TODO
-        if (!!this.saveConfig(param)) {
+        let isSuccess = await this.saveConfig(param);
+        if (isSuccess) {
           return param;
         }
       }
-      return null;
+      return false;
     },
     getParam() {
       let param = null;
@@ -75,28 +78,28 @@ export default {
       }
       return param;
     },
-    async saveConfig(param) {
-      let isSuccess = false;
-      let configInfo = param;
-      await api.dataMigration.saveConfig(configInfo, (response) => {
-        let res = response.data;
-        if (res.code == 0) {
-          isSuccess = true;
-          console.log("111isSuccess==", isSuccess);
-          this.$message({
-            message: "保存成功",
-            type: "success",
-            duration: 1000,
-          });
-        } else {
-          this.$message({
-            message: "保存失败, " + res.msg,
-            type: "error",
-          });
-        }
+    saveConfig(param) {
+      return new Promise((resolve) => {
+        let isSuccess = false;
+        let configInfo = param;
+        api.dataMigration.saveConfig(configInfo, (response) => {
+          let res = response.data;
+          if (res.code == 0) {
+            isSuccess = true;
+            this.$message({
+              message: "保存成功",
+              type: "success",
+              duration: 1000,
+            });
+          } else {
+            this.$message({
+              message: "保存失败, " + res.msg,
+              type: "error",
+            });
+          }
+          resolve(isSuccess);
+        });
       });
-      await console.log("222isSuccess==", isSuccess);
-      return isSuccess;
     },
     btnclickReset() {
       if (this.activeName === "migrationParams") {

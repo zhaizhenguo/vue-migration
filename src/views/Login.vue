@@ -88,31 +88,37 @@ export default {
   },
   methods: {
     getPublicKey() {
-      api.getPublicKey(null, (response) => {
-        let res = response.data;
-        if (res.code == 0) {
-          try {
-            if (!!res.data) {
-              this._$common.publicKey = getDecrypt(
-                res.data,
-                this._$common.privateKey
-              );
-              console.log(
-                "this._$common.publicKey已重置===",
-                this._$common.publicKey
-              );
-              console.log("this._$commonClone已重置===", this._$commonClone);
+      return new Promise((resolve) => {
+        api.getPublicKey(null, (response) => {
+          let res = response.data;
+          if (res.code == 0) {
+            try {
+              if (!!res.data) {
+                this._$common.publicKey = getDecrypt(
+                  res.data,
+                  this._$common.privateKey
+                );
+                console.log(
+                  "this._$common.publicKey已重置===",
+                  this._$common.publicKey
+                );
+                console.log("this._$commonClone已重置===", this._$commonClone);
+              }
+            } catch (error) {
+              console.error(error);
+              this.$message({
+                message: "登录异常,请联系管理员",
+                type: "error",
+              });
             }
-          } catch (error) {
-            console.error(error);
+          } else {
             this.$message({ message: "登录异常,请联系管理员", type: "error" });
           }
-        } else {
-          this.$message({ message: "登录异常,请联系管理员", type: "error" });
-        }
+          resolve();
+        });
       });
     },
-    login() {
+    async login() {
       this.loading = true;
       let userInfo = {
         userName: this.loginForm.userName,
@@ -120,7 +126,7 @@ export default {
         captcha: this.loginForm.captcha,
       };
 
-      this.$refs["loginForm"].validate((valid) => {
+      await this.$refs["loginForm"].validate((valid) => {
         if (valid) {
           /**加密*/
           if (!this._$common.publicKey) {
@@ -164,16 +170,15 @@ export default {
     refreshCaptcha: function () {
       this.loginForm.src =
         process.env.API_ROOT + "/captcha.jpg?t=" + new Date().getTime();
-      console.log("this.loginForm.src===", this.loginForm.src);
     },
     reset() {
       this.$refs.loginForm.resetFields();
     },
   },
-  mounted() {
+  async mounted() {
     window.addEventListener("keydown", this.keyDown);
-    this.refreshCaptcha();
-    console.log("this._$common.publicKey==", this._$common.publicKey);
+    await this.refreshCaptcha();
+    console.log("!!!this._$common.publicKey==", this._$common.publicKey);
     if (!this._$common.publicKey) {
       setTimeout(() => {
         this.getPublicKey();

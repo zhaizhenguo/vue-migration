@@ -67,7 +67,10 @@
               <el-switch v-model="form.bChannel"></el-switch>
             </el-form-item>
             <el-form-item label="" style="float: right">
-              <el-button type="primary" @click="testConnection"
+              <el-button
+                type="primary"
+                @click="testConnection"
+                :loading="loading"
                 >测试连接</el-button
               >
             </el-form-item>
@@ -122,6 +125,7 @@ export default {
       driverType: driverType,
       dialogPointDriverVisible: false,
       dialogDriverDataVisible: false,
+      loading: false,
       form: {
         connectionType: this.connectionType,
         dataSource: "ShenTong",
@@ -164,26 +168,29 @@ export default {
     };
   },
   methods: {
-    async testConnection() {
-      let isConnectionSuccess = false;
-      let connectionInfo = this.form;
-      await api.dataMigration.testConnection(connectionInfo, (response) => {
-        let res = response.data;
-        if (res.code == 0) {
-          isConnectionSuccess = true;
-          this.$message({
-            message: this.paneName + "连接成功",
-            type: "success",
-            duration: 1000,
-          });
-        } else {
-          this.$message({
-            message: this.paneName + "连接失败, " + res.msg,
-            type: "error",
-          });
-        }
+    testConnection() {
+      return new Promise((resolve) => {
+        this.loading = true;
+        let isConnectionSuccess = false;
+        api.dataMigration.testConnection(this.form, (response) => {
+          let res = response.data;
+          if (res.code == 0) {
+            isConnectionSuccess = true;
+            this.$message({
+              message: this.paneName + "连接成功",
+              type: "success",
+              duration: 1000,
+            });
+          } else {
+            this.$message({
+              message: this.paneName + "连接失败, " + res.msg,
+              type: "error",
+            });
+          }
+          this.loading = false;
+          resolve(isConnectionSuccess);
+        });
       });
-      return isConnectionSuccess;
     },
     btnPointDriver() {
       this.dialogPointDriverVisible = true;
@@ -204,11 +211,7 @@ export default {
       let param;
       this.$refs.form.validate((valid) => {
         if (valid) {
-          if (this.testConnection()) {
-            param = this.getParam();
-          } else {
-            param = false;
-          }
+          param = this.getParam();
         } else {
           param = false;
         }

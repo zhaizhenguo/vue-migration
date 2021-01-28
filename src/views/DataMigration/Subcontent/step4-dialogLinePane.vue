@@ -18,7 +18,7 @@
       <el-table-column
         align="center"
         sortable
-        prop="sourceLineName"
+        prop="sourceName"
         label="源列名"
         min-width="11%"
       >
@@ -26,54 +26,54 @@
       <el-table-column
         align="center"
         sortable
-        prop="targetLineName"
+        prop="targetName"
         label="目的列名"
         min-width="15%"
       >
         <template slot-scope="scope">
-          <el-input size="mini" v-model="scope.row.targetLineName"></el-input>
+          <el-input size="mini" v-model="scope.row.targetName"></el-input>
         </template>
       </el-table-column>
       <el-table-column
         align="center"
         sortable
-        prop="checkType"
+        prop="targetType"
         label="类型"
         min-width="14%"
       >
         <template slot-scope="scope">
           <el-select
             size="mini"
-            v-if="typeof scope.row.type === 'object'"
-            v-model="scope.row.checkType"
+            v-if="!!scope.row.stype.accTypes"
+            v-model="scope.row.targetType"
             placeholder="请选择"
           >
             <el-option
-              v-for="item in scope.row.type"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
+              v-for="item in scope.row.stype.accTypes"
+              :key="item.ttypeName"
+              :label="item.ttypeName"
+              :value="item.ttypeName"
             >
             </el-option>
           </el-select>
-          <el-input v-else v-model="scope.row.checkType"></el-input>
+          <el-input v-else v-model="scope.row.targetType"></el-input>
         </template>
       </el-table-column>
       <el-table-column
         align="center"
         sortable
-        prop="length"
+        prop="lengthTarget"
         label="长度"
         min-width="10%"
       >
         <template slot-scope="scope">
-          <el-input size="mini" v-model="scope.row.length"></el-input>
+          <el-input size="mini" v-model="scope.row.lengthTarget"></el-input>
         </template>
       </el-table-column>
       <el-table-column
         align="center"
         sortable
-        prop="precision"
+        prop="precisionTarget"
         label="精度"
         min-width="8%"
       >
@@ -81,7 +81,7 @@
       <el-table-column
         align="center"
         sortable
-        prop="decimals"
+        prop="scaleTarget"
         label="小数位"
         min-width="8%"
       >
@@ -89,12 +89,12 @@
       <el-table-column
         align="center"
         sortable
-        prop="ismajorKey"
+        prop="isPrimaryKey"
         label="主键"
         min-width="10%"
       >
         <template slot-scope="scope">
-          <el-select size="mini" v-model="scope.row.ismajorKey">
+          <el-select size="mini" v-model="scope.row.isPrimaryKey">
             <el-option
               v-for="item in whetherList"
               :key="item.value"
@@ -108,12 +108,12 @@
       <el-table-column
         align="center"
         sortable
-        prop="canBeNull"
+        prop="isNull"
         label="可为空"
         min-width="10%"
       >
         <template slot-scope="scope">
-          <el-select size="mini" v-model="scope.row.canBeNull">
+          <el-select size="mini" v-model="scope.row.isNull">
             <el-option
               v-for="item in whetherList"
               :key="item.value"
@@ -127,7 +127,7 @@
       <el-table-column
         align="center"
         sortable
-        prop="defaultValue"
+        prop="defaultValueTarget"
         label="默认值"
         min-width="10%"
       >
@@ -157,17 +157,17 @@ export default {
   data() {
     return {
       whetherList: [
-        { value: 0, label: "是" },
-        { value: 1, label: "否" },
+        { value: true, label: "是" },
+        { value: false, label: "否" },
       ],
     };
   },
   methods: {
     selectAll(selection) {
-      this.$emit("getTableResourceData", "line", selection);
+      this.$emit("getTableResourceData", "columns", selection);
     },
     select(selection) {
-      this.$emit("getTableResourceData", "line", selection);
+      this.$emit("getTableResourceData", "columns", selection);
     },
     selectRow(rows) {
       let tableRef = this.$refs["table"];

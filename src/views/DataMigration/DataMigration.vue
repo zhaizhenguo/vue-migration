@@ -28,13 +28,31 @@
       <el-row class="headerDesc">{{ getDesc }}</el-row>
     </el-header>
     <!-- <el-main :style="`height:${contentHeight}px;padding: 45px 20px;`"> -->
-    <el-main class="main">
+    <el-main v-loading="loading" class="main">
       <el-card class="box-card">
-        <step1 v-show="nowProcess === 1" ref="step1"></step1>
-        <step2 v-show="nowProcess === 2" ref="step2"></step2>
-        <step3 v-show="nowProcess === 3" ref="step3"></step3>
-        <step4 v-show="nowProcess === 4" ref="step4"></step4>
+        <step1
+          @updateLoadingState="updateLoadingState"
+          @updateInitState="updateInitState"
+          v-show="nowProcess === 1"
+          ref="step1"
+        ></step1>
+        <step2
+          @updateLoadingState="updateLoadingState"
+          v-show="nowProcess === 2"
+          ref="step2"
+        ></step2>
+        <step3
+          @updateLoadingState="updateLoadingState"
+          v-show="nowProcess === 3"
+          ref="step3"
+        ></step3>
+        <step4
+          @updateLoadingState="updateLoadingState"
+          v-show="nowProcess === 4"
+          ref="step4"
+        ></step4>
         <step5
+          @updateLoadingState="updateLoadingState"
           v-show="nowProcess === 5"
           :stepData="stepData"
           ref="step5"
@@ -71,6 +89,7 @@
         type="primary"
         @click="btnclick(1)"
         :disabled="nowProcess == stepDesc.length"
+        :loading="nextStepLoding"
         >下一步</el-button
       >
 
@@ -79,7 +98,7 @@
         @click="btnclickSumbit()"
         :loading="sumbitLoading"
         :disabled="nowProcess !== stepDesc.length"
-        >{{ sumbitLabel }}</el-button
+        >完成</el-button
       >
     </el-footer>
     <div class="szBrand">2008-2020 神州通用数据技术有限公司</div>
@@ -122,7 +141,10 @@ export default {
     return {
       contentHeight: window.innerHeight - 250,
       stepData: {},
-      sumbitLabel: "完成",
+      //上一步按钮加载状态
+      lastStepLoding: false,
+      //下一步按钮加载状态
+      nextStepLoding: false,
       sumbitLoading: false,
       stepDesc: stepDesc,
       nowProcessStep: 0,
@@ -130,6 +152,7 @@ export default {
       options: [],
       dialogParamConfigVisible: false,
       dialogMigrationPlanVisible: false,
+      loading: false,
     };
   },
   computed: {
@@ -152,10 +175,13 @@ export default {
     },
     async btnclick(isDown) {
       if (isDown) {
+        this.loading = true;
+        this.nextStepLoding = true;
         //保存数据逻辑
         let param = await this.$refs["step" + this.nowProcess].getData();
         console.log("保存数据逻辑", param);
         if (!param) {
+          this.updateLoadingState();
           return;
         }
         let resName = "step" + this.nowProcess;
@@ -170,9 +196,10 @@ export default {
             this.stepData["colMapRelation"] = param;
             break;
           case "step4":
-            this.stepData["patternData"] = param.selectPatternData;
-            this.stepData["patternNameList"] = param.selectPatternNameList;
-            this.stepData["patternParam"] = param.patternParam;
+            this.stepData["schemaData"] = param.schemaData;
+            this.stepData["selectSchemaData"] = param.selectSchemaData;
+            this.stepData["selectSchemaNameList"] = param.selectSchemaNameList;
+            this.stepData["migrationConfigInfo"] = param.migrationConfigInfo;
             break;
           default:
             this.stepData[resName] = param;
@@ -188,15 +215,75 @@ export default {
       } else {
         let initData = this.$refs["step" + (this.nowProcess - 1)].initData;
         if (typeof initData === "function") {
+          this.loading = true;
+          this.lastStepLoding = true;
           initData(this.stepData);
         }
         this.nowProcessStep--;
       }
     },
+    // 更新页面和按钮loading状态
+    updateLoadingState() {
+      this.nextStepLoding = false;
+      this.loading = false;
+    },
+    // 更新各步骤初始化状态
+    updateInitState(falg) {
+      ["step2", "step3", "step4", "step5"].forEach((item) => {
+        this.$refs[item].isLoading = falg;
+      });
+    },
     btnclickSumbit() {
+      this.saveMigrationInfo(this.stepData["migrationConfigInfo"]);
+      this.saveSchemaInfo(this.stepData["schemaData"]);
+
       this.dialogMigrationPlanVisible = true;
       this.$nextTick(() => {
         this.$refs.dialogMigrationPlan.test();
+      });
+    },
+    saveMigrationInfo(param) {
+      api.dataMigration.saveMigrationInfo(param, (response) => {
+        let res = response.data;
+        if (res.code == 0) {
+          this.$message({
+            message: "保存模式参数成功",
+            type: "success",
+          });
+        } else {
+          this.$message({
+            message: "保存模式参数失败, " + res.msg,
+            type: "error",
+          });
+        }
+      });
+    },
+    saveSchemaInfo(param) {
+      api.dataMigration.saveSchemaInfo(param, (response) => {
+        let res = response.data;
+        if (res.code == 0) {
+          this.$message({
+            message: "@保存模式信息成功",
+            type: "success",
+          });
+          this.startMigration();
+        } else {
+          this.$message({
+            message: "@保存模式信息失败, " + res.msg,
+            type: "error",
+          });
+        }
+      });
+    },
+    startMigration() {
+      api.dataMigration.startMigration(null, (response) => {
+        let res = response.data;
+        if (res.code != 0) {
+          this.$message({
+            message: "执行迁移失败," + res.msg,
+            type: "error",
+          });
+        }
       });
     },
     btnclickReset() {

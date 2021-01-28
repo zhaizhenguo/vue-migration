@@ -65,8 +65,8 @@ export default {
         .then(() => {
           api.layout(null, (response) => {
             let res = response.data;
-            console.log("res===", res);
             if (res.code == 0) {
+              this.$message({ message: "清空用户信息成功", type: "success" });
               this.clearUserInfo();
             }
           });
@@ -77,11 +77,8 @@ export default {
     clearUserInfo: function () {
       Cookies.remove("oscar-token");
       sessionStorage.clear();
-      window.vue._$common = this._$commonClone;
+      window.vue._$common = Object.assign({}, this._$commonClone);
       this.$router.push("/login");
-      console.log("this._$commonClone===", this._$commonClone);
-      console.log("window.vue._$common===", window.vue._$common);
-      console.log("this._$common===", this._$common);
     },
     closeDialogChangePassword() {
       this.dialogChangePasswordVisible = false;
