@@ -60,6 +60,9 @@
       </el-card>
     </el-main>
     <el-footer class="footer">
+      <el-button type="primary" @click="btnclickOPpen()">建立连接</el-button>
+      <el-button type="primary" @click="btnclickClose()">关闭连接</el-button>
+      <el-button type="primary" @click="btnclickMsg()">发送消息</el-button>
       <el-button
         v-show="nowProcess === stepDesc.length"
         type="primary"
@@ -169,7 +172,50 @@ export default {
   beforeDestroy() {
     window.removeEventListener("resize", this.getContentHeight);
   },
+  sockets: {
+    // 通过vue实例对象sockets实现组件中的事件监听
+    connect: function () {
+      console.log("连接成功");
+    },
+    connecting: function () {
+      console.log("正在连接");
+    },
+    disconnect: function () {
+      console.log("断开连接");
+    },
+    connect_failed: function () {
+      console.log("连接失败");
+    },
+    error: function () {
+      console.log("发生错误");
+    },
+    reconnect: function () {
+      console.log("重连成功");
+    },
+    reconnecting: function () {
+      console.log("正在重连");
+    },
+    msgEvent(data) {
+      // 后端按主题名推送的消息数据
+      console.log("msgEvent收到消息：" + data);
+    },
+  },
+
+  //   mounted() {
+  //     console.log("mounted 在页面加载时发起订阅");
+  //   },
   methods: {
+    btnclickOPpen() {
+      // 开始连接socket
+      this.$socket.open();
+    },
+    btnclickClose() {
+      // 关闭连接socket
+      this.$socket.close();
+    },
+    btnclickMsg() {
+      this.$socket.emit("msgEvent", "我是客户端");
+    },
     getContentHeight() {
       //   this.contentHeight = window.innerHeight - 230;
     },

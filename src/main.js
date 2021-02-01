@@ -7,9 +7,10 @@ import router from "@/router";
 import common from '@/utils/common'
 import request from "@/my-request";
 import VueSocketIO from 'vue-socket.io'
+import socketio from 'socket.io-client';
 
 // var socket;
-// socket = new WebSocket("ws://localhost:8081/ws/asset");
+// socket = new WebSocket("ws://127.0.0.1:8081/");
 
 Vue.use(ElementUI, {
   size: "small",
@@ -48,14 +49,49 @@ requireComponent.keys().forEach(fileName => {
     componentConfig.default || componentConfig
   );
 });
+// 关闭自动连接 
+const socketOptions = {
+  autoConnect: false
+}
 
-// Vue.use(new VueSocketIO({
-//   debug: true,
-//   connection: 'ws://127.0.0.1:8081/ws/asset',
-// }))
+Vue.use(new VueSocketIO({
+  debug: true,
+  connection: socketio('localhost:8082', socketOptions)
+}))
 /* eslint-disable no-new */
 const vm = new Vue({
   el: "#app",
+  // 通过vue实例对象sockets实现组件中的事件监听
+  sockets: {
+    connect: function () {
+      console.log("连接成功");
+    },
+    connecting: function () {
+      console.log("正在连接");
+    },
+    disconnect: function () {
+      console.log("断开连接");
+    },
+    connect_failed: function () {
+      console.log("连接失败");
+    },
+    error: function () {
+      console.log("发生错误");
+    },
+    reconnect: function () {
+      console.log("重连成功");
+    },
+    reconnecting: function () {
+      console.log("正在重连");
+    },
+    reconnect_failed: function () {
+      console.log("重连失败");
+    },
+    msgEvent(data) {
+      // 后端按主题名推送的消息数据
+      console.log("msgEvent收到消息：" + data);
+    },
+  },
   router,
   render: h => h(App)
 });

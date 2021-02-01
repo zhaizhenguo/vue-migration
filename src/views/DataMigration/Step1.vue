@@ -24,6 +24,7 @@ export default {
   components: {
     step1Form: step1Form,
   },
+
   data() {
     return {
       backSoureDataSource: {},
