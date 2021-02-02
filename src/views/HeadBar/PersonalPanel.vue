@@ -77,6 +77,7 @@ export default {
     clearUserInfo: function () {
       Cookies.remove("oscar-token");
       sessionStorage.clear();
+      this.$socket.close();
       window.vue._$common = Object.assign({}, this._$commonClone);
       this.$router.push("/login");
     },

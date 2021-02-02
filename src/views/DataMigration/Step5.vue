@@ -68,6 +68,12 @@ export default {
       return {};
     },
   },
+  mounted() {
+    console.log("step5 mounted 在页面加载时发起订阅");
+    this.sockets.subscribe("migrationStatusMsg", (data) => {
+      console.log("migrationStatusMsg========", JSON.stringify(data));
+    });
+  },
   created: function () {},
   computed: {},
 };
