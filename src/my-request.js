@@ -4,9 +4,12 @@ import Cookies from "js-cookie"
 import router from './router/index.js'
 
 let http = axios.create({
+  //携带cookie
   withCredentials: true,
   timeout: 300000
 });
+
+console.log("window.location.host=====", window.location.host)
 
 let baseUrl = process.env.API_ROOT;
 

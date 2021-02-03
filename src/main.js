@@ -20,7 +20,8 @@ Vue.prototype._$commonClone = commonClone;
 Vue.prototype._$request = request;
 
 window.vue = Vue.prototype;
-// 全局导入组件
+
+//全局导入组件
 const requireComponent = require.context(
   // 其组件目录的相对路径
   "./components/base",
@@ -46,14 +47,15 @@ requireComponent.keys().forEach(fileName => {
   );
 });
 
-// 关闭socketIO自动连接 
+
 const socketOptions = {
+  // 关闭socketIO自动连接 
   autoConnect: false
 }
 
 Vue.use(new VueSocketIO({
   debug: true,
-  connection: socketio('localhost:8082', socketOptions)
+  connection: socketio('localhost:8082/?username=tomoya', socketOptions)
 }))
 
 const vm = new Vue({
