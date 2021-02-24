@@ -8,11 +8,7 @@ let http = axios.create({
   withCredentials: true,
   timeout: 300000
 });
-
-console.log("window.location.host=====", window.location.host)
-
 let baseUrl = process.env.API_ROOT;
-
 //请求拦截
 http.interceptors.request.use(function (config) {
   let token = Cookies.get('oscar-token');

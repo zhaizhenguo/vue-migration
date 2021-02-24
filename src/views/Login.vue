@@ -1,67 +1,72 @@
 <template>
-  <el-form
-    :model="loginForm"
-    :rules="fieldRules"
-    ref="loginForm"
-    label-position="left"
-    label-width="0px"
-    class="demo-ruleForm login-container"
-  >
-    <h2 class="title" style="padding-left: 22px">系统登录</h2>
-    <el-form-item prop="userName">
-      <el-input
-        type="text"
-        v-model="loginForm.userName"
-        auto-complete="off"
-        placeholder="账号"
-      ></el-input>
-    </el-form-item>
-    <el-form-item prop="password">
-      <el-input
-        type="password"
-        v-model="loginForm.password"
-        auto-complete="off"
-        placeholder="密码"
-      ></el-input>
-    </el-form-item>
-    <el-form-item>
-      <el-col :span="12">
-        <el-form-item prop="captcha">
-          <el-input
-            type="test"
-            v-model="loginForm.captcha"
-            auto-complete="off"
-            placeholder="验证码, 单击图片刷新"
-            style="width: 100%"
-          >
-          </el-input>
-        </el-form-item>
-      </el-col>
-      <el-col class="line" :span="1">&nbsp;</el-col>
-      <el-col :span="11">
-        <el-form-item>
-          <img
-            style="width: 100%; height: 36px"
-            class="pointer"
-            :src="loginForm.src"
-            @click="refreshCaptcha"
-          />
-        </el-form-item>
-      </el-col>
-    </el-form-item>
-    <el-form-item style="width: 100%">
-      <el-button type="primary" style="width: 48%" @click.native.prevent="reset"
-        >重 置</el-button
-      >
-      <el-button
-        type="primary"
-        style="width: 48%; margin-left: 8px"
-        @click.native.prevent="login"
-        :loading="loading"
-        >登 录</el-button
-      >
-    </el-form-item>
-  </el-form>
+  <div class="loginClass">
+    <el-form
+      :model="loginForm"
+      :rules="fieldRules"
+      ref="loginForm"
+      label-position="left"
+      label-width="0px"
+      class="demo-ruleForm login-container"
+    >
+      <h2 class="title" style="padding-left: 22px">系统登录</h2>
+      <el-form-item prop="userName">
+        <el-input
+          type="text"
+          v-model="loginForm.userName"
+          auto-complete="off"
+          placeholder="账号"
+        ></el-input>
+      </el-form-item>
+      <el-form-item prop="password">
+        <el-input
+          type="password"
+          v-model="loginForm.password"
+          auto-complete="off"
+          placeholder="密码"
+        ></el-input>
+      </el-form-item>
+      <el-form-item>
+        <el-col :span="12">
+          <el-form-item prop="captcha">
+            <el-input
+              type="test"
+              v-model="loginForm.captcha"
+              auto-complete="off"
+              placeholder="验证码, 单击图片刷新"
+              style="width: 100%"
+            >
+            </el-input>
+          </el-form-item>
+        </el-col>
+        <el-col class="line" :span="1">&nbsp;</el-col>
+        <el-col :span="11">
+          <el-form-item>
+            <img
+              style="width: 100%; height: 36px"
+              class="pointer"
+              :src="loginForm.src"
+              @click="refreshCaptcha"
+            />
+          </el-form-item>
+        </el-col>
+      </el-form-item>
+      <el-form-item style="width: 100%">
+        <el-button
+          type="primary"
+          style="width: 48%"
+          @click.native.prevent="reset"
+          >重 置</el-button
+        >
+        <el-button
+          type="primary"
+          style="width: 48%; margin-left: 8px"
+          @click.native.prevent="login"
+          :loading="loading"
+          >登 录</el-button
+        >
+      </el-form-item>
+    </el-form>
+  </div>
 </template>
 <script>
 import Cookies from "js-cookie";
@@ -168,6 +173,7 @@ export default {
       }
     },
     refreshCaptcha: function () {
+      console.log("process.env.API_ROOT=========", process.env.API_ROOT);
       this.loginForm.src =
         process.env.API_ROOT + "/captcha.jpg?t=" + new Date().getTime();
     },
@@ -197,7 +203,7 @@ export default {
   border-radius: 5px;
   -moz-border-radius: 5px;
   background-clip: padding-box;
-  margin: 100px auto;
+  margin: 200px auto;
   width: 350px;
   padding: 35px 35px 15px 35px;
   background: #fff;
@@ -211,5 +217,14 @@ export default {
 }
 .remember {
   margin: 0px 0px 35px 0px;
+}
+.loginClass {
+  height: 100vh;
+  overflow: auto;
+  background-image: url(https://gw.alipayobjects.com/zos/rmsportal/TVYTbAXWheQpRcWDaDMu.svg);
+  background-repeat: no-repeat;
+  background-position-x: center;
+  background-position-y: 110px;
+  background-size: 100%;
 }
 </style>

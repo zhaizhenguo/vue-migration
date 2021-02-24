@@ -55,41 +55,41 @@ const socketOptions = {
 
 Vue.use(new VueSocketIO({
   debug: true,
-  connection: socketio('localhost:8082/?username=tomoya', socketOptions)
+  connection: socketio('localhost:9001/?username=tomoya', socketOptions)
 }))
 
 const vm = new Vue({
   el: "#app",
   // 通过vue实例对象sockets实现组件中的事件监听
-  sockets: {
-    connect: function () {
-      console.log("连接成功");
+    sockets: {
+      connect: function () {
+        console.log("连接成功");
+      },
+      connecting: function () {
+        console.log("正在连接");
+      },
+      disconnect: function () {
+        console.log("断开连接");
+      },
+      connect_failed: function () {
+        console.log("连接失败");
+      },
+      error: function () {
+        console.log("发生错误");
+      },
+      reconnect: function () {
+        console.log("重连成功");
+      },
+      reconnecting: function () {
+        console.log("正在重连");
+      },
+      reconnect_failed: function () {
+        console.log("重连失败");
+      },
+      errorMsg(data) {
+        console.log("errorMsg收到消息：", JSON.stringify(data));
+      },
     },
-    connecting: function () {
-      console.log("正在连接");
-    },
-    disconnect: function () {
-      console.log("断开连接");
-    },
-    connect_failed: function () {
-      console.log("连接失败");
-    },
-    error: function () {
-      console.log("发生错误");
-    },
-    reconnect: function () {
-      console.log("重连成功");
-    },
-    reconnecting: function () {
-      console.log("正在重连");
-    },
-    reconnect_failed: function () {
-      console.log("重连失败");
-    },
-    errorMsg(data) {
-      console.log("errorMsg收到消息：", JSON.stringify(data));
-    },
-  },
   router,
   render: h => h(App)
 });
